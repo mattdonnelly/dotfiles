@@ -36,7 +36,8 @@ zstyle ':prezto:load' pmodule \
   'python' \
   'ruby' \
   'rails' \
-  'tmux'
+  'tmux' \
+  'node'
 
 #
 # Editor

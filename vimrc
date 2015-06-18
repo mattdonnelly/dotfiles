@@ -7,23 +7,24 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " appearence plugins
-Plugin 'scrooloose/nerdtree'       " file tree
-Plugin 'mhinz/vim-startify'        " helpful start page
-Plugin 'sjl/badwolf'               " theme
-Plugin 'bling/vim-airline'         " status line theme
+Plugin 'scrooloose/nerdtree' " file tree
+Plugin 'mhinz/vim-startify'  " helpful start page
+Plugin 'sjl/badwolf'         " theme
+Plugin 'bling/vim-airline'   " status line theme
 let g:airline_powerline_fonts = 1
 let g:airline_theme='powerlineish'
 let g:airline#extensions#branch#enabled=1
 let g:airline#syntastic#enabled=1
 
 " integrations
-Plugin 'scrooloose/syntastic.git' " syntax checking
-Plugin 'ctrlpvim/ctrlp.vim'       " fuzzy searching
-Plugin 'jiangmiao/auto-pairs'     " pair quotes, brackets, etc.
-Plugin 'Valloric/YouCompleteMe'   " auto completion
-Plugin 'Lokaltog/vim-easymotion'  " movement without numbers
-Plugin 'airblade/vim-gitgutter'   " git status
-Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/syntastic.git'       " syntax checking
+Plugin 'ctrlpvim/ctrlp.vim'             " fuzzy searching
+Plugin 'jiangmiao/auto-pairs'           " pair quotes, brackets, etc.
+Plugin 'Valloric/YouCompleteMe'         " auto completion
+Plugin 'Lokaltog/vim-easymotion'        " movement without numbers
+Plugin 'airblade/vim-gitgutter'         " git status
+Plugin 'tpope/vim-fugitive'             " git integration
+Plugin 'christoomey/vim-tmux-navigator' " tmux + vim pane navigation
 
 call vundle#end()
 
@@ -46,7 +47,7 @@ set splitbelow
 set splitright
 
 set backspace=2
-set list listchars=tab:→·,trail:·,nbsp:· " display extra whitespace
+set list listchars=tab:▸\ ,trail:·,nbsp:·,eol:¬ " display extra whitespace
 
 " When the page starts to scroll, keep the cursor 8 lines from the top
 " and 8 lines from the bottom and 15 lines on the left
