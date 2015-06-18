@@ -4,7 +4,7 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'gmarik/Vundle.vim' 
+Plugin 'gmarik/Vundle.vim'
 
 " appearence plugins
 Plugin 'scrooloose/nerdtree'       " file tree
@@ -89,4 +89,3 @@ let g:syntastic_python_checker = 'pep8'
 let g:syntastic_stl_format = '[%E{%e Errors}%B{, }%W{%w Warnings}]'
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -Wall'
-

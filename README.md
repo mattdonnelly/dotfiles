@@ -21,4 +21,3 @@ Install the dotfiles:
     git clone https://github.com/mattdonnelly/dotfiles.git
     ln -s $(pwd)/dotfiles ~/.dotfiles
     env RCRC=$HOME/.dotfiles/rcrc rcup
-

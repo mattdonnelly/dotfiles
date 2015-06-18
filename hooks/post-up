@@ -1,2 +1,6 @@
-vim -u $HOME/.vimrc.bundles +PlugInstall +PlugClean! +qa
+#!/bin/sh
 
+mkdir -p ~/.vim/files
+touch ~/.vim/filesinfo
+
+vim +PlugInstall +PlugClean! +qa

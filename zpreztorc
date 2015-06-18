@@ -163,4 +163,3 @@ zstyle ':prezto:module:syntax-highlighting' color 'yes'
 # zstyle ':prezto:module:tmux:iterm' integrate 'yes'
 
 [[ -f ~/.zpreztorc.local ]] && source "$HOME/.zpreztorc.local"
-
