@@ -7,14 +7,10 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " appearence plugins
-Plugin 'scrooloose/nerdtree' " file tree
-Plugin 'mhinz/vim-startify'  " helpful start page
-Plugin 'sjl/badwolf'         " theme
-Plugin 'bling/vim-airline'   " status line theme
-let g:airline_powerline_fonts = 1
-let g:airline_theme='powerlineish'
-let g:airline#extensions#branch#enabled=1
-let g:airline#syntastic#enabled=1
+Plugin 'scrooloose/nerdtree'      " file tree
+Plugin 'mhinz/vim-startify'       " helpful start page
+Plugin 'sjl/badwolf'              " theme
+Plugin 'bling/vim-airline'        " status line theme
 
 " integrations
 Plugin 'scrooloose/syntastic.git'       " syntax checking
@@ -42,6 +38,32 @@ highlight LineNr guibg=grey
 
 set viminfo='100,n$HOME/.vim/files/info' " set viminfo
 
+function! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+" The Silver Searcher
+if executable('ag')
+    " Use ag over grep
+    set grepprg=ag\ --nogroup\ --nocolor
+
+    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+    " ag is fast enough that CtrlP doesn't need to cache
+    let g:ctrlp_use_caching = 0
+endif
+
+" bind \ (backward slash) to grep shortcut
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+
+nnoremap \ :Ag<SPACE>
+
 " open new split panes to right and bottom, which feels more natural
 set splitbelow
 set splitright
@@ -59,7 +81,6 @@ set number                 " line numbers
 set numberwidth=4          " gutter width
 set cursorline             " show current line
 set whichwrap+=<,>,h,l,[,] " cursor line wrapping
-set hlsearch               " search highlighting
 set incsearch              " incremental search
 set ignorecase             " ignore search case
 set smartcase              " smart search matching case
@@ -83,10 +104,22 @@ noremap <Right> <nop>
 nmap <silent> <C-n> :NERDTreeFocus<cr>
 
 " syntastic settings
-let g:syntastic_enable_signs = 1
-let g:syntastic_auto_loc_list = 2
-let g:syntastic_python_checker = 'pep8'
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#branch#enabled=1
+let g:airline#syntastic#enabled=1
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 let g:syntastic_stl_format = '[%E{%e Errors}%B{, }%W{%w Warnings}]'
+
+let g:syntastic_python_checker = 'flake8'
+
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -Wall'
