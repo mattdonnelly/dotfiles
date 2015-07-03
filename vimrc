@@ -45,7 +45,26 @@ function! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 
-autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+augroup vimrcEx
+    autocmd!
+
+    " when editing a file, always jump to the last known cursor position.
+    " don't do it for commit messages, when the position is invalid, or when
+    " inside an event handler (happens when dropping a file on gvim).
+    autocmd BufReadPost *
+        \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+        \   exe "normal g`\"" |
+        \ endif
+
+    " set syntax hilighting
+    autocmd BufRead,BufNewFile *.md set filetype=markdown
+
+    " strip white space
+    autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+    " allow stylesheets to autocomplete hyphenated words
+    autocmd FileType css,scss,sass setlocal iskeyword+=-
+augroup END
 
 " The Silver Searcher
 if executable('ag')
