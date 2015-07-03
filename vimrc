@@ -21,6 +21,7 @@ Plugin 'Lokaltog/vim-easymotion'        " movement without numbers
 Plugin 'airblade/vim-gitgutter'         " git status
 Plugin 'tpope/vim-fugitive'             " git integration
 Plugin 'christoomey/vim-tmux-navigator' " tmux + vim pane navigation
+Plugin 'tpope/vim-surround'             " easier surronding characters
 
 call vundle#end()
 
@@ -34,7 +35,6 @@ endif
 
 set encoding=utf-8                 " allow rich text
 colorscheme badwolf                " set syntax colouring theme
-highlight LineNr guibg=grey
 
 set viminfo='100,n$HOME/.vim/files/info' " set viminfo
 
@@ -81,6 +81,7 @@ set number                 " line numbers
 set numberwidth=4          " gutter width
 set cursorline             " show current line
 set whichwrap+=<,>,h,l,[,] " cursor line wrapping
+set nohlsearch             " don't highlight search results
 set incsearch              " incremental search
 set ignorecase             " ignore search case
 set smartcase              " smart search matching case
@@ -108,6 +109,12 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](node_modules|bower_components|\.git|\.hg|\.svn)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#branch#enabled=1
 let g:airline#syntastic#enabled=1
@@ -122,4 +129,5 @@ let g:syntastic_stl_format = '[%E{%e Errors}%B{, }%W{%w Warnings}]'
 let g:syntastic_python_checker = 'flake8'
 
 let g:syntastic_cpp_compiler = 'clang++'
+set showcmd
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -Wall'
