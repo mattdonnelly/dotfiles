@@ -7,10 +7,12 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " appearence plugins
-Plugin 'scrooloose/nerdtree'      " file tree
-Plugin 'mhinz/vim-startify'       " helpful start page
-Plugin 'sjl/badwolf'              " theme
-Plugin 'bling/vim-airline'        " status line theme
+Plugin 'scrooloose/nerdtree'        " file tree
+Plugin 'mhinz/vim-startify'         " helpful start page
+Plugin 'sjl/badwolf'                " theme
+Plugin 'vim-scripts/Spacegray.vim'  " theme
+Plugin 'jordwalke/flatlandia'       " theme
+Plugin 'bling/vim-airline'          " status line theme
 
 " integrations
 Plugin 'scrooloose/syntastic.git'       " syntax checking
@@ -30,11 +32,12 @@ filetype plugin indent on
 " switch syntax highlighting on, when the terminal has colors
 " also switch on highlighting the last used search pattern.
 if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
     syntax on
 endif
 
 set encoding=utf-8                 " allow rich text
-colorscheme badwolf                " set syntax colouring theme
+colorscheme spacegray              " set syntax colouring theme
 
 set viminfo='100,n$HOME/.vim/files/info' " set viminfo
 
@@ -125,21 +128,22 @@ noremap <Right> <nop>
 
 nmap <silent> <C-n> :NERDTreeFocus<cr>
 
-" syntastic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](node_modules|bower_components|\.git|\.hg|\.svn)$',
   \ 'file': '\v\.(exe|so|dll)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
 
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#branch#enabled=1
-let g:airline#syntastic#enabled=1
+let g:airline_theme='base16'
+let g:airline_powerline_fonts = 0
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
 
+let g:airline#extensions#branch#enabled=1
+
+let g:airline#syntastic#enabled=1
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -150,5 +154,4 @@ let g:syntastic_stl_format = '[%E{%e Errors}%B{, }%W{%w Warnings}]'
 let g:syntastic_python_checker = 'flake8'
 
 let g:syntastic_cpp_compiler = 'clang++'
-set showcmd
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -Wall'
