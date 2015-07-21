@@ -18,7 +18,6 @@ Plugin 'bling/vim-airline'          " status line theme
 Plugin 'scrooloose/syntastic.git'       " syntax checking
 Plugin 'ctrlpvim/ctrlp.vim'             " fuzzy searching
 Plugin 'jiangmiao/auto-pairs'           " pair quotes, brackets, etc.
-Plugin 'Valloric/YouCompleteMe'         " auto completion
 Plugin 'Lokaltog/vim-easymotion'        " movement without numbers
 Plugin 'airblade/vim-gitgutter'         " git status
 Plugin 'tpope/vim-fugitive'             " git integration
@@ -128,11 +127,7 @@ noremap <Right> <nop>
 
 nmap <silent> <C-n> :NERDTreeFocus<cr>
 
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](node_modules|bower_components|\.git|\.hg|\.svn)$',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
+let g:ctrlp_working_path_mode = 0
 
 let g:airline_theme='base16'
 let g:airline_powerline_fonts = 0
