@@ -1,6 +1,7 @@
 #!/bin/sh
-
 mkdir -p ~/.vim/files
 touch ~/.vim/filesinfo
+
+ln -s ~/.vimrc ~/.nvimrc
 
 vim +PlugInstall +PlugClean! +qa
