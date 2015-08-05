@@ -23,6 +23,7 @@ Plugin 'airblade/vim-gitgutter'         " git status
 Plugin 'tpope/vim-fugitive'             " git integration
 Plugin 'christoomey/vim-tmux-navigator' " tmux + vim pane navigation
 Plugin 'tpope/vim-surround'             " easier surronding characters
+Plugin 'unblevable/quick-scope'         " highlight first occurences of chars
 
 call vundle#end()
 
@@ -84,6 +85,11 @@ endif
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
 nnoremap \ :Ag<SPACE>
+
+let mapleader=" "
+
+nmap <leader>q <plug>(QuickScopeToggle)
+vmap <leader>q <plug>(QuickScopeToggle)
 
 " open new split panes to right and bottom, which feels more natural
 set splitbelow
