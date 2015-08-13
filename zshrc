@@ -15,9 +15,3 @@ bindkey "^N" insert-last-word
 
 [[ -f ~/.aliases ]] && source ~/.aliases
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-
-if (( $+commands[command-name] )) ; then
-    if [[ $(boot2docker status) == "running" ]]; then
-        eval $(boot2docker shellinit 2> /dev/null)
-    fi
-fi
