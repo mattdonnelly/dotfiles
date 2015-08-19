@@ -12,6 +12,8 @@ bindkey "^R" history-incremental-search-backward
 bindkey "^P" history-search-backward
 bindkey "^Y" accept-and-hold
 bindkey "^N" insert-last-word
+bindkey "^B" backward-word
+bindkey "^F" forward-word
 
 [[ -f ~/.aliases ]] && source ~/.aliases
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
