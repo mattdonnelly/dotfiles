@@ -1,5 +1,5 @@
 # Unix
-unalias rm
+unalias rm >/dev/null 2>/dev/null
 alias ll="ls -al"
 alias ln="ln -v"
 alias lsaa="ls -hA"
@@ -10,6 +10,10 @@ alias path='echo $PATH | tr -s ":" "\n"'
 
 if (( $+commands[ag] )) ; then
     alias grep="ag"
+fi
+
+if (( $+command[nvim] )) ; then
+    alias vim="nvim"
 fi
 
 # Include custom aliases
