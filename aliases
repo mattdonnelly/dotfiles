@@ -1,5 +1,5 @@
 # Unix
-unalias rm >/dev/null 2>/dev/null
+unalias rm > /dev/null 2> /dev/null
 alias ll="ls -al"
 alias ln="ln -v"
 alias lsaa="ls -hA"
@@ -12,7 +12,7 @@ if (( $+commands[ag] )) ; then
     alias grep="ag"
 fi
 
-if (( $+command[nvim] )) ; then
+if (( $+commands[nvim] )) ; then
     alias vim="nvim"
 fi
 
