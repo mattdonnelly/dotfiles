@@ -7,12 +7,10 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " appearence plugins
-Plugin 'scrooloose/nerdtree'        " file tree
-Plugin 'mhinz/vim-startify'         " helpful start page
-Plugin 'sjl/badwolf'                " theme
-Plugin 'vim-scripts/Spacegray.vim'  " theme
-Plugin 'jordwalke/flatlandia'       " theme
-Plugin 'bling/vim-airline'          " status line theme
+Plugin 'scrooloose/nerdtree'         " file tree
+Plugin 'mhinz/vim-startify'          " helpful start page
+Plugin 'mattdonnelly/Spacegray.vim'  " theme
+Plugin 'bling/vim-airline'           " status line theme
 
 " integrations
 Plugin 'scrooloose/syntastic.git'       " syntax checking
@@ -23,7 +21,6 @@ Plugin 'airblade/vim-gitgutter'         " git status
 Plugin 'tpope/vim-fugitive'             " git integration
 Plugin 'christoomey/vim-tmux-navigator' " tmux + vim pane navigation
 Plugin 'tpope/vim-surround'             " easier surronding characters
-Plugin 'unblevable/quick-scope'         " highlight first occurences of chars
 
 call vundle#end()
 
