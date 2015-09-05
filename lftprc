@@ -1,0 +1,17 @@
+set bmk:save-password true
+set cache:expire 10
+set cmd:csh-history true
+set cmd:default-protocol sftp
+set mirror:parallel-transfer-count 2
+set mirror:use-pget-n 10
+set xfer:destination-directory ~/Downloads
+alias p queue pget -c -n 40
+alias m queue mirror -c --use-pget-n=20
+alias q queue
+set cmd:prompt "lftp \[\e[32m\]\h\[\e[00m\] \[\e[34m\]\w\[\e[00m\] % "
+set cmd:term-status/*screen* "\e_\T\e\\"
+set cmd:term-status/*xterm* "\e[11;0]\e]2;\T\007\e[11]"
+set cmd:term-status/*rxvt* "\e[11;0]\e]2;\T\007\e[11]"
+set cmd:set-term-status on
+set color:use-color auto
+
