@@ -106,7 +106,7 @@ set sidescroll=1
 
 set noswapfile             " no swap files
 set autoread               " auto read changes to files
-set number                 " line numbers
+set relativenumber         " relative line numbers
 set numberwidth=4          " gutter width
 set cursorline             " show current line
 set whichwrap+=<,>,h,l,[,] " cursor line wrapping
