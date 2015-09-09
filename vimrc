@@ -15,7 +15,6 @@ Plugin 'bling/vim-airline'           " status line theme
 " integrations
 Plugin 'scrooloose/syntastic.git'       " syntax checking
 Plugin 'ctrlpvim/ctrlp.vim'             " fuzzy searching
-Plugin 'jiangmiao/auto-pairs'           " pair quotes, brackets, etc.
 Plugin 'Lokaltog/vim-easymotion'        " movement without numbers
 Plugin 'airblade/vim-gitgutter'         " git status
 Plugin 'tpope/vim-fugitive'             " git integration
