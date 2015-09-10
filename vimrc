@@ -20,6 +20,7 @@ Plugin 'airblade/vim-gitgutter'         " git status
 Plugin 'tpope/vim-fugitive'             " git integration
 Plugin 'christoomey/vim-tmux-navigator' " tmux + vim pane navigation
 Plugin 'tpope/vim-surround'             " easier surronding characters
+Plugin 'tomtom/tcomment_vim'            " commenting
 
 call vundle#end()
 
