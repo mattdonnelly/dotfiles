@@ -22,7 +22,7 @@ Plug 'airblade/vim-gitgutter'                          " git status
 Plug 'tpope/vim-fugitive'                              " git integration
 Plug 'christoomey/vim-tmux-navigator'                  " tmux + vim pane navigation
 Plug 'tpope/vim-surround'                              " easier surronding characters
-Plug 'tomtom/tcomment_vim'                             " commenting
+Plug 'tpope/vim-commentary'                            " commenting
 Plug 'mattn/emmet-vim'                                 " easier html tags
 
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
