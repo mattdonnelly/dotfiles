@@ -1,37 +1,34 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'gmarik/Vundle.vim'
+call plug#begin('~/.vim/plugged')
 
 " appearence plugins
-Plugin 'scrooloose/nerdtree'         " file tree
-Plugin 'mhinz/vim-startify'          " helpful start page
-Plugin 'mattdonnelly/Spacegray.vim'  " theme
-Plugin 'bling/vim-airline'           " status line theme
+Plug 'scrooloose/nerdtree'         " file tree
+Plug 'mhinz/vim-startify'          " helpful start page
+Plug 'mattdonnelly/Spacegray.vim'  " theme
+Plug 'bling/vim-airline'           " status line theme
 
 " integrations
-Plugin 'scrooloose/syntastic.git'       " syntax checking
-Plugin 'ctrlpvim/ctrlp.vim'             " fuzzy searching
-Plugin 'Lokaltog/vim-easymotion'        " movement without numbers
-Plugin 'airblade/vim-gitgutter'         " git status
-Plugin 'tpope/vim-fugitive'             " git integration
-Plugin 'christoomey/vim-tmux-navigator' " tmux + vim pane navigation
-Plugin 'tpope/vim-surround'             " easier surronding characters
-Plugin 'tomtom/tcomment_vim'            " commenting
+Plug 'Lokaltog/vim-easymotion'        " movement without numbers
+Plug 'airblade/vim-gitgutter'         " git status
+Plug 'tpope/vim-fugitive'             " git integration
+Plug 'christoomey/vim-tmux-navigator' " tmux + vim pane navigation
+Plug 'tpope/vim-surround'             " easier surronding characters
+Plug 'tomtom/tcomment_vim'            " commenting
+Plug 'mattn/emmet-vim'                " easier html tags
 
-call vundle#end()
+if has('mac')
+    set rtp+=/usr/local/opt/fzf " fzf vim setup
+endif
+
+call plug#end()
 
 filetype plugin indent on
 
-" switch syntax highlighting on, when the terminal has colors
-" also switch on highlighting the last used search pattern.
-if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-    syntax on
-endif
+syntax on
+
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 set encoding=utf-8                 " allow rich text
 colorscheme spacegray              " set syntax colouring theme
@@ -82,6 +79,7 @@ endif
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
 nnoremap \ :Ag<SPACE>
+nnoremap <C-P> :FZF<CR>
 
 let mapleader=" "
 
