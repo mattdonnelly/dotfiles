@@ -16,7 +16,9 @@ if (( $+commands[nvim] )) ; then
     alias vim="nvim"
 fi
 
-eval "$(thefuck --alias)"
+if (( $+commands[thefuck] )) ; then
+    alias fuck='$(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
+fi
 
 # Include custom aliases
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local
