@@ -1,13 +1,20 @@
 set nocompatible
-filetype off
+filetype plugin indent on
+syntax on
+
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
 
 call plug#begin('~/.vim/plugged')
 
 " appearence plugins
-Plug 'scrooloose/nerdtree'         " file tree
-Plug 'mhinz/vim-startify'          " helpful start page
-Plug 'mattdonnelly/Spacegray.vim'  " theme
-Plug 'bling/vim-airline'           " status line theme
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' } " file tree
+Plug 'mhinz/vim-startify'                               " helpful start page
+Plug 'mattdonnelly/Spacegray.vim'                       " theme
+Plug 'bling/vim-airline'                                " status line theme
 
 " integrations
 Plug 'Lokaltog/vim-easymotion'        " movement without numbers
@@ -18,15 +25,13 @@ Plug 'tpope/vim-surround'             " easier surronding characters
 Plug 'tomtom/tcomment_vim'            " commenting
 Plug 'mattn/emmet-vim'                " easier html tags
 
+Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
+
 if has('mac')
     set rtp+=/usr/local/opt/fzf " fzf vim setup
 endif
 
 call plug#end()
-
-filetype plugin indent on
-
-syntax on
 
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
@@ -76,8 +81,6 @@ if executable('ag')
 endif
 
 " bind \ (backward slash) to grep shortcut
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-
 nnoremap \ :Ag<SPACE>
 nnoremap <C-P> :FZF<CR>
 
