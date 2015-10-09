@@ -18,6 +18,7 @@ Plug 'mhinz/vim-startify'         " helpful start page
 " integrations
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' }  " file tree
 Plug 'Lokaltog/vim-easymotion'                         " movement without numbers
+Plug 'rking/ag.vim'                                    " ag integration
 Plug 'airblade/vim-gitgutter'                          " git status
 Plug 'tpope/vim-fugitive'                              " git integration
 Plug 'christoomey/vim-tmux-navigator'                  " tmux + vim pane navigation
