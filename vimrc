@@ -11,19 +11,19 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " appearence plugins
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' } " file tree
-Plug 'mhinz/vim-startify'                               " helpful start page
-Plug 'mattdonnelly/Spacegray.vim'                       " theme
-Plug 'bling/vim-airline'                                " status line theme
+Plug 'mattdonnelly/Spacegray.vim' " theme
+Plug 'bling/vim-airline'          " status line theme
+Plug 'mhinz/vim-startify'         " helpful start page
 
 " integrations
-Plug 'Lokaltog/vim-easymotion'        " movement without numbers
-Plug 'airblade/vim-gitgutter'         " git status
-Plug 'tpope/vim-fugitive'             " git integration
-Plug 'christoomey/vim-tmux-navigator' " tmux + vim pane navigation
-Plug 'tpope/vim-surround'             " easier surronding characters
-Plug 'tomtom/tcomment_vim'            " commenting
-Plug 'mattn/emmet-vim'                " easier html tags
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' }  " file tree
+Plug 'Lokaltog/vim-easymotion'                         " movement without numbers
+Plug 'airblade/vim-gitgutter'                          " git status
+Plug 'tpope/vim-fugitive'                              " git integration
+Plug 'christoomey/vim-tmux-navigator'                  " tmux + vim pane navigation
+Plug 'tpope/vim-surround'                              " easier surronding characters
+Plug 'tomtom/tcomment_vim'                             " commenting
+Plug 'mattn/emmet-vim'                                 " easier html tags
 
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
 
