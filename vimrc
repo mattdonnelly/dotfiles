@@ -16,17 +16,18 @@ Plug 'bling/vim-airline'          " status line theme
 Plug 'mhinz/vim-startify'         " helpful start page
 
 " integrations
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' }  " file tree
-Plug 'Lokaltog/vim-easymotion'                         " movement without numbers
-Plug 'rking/ag.vim'                                    " ag integration
-Plug 'airblade/vim-gitgutter'                          " git status
-Plug 'tpope/vim-fugitive'                              " git integration
-Plug 'christoomey/vim-tmux-navigator'                  " tmux + vim pane navigation
-Plug 'tpope/vim-surround'                              " easier surronding characters
-Plug 'tpope/vim-commentary'                            " commenting
-Plug 'mattn/emmet-vim'                                 " easier html tags
+Plug 'Lokaltog/vim-easymotion'        " movement without numbers
+Plug 'rking/ag.vim'                   " ag integration
+Plug 'airblade/vim-gitgutter'         " git status
+Plug 'tpope/vim-fugitive'             " git integration
+Plug 'christoomey/vim-tmux-navigator' " tmux + vim pane navigation
+Plug 'tpope/vim-surround'             " easier surronding characters
+Plug 'tpope/vim-commentary'           " commenting
+Plug 'mattn/emmet-vim'                " easier html tags
 
-Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
+Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }     " fuzzy search
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' } " file tree
+Plug 'Valloric/YouCompleteMe', { 'for': 'cpp', 'do': './install.sh --clang-complete' } " code compeltion
 
 if has('mac')
     set rtp+=/usr/local/opt/fzf " fzf vim setup
@@ -34,7 +35,7 @@ endif
 
 call plug#end()
 
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
 
 set encoding=utf-8                 " allow rich text
 colorscheme spacegray              " set syntax colouring theme
