@@ -12,6 +12,8 @@ call plug#begin('~/.vim/plugged')
 
 " appearence plugins
 Plug 'mattdonnelly/Spacegray.vim' " theme
+Plug 'ajh17/Spacegray.vim'        " theme
+Plug 'chriskempson/base16-vim'    " theme
 Plug 'bling/vim-airline'          " status line theme
 Plug 'mhinz/vim-startify'         " helpful start page
 
@@ -29,16 +31,11 @@ Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }     " fuzzy search
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' } " file tree
 Plug 'Valloric/YouCompleteMe', { 'for': 'cpp', 'do': './install.sh --clang-complete' } " code compeltion
 
-if has('mac')
-    set rtp+=/usr/local/opt/fzf " fzf vim setup
-endif
-
 call plug#end()
 
-let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
-
 set encoding=utf-8                 " allow rich text
-colorscheme spacegray              " set syntax colouring theme
+set background=dark
+colorscheme base16-default         " set syntax colouring theme
 
 set viminfo='100,n$HOME/.vim/files/info' " set viminfo
 
@@ -107,7 +104,7 @@ set sidescroll=1
 set noswapfile             " no swap files
 set autoread               " auto read changes to files
 set relativenumber         " relative line numbers
-set numberwidth=4          " gutter width
+set numberwidth=3          " gutter width
 set cursorline             " show current line
 set whichwrap+=<,>,h,l,[,] " cursor line wrapping
 set nohlsearch             " don't highlight search results
@@ -125,6 +122,13 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+" use
+autocmd Filetype javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2
+
+" automatic indentation
+set autoindent
+set smartindent
+
 nnoremap ; :
 noremap <Up> <nop>
 noremap <Down> <nop>
@@ -135,7 +139,7 @@ nmap <silent> <C-n> :NERDTreeFocus<cr>
 
 let g:ctrlp_working_path_mode = 0
 
-let g:airline_theme='base16'
+let g:airline_theme='ubaryd'
 let g:airline_powerline_fonts = 0
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
