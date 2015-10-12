@@ -11,9 +11,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " appearence plugins
-Plug 'mattdonnelly/Spacegray.vim' " theme
-Plug 'ajh17/Spacegray.vim'        " theme
-Plug 'chriskempson/base16-vim'    " theme
+Plug 'w0ng/vim-hybrid'            " theme
 Plug 'bling/vim-airline'          " status line theme
 Plug 'mhinz/vim-startify'         " helpful start page
 
@@ -33,9 +31,9 @@ Plug 'Valloric/YouCompleteMe', { 'for': 'cpp', 'do': './install.sh --clang-compl
 
 call plug#end()
 
-set encoding=utf-8                 " allow rich text
-set background=dark
-colorscheme base16-default         " set syntax colouring theme
+set encoding=utf-8  " allow rich text
+set background=dark " dark background
+colorscheme hybrid  " set syntax colouring theme
 
 set viminfo='100,n$HOME/.vim/files/info' " set viminfo
 
@@ -122,7 +120,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
-" use
+" use 2 space for js
 autocmd Filetype javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 " automatic indentation
@@ -139,7 +137,7 @@ nmap <silent> <C-n> :NERDTreeFocus<cr>
 
 let g:ctrlp_working_path_mode = 0
 
-let g:airline_theme='ubaryd'
+let g:airline_theme = 'tomorrow'
 let g:airline_powerline_fonts = 0
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
