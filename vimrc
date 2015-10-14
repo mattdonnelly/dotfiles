@@ -32,6 +32,9 @@ Plug 'Valloric/YouCompleteMe', { 'for': 'cpp', 'do': './install.sh --clang-compl
 call plug#end()
 
 set encoding=utf-8  " allow rich text
+
+
+let g:hybrid_use_Xresources = 1
 set background=dark " dark background
 colorscheme hybrid  " set syntax colouring theme
 
@@ -103,7 +106,6 @@ set noswapfile             " no swap files
 set autoread               " auto read changes to files
 set relativenumber         " relative line numbers
 set numberwidth=3          " gutter width
-set cursorline             " show current line
 set whichwrap+=<,>,h,l,[,] " cursor line wrapping
 set nohlsearch             " don't highlight search results
 set incsearch              " incremental search
@@ -137,7 +139,7 @@ nmap <silent> <C-n> :NERDTreeFocus<cr>
 
 let g:ctrlp_working_path_mode = 0
 
-let g:airline_theme = 'tomorrow'
+let g:airline_theme = 'hybrid'
 let g:airline_powerline_fonts = 0
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
