@@ -19,3 +19,5 @@ bindkey "^F" forward-word
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export FZF_DEFAULT_COMMAND='git ls-tree -r --name-only HEAD || ag -l -g ""'
