@@ -11,7 +11,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " appearence plugins
-Plug 'w0ng/vim-hybrid'            " theme
+Plug 'mattdonnelly/vim-hybrid'    " theme
 Plug 'bling/vim-airline'          " status line theme
 Plug 'mhinz/vim-startify'         " helpful start page
 
