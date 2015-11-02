@@ -108,7 +108,7 @@ set sidescroll=1
 set noswapfile             " no swap files
 set autoread               " auto read changes to files
 set relativenumber         " relative line numbers
-set numberwidth=3          " gutter width
+set numberwidth=4          " gutter width
 set whichwrap+=<,>,h,l,[,] " cursor line wrapping
 set nohlsearch             " don't highlight search results
 set incsearch              " incremental search
