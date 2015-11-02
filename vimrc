@@ -24,6 +24,7 @@ Plug 'christoomey/vim-tmux-navigator' " tmux + vim pane navigation
 Plug 'tpope/vim-surround'             " easier surronding characters
 Plug 'tpope/vim-commentary'           " commenting
 Plug 'mattn/emmet-vim'                " easier html tags
+Plug 'pangloss/vim-javascript'        " enhanced js syntax highlighting and indentation
 
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }     " fuzzy search
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' } " file tree
