@@ -30,7 +30,9 @@ Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }     " fuzzy search
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' } " file tree
 Plug 'Valloric/YouCompleteMe', { 'for': 'cpp', 'do': './install.sh --clang-complete' } " code compeltion
 
-source ~/.vimplugins.local
+if filereadable("~/.vimplugins.local")
+    source ~/.vimplugins.local
+endif
 
 call plug#end()
 
@@ -155,9 +157,10 @@ let g:airline#syntastic#enabled=1
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 let g:syntastic_stl_format = '[%E{%e Errors}%B{, }%W{%w Warnings}]'
 
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -Wall'
+
+let g:syntastic_javascript_checkers = ['standard']
