@@ -30,6 +30,8 @@ Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }     " fuzzy search
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' } " file tree
 Plug 'Valloric/YouCompleteMe', { 'for': 'cpp', 'do': './install.sh --clang-complete' } " code compeltion
 
+source ~/.vimplugins.local
+
 call plug#end()
 
 set encoding=utf-8  " allow rich text
