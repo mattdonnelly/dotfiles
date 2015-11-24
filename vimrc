@@ -25,6 +25,7 @@ Plug 'tpope/vim-surround'             " easier surronding characters
 Plug 'tpope/vim-commentary'           " commenting
 Plug 'mattn/emmet-vim'                " easier html tags
 Plug 'pangloss/vim-javascript'        " enhanced js syntax highlighting and indentation
+Plug 'ntpeters/vim-better-whitespace' " stip trailing whitespace
 
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }     " fuzzy search
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' } " file tree
@@ -37,20 +38,13 @@ endif
 call plug#end()
 
 set encoding=utf-8  " allow rich text
-
+set clipboard=unnamed
 
 let g:hybrid_use_Xresources = 1
 set background=dark " dark background
 colorscheme hybrid  " set syntax colouring theme
 
 set viminfo='100,n$HOME/.vim/files/info' " set viminfo
-
-function! <SID>StripTrailingWhitespaces()
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    call cursor(l, c)
-endfun
 
 augroup vimrcEx
     autocmd!
@@ -66,8 +60,11 @@ augroup vimrcEx
     " set syntax hilighting
     autocmd BufRead,BufNewFile *.md set filetype=markdown
 
-    " strip white space
-    autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+    autocmd BufRead,BufNewFile *.md set filetype=markdown
+
+    autocmd FileType python highlight Excess ctermbg=Red
+    autocmd FileType python match Excess /\%120v.*/
+    autocmd FileType python set nowrap
 
     " allow stylesheets to autocomplete hyphenated words
     autocmd FileType css,scss,sass setlocal iskeyword+=-
@@ -107,8 +104,10 @@ set scrolloff=8
 set sidescrolloff=15
 set sidescroll=1
 
+set hidden
 set noswapfile             " no swap files
 set autoread               " auto read changes to files
+set nu                     " current line number
 set relativenumber         " relative line numbers
 set numberwidth=4          " gutter width
 set whichwrap+=<,>,h,l,[,] " cursor line wrapping
@@ -142,6 +141,14 @@ noremap <Right> <nop>
 
 nmap <silent> <C-n> :NERDTreeFocus<cr>
 
+nmap <leader>t :enew<CR>
+
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
+
+nmap <leader>bq :bp <BAR> bd #<CR>
+nmap <leader>bl :ls<CR>
+
 let g:ctrlp_working_path_mode = 0
 
 let g:airline_theme = 'hybrid'
@@ -151,7 +158,10 @@ let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
 
-let g:airline#extensions#branch#enabled=1
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 let g:airline#syntastic#enabled=1
 let g:syntastic_always_populate_loc_list = 1
