@@ -11,6 +11,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " appearence plugins
+Plug 'noahfrederick/vim-noctu'    " theme
 Plug 'mattdonnelly/vim-hybrid'    " theme
 Plug 'bling/vim-airline'          " status line theme
 Plug 'mhinz/vim-startify'         " helpful start page
@@ -26,10 +27,23 @@ Plug 'tpope/vim-commentary'           " commenting
 Plug 'mattn/emmet-vim'                " easier html tags
 Plug 'pangloss/vim-javascript'        " enhanced js syntax highlighting and indentation
 Plug 'ntpeters/vim-better-whitespace' " stip trailing whitespace
+Plug 'benekastah/neomake'             " linting
+Plug 'nvie/vim-flake8'                " python linter
 
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }     " fuzzy search
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' } " file tree
-Plug 'Valloric/YouCompleteMe', { 'for': 'cpp', 'do': './install.sh --clang-complete' } " code compeltion
+
+function! BuildYCM(info)
+  " info is a dictionary with 3 fields
+  " - name:   name of the plugin
+  " - status: 'installed', 'updated', or 'unchanged'
+  " - force:  set on PlugInstall! or PlugUpdate!
+  if a:info.status == 'installed' || a:info.force
+    !./install.py
+  endif
+endfunction
+
+Plug 'Valloric/YouCompleteMe', { 'for': ['cpp', 'python'], 'do': function('BuildYCM') } " code compeltion
 
 if filereadable("~/.vimplugins.local")
     source ~/.vimplugins.local
@@ -42,12 +56,12 @@ set clipboard=unnamed
 
 let g:hybrid_use_Xresources = 1
 set background=dark " dark background
-colorscheme hybrid  " set syntax colouring theme
-
-set viminfo='100,n$HOME/.vim/files/info' " set viminfo
+colorscheme noctu " set syntax colouring theme
 
 augroup vimrcEx
     autocmd!
+
+    autocmd! BufWritePost * Neomake
 
     " when editing a file, always jump to the last known cursor position.
     " don't do it for commit messages, when the position is invalid, or when
@@ -58,8 +72,6 @@ augroup vimrcEx
         \ endif
 
     " set syntax hilighting
-    autocmd BufRead,BufNewFile *.md set filetype=markdown
-
     autocmd BufRead,BufNewFile *.md set filetype=markdown
 
     autocmd FileType python highlight Excess ctermbg=Red
@@ -127,7 +139,19 @@ set shiftwidth=4
 set expandtab
 
 " use 2 space for js
-autocmd Filetype javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2
+autocmd Filetype javascript, html, css setlocal
+    \ tabstop=2
+    \ softtabstop=2
+    \ shiftwidth=2
+
+autocmd Filetype python setlocal
+    \ tabstop=4
+    \ softtabstop=4
+    \ shiftwidth=4
+    \ textwidth=79
+    \ expandtab
+    \ autoindent
+    \ fileformat=unix
 
 " automatic indentation
 set autoindent
@@ -162,6 +186,9 @@ let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 
 let g:airline#extensions#tabline#fnamemod = ':t'
+
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 let g:airline#syntastic#enabled=1
 let g:syntastic_always_populate_loc_list = 1
