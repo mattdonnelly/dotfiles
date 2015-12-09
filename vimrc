@@ -63,13 +63,13 @@ let mapleader=" "
 set background=dark
 colorscheme noctu
 
-set statusline=                                                            " clear upon load
-set statusline+=\ %{emoji#available()?emoji#for('cherry_blossom').'\ ':''}    " pretty flower
-set statusline+=\ %n:\ %F                                                  " buffer + filename
-set statusline+=\ %m%r%y                                                   " file info
+set statusline=                                                                                " clear upon load
+set statusline+=\ %{emoji#available()?emoji#for('cherry_blossom').'\ ':''}                     " pretty flower
+set statusline+=\ %n:\ %F                                                                      " buffer + filename
+set statusline+=\ %m%r%y                                                                       " file info
 set statusline+=\ %{exists('*fugitive#head')&&''!=fugitive#head()?'('.fugitive#head().')':''}  " git
-set statusline+=%=%-30.(line:\ %l\ of\ %L,\ col:\ %c%V%)                   " position
-set statusline+=\ %P\                                                      " percent
+set statusline+=%=%-30.(line:\ %l\ of\ %L,\ col:\ %c%V%)                                       " position
+set statusline+=\ %P\                                                                          " percent
 
 augroup vimrcEx
   autocmd!
