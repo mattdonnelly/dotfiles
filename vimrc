@@ -2,18 +2,12 @@ set nocompatible
 filetype plugin indent on
 syntax on
 
-if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall | source $MYVIMRC
-endif
-
-call plug#begin('~/.vim/plugged')
+silent! if plug#begin('~/.vim/plugged')
 
 " appearence plugins
-Plug 'noahfrederick/vim-noctu'    " theme
+Plug 'mattdonnelly/vim-noctu'     " theme
 Plug 'mattdonnelly/vim-hybrid'    " theme
-Plug 'bling/vim-airline'          " status line theme
+" Plug 'bling/vim-airline'          " status line theme
 Plug 'mhinz/vim-startify'         " helpful start page
 
 " integrations
@@ -26,12 +20,15 @@ Plug 'tpope/vim-surround'             " easier surronding characters
 Plug 'tpope/vim-commentary'           " commenting
 Plug 'mattn/emmet-vim'                " easier html tags
 Plug 'pangloss/vim-javascript'        " enhanced js syntax highlighting and indentation
-Plug 'ntpeters/vim-better-whitespace' " stip trailing whitespace
+Plug 'ntpeters/vim-better-whitespace' " strip trailing whitespace
 Plug 'benekastah/neomake'             " linting
 Plug 'nvie/vim-flake8'                " python linter
+Plug 'junegunn/vim-emoji'             " emojis
+Plug 'mbbill/undotree', { 'on': 'UndotreeToggle'   }
 
-Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }     " fuzzy search
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' } " file tree
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
+Plug 'junegunn/fzf.vim'                                           " fzf vim integration
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' }             " file tree
 
 function! BuildYCM(info)
   " info is a dictionary with 3 fields
@@ -46,57 +43,74 @@ endfunction
 Plug 'Valloric/YouCompleteMe', { 'for': ['cpp', 'python'], 'do': function('BuildYCM') } " code compeltion
 
 if filereadable("~/.vimplugins.local")
-    source ~/.vimplugins.local
+  source ~/.vimplugins.local
 endif
 
 call plug#end()
+endif
 
 set encoding=utf-8  " allow rich text
 set clipboard=unnamed
 
-let g:hybrid_use_Xresources = 1
-set background=dark " dark background
-colorscheme noctu " set syntax colouring theme
+if has("persistent_undo")
+  set undodir=~/.vim-undo/
+  set undofile
+endif
+
+set background=dark
+colorscheme noctu
+
+set statusline=                                                            " clear upon load
+set statusline+=\ %{emoji#available()?emoji#for('cherry_blossom').'\ ':''}    " pretty flower
+set statusline+=\ %n:\ %F                                                  " buffer + filename
+set statusline+=\ %m%r%y                                                   " file info
+set statusline+=\ %{exists('*fugitive#head')&&''!=fugitive#head()?'('.fugitive#head().')':''}  " git
+set statusline+=%=%-30.(line:\ %l\ of\ %L,\ col:\ %c%V%)                   " position
+set statusline+=\ %P\                                                      " percent
 
 augroup vimrcEx
-    autocmd!
+  autocmd!
 
-    autocmd! BufWritePost * Neomake
+  autocmd! BufWritePost * Neomake
 
-    " when editing a file, always jump to the last known cursor position.
-    " don't do it for commit messages, when the position is invalid, or when
-    " inside an event handler (happens when dropping a file on gvim).
-    autocmd BufReadPost *
-        \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
-        \   exe "normal g`\"" |
-        \ endif
+  " when editing a file, always jump to the last known cursor position.
+  " don't do it for commit messages, when the position is invalid, or when
+  " inside an event handler (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
 
-    " set syntax hilighting
-    autocmd BufRead,BufNewFile *.md set filetype=markdown
+  " set syntax hilighting
+  autocmd BufRead,BufNewFile *.md set filetype=markdown
 
-    autocmd FileType python highlight Excess ctermbg=Red
-    autocmd FileType python match Excess /\%120v.*/
-    autocmd FileType python set nowrap
+  autocmd FileType python highlight Excess ctermbg=Red
+  autocmd FileType python match Excess /\%120v.*/
+  autocmd FileType python set nowrap
 
-    " allow stylesheets to autocomplete hyphenated words
-    autocmd FileType css,scss,sass setlocal iskeyword+=-
+  " allow stylesheets to autocomplete hyphenated words
+  autocmd FileType css,scss,sass setlocal iskeyword+=-
 augroup END
 
 " The Silver Searcher
 if executable('ag')
-    " Use ag over grep
-    set grepprg=ag\ --nogroup\ --nocolor
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
 
-    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
-    " ag is fast enough that CtrlP doesn't need to cache
-    let g:ctrlp_use_caching = 0
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
 endif
 
 " bind \ (backward slash) to grep shortcut
 nnoremap \ :Ag<SPACE>
-nnoremap <C-P> :FZF<CR>
+nnoremap <C-P> :Files<CR>
+nnoremap <C-O> :Buffer<CR>
+nnoremap <C-S> :History<CR>
+
+nnoremap U :UndotreeToggle<CR>
 
 let mapleader=" "
 
@@ -133,25 +147,26 @@ set nowrap                 " no word wrapping
 set linebreak              " only insert linebreaks explicitly
 set mouse=a                " allow mouse scrolling
 
-" soft tabs, 4 space
-set tabstop=4
-set shiftwidth=4
+" soft tabs, 2 space
+set tabstop=2
+set shiftwidth=2
 set expandtab
+set smarttab
 
 " use 2 space for js
 autocmd Filetype javascript, html, css setlocal
-    \ tabstop=2
-    \ softtabstop=2
-    \ shiftwidth=2
+  \ tabstop=2
+  \ softtabstop=2
+  \ shiftwidth=2
 
 autocmd Filetype python setlocal
-    \ tabstop=4
-    \ softtabstop=4
-    \ shiftwidth=4
-    \ textwidth=79
-    \ expandtab
-    \ autoindent
-    \ fileformat=unix
+  \ tabstop=4
+  \ softtabstop=4
+  \ shiftwidth=4
+  \ textwidth=79
+  \ expandtab
+  \ autoindent
+  \ fileformat=unix
 
 " automatic indentation
 set autoindent
@@ -188,7 +203,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 
 let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+map <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 let g:airline#syntastic#enabled=1
 let g:syntastic_always_populate_loc_list = 1
