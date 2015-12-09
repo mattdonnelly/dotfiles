@@ -1,6 +1,6 @@
 set nocompatible
 filetype plugin indent on
-syntax on
+set encoding=utf-8
 
 silent! if plug#begin('~/.vim/plugged')
 
@@ -24,23 +24,25 @@ Plug 'ntpeters/vim-better-whitespace' " strip trailing whitespace
 Plug 'benekastah/neomake'             " linting
 Plug 'nvie/vim-flake8'                " python linter
 Plug 'junegunn/vim-emoji'             " emojis
+Plug 'ervandew/supertab'              " improved tab completion in insert mode
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle'   }
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
 Plug 'junegunn/fzf.vim'                                           " fzf vim integration
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' }             " file tree
 
-function! BuildYCM(info)
-  " info is a dictionary with 3 fields
-  " - name:   name of the plugin
-  " - status: 'installed', 'updated', or 'unchanged'
-  " - force:  set on PlugInstall! or PlugUpdate!
-  if a:info.status == 'installed' || a:info.force
-    !./install.py
-  endif
-endfunction
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim' " asynchronous auto completion.
+else
+  function! BuildYCM(info)
+    if a:info.status == 'installed' || a:info.force
+      !./install.py
+    endif
+  endfunction
 
-Plug 'Valloric/YouCompleteMe', { 'for': ['cpp', 'python'], 'do': function('BuildYCM') } " code compeltion
+  " synchronous auto completion
+  Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+endif
 
 if filereadable("~/.vimplugins.local")
   source ~/.vimplugins.local
@@ -49,13 +51,14 @@ endif
 call plug#end()
 endif
 
-set encoding=utf-8  " allow rich text
 set clipboard=unnamed
 
 if has("persistent_undo")
   set undodir=~/.vim-undo/
   set undofile
 endif
+
+let mapleader=" "
 
 set background=dark
 colorscheme noctu
@@ -105,14 +108,27 @@ if executable('ag')
 endif
 
 " bind \ (backward slash) to grep shortcut
-nnoremap \ :Ag<SPACE>
-nnoremap <C-P> :Files<CR>
-nnoremap <C-O> :Buffer<CR>
-nnoremap <C-S> :History<CR>
+nnoremap <leader>/ :Ag<SPACE>
+
+if exists('plugs') && has_key(plugs, 'fzf.vim')
+  nnoremap <C-P> :Files<CR>
+  nnoremap <C-O> :Buffer<CR>
+  nnoremap <C-S> :History<CR>
+endif
 
 nnoremap U :UndotreeToggle<CR>
 
-let mapleader=" "
+if exists('plugs') && has_key(plugs, 'neocomplete.vim')
+  let g:neocomplete#enable_at_startup = 1 " Enable neocomplete on startup.
+  let g:neocomplete#enable_smart_case = 1 " Enable smart case.
+
+
+  inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
+
+  " On backspace, delete previous completion and regenerate popup.
+  inoremap <expr><C-H> deoplete#mappings#smart_close_popup()."\<C-H>"
+  inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-H>"
+endif
 
 nmap <leader>q <plug>(QuickScopeToggle)
 vmap <leader>q <plug>(QuickScopeToggle)
@@ -181,9 +197,6 @@ noremap <Right> <nop>
 nmap <silent> <C-n> :NERDTreeFocus<cr>
 
 nmap <leader>t :enew<CR>
-
-nnoremap <Tab> :bnext<CR>
-nnoremap <S-Tab> :bprevious<CR>
 
 nmap <leader>bq :bp <BAR> bd #<CR>
 nmap <leader>bl :ls<CR>
