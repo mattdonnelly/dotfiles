@@ -63,11 +63,22 @@ let mapleader=" "
 set background=dark
 colorscheme noctu
 
+function! S_modified()
+  if !&modifiable || &readonly
+    return ' '.emoji#for('lock').' '
+  elseif &modified
+    return ' '.emoji#for('pencil').' '
+  else
+    return ''
+  endif
+endfunction
+
 set statusline=                                                                                " clear upon load
 set statusline+=\ %{emoji#available()?emoji#for('cherry_blossom').'\ ':''}                     " pretty flower
-set statusline+=\ %n:\ %F                                                                      " buffer + filename
-set statusline+=\ %m%r%y                                                                       " file info
-set statusline+=\ %{exists('*fugitive#head')&&''!=fugitive#head()?'('.fugitive#head().')':''}  " git
+set statusline+=\ %n:\ %f                                                                      " buffer + filename
+set statusline+=%{S_modified()}                                                                " modification
+set statusline+=%{strlen(&filetype)?'\ ['.&filetype.']\ ':''}                                  " file info
+set statusline+=%{exists('*fugitive#head')&&''!=fugitive#head()?'\ ('.fugitive#head().')':''}  " git
 set statusline+=%=%-30.(line:\ %l\ of\ %L,\ col:\ %c%V%)                                       " position
 set statusline+=\ %P\                                                                          " percent
 
