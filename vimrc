@@ -21,19 +21,20 @@ Plug 'airblade/vim-gitgutter'                      " git status
 Plug 'tpope/vim-fugitive'                          " git integration
 Plug 'christoomey/vim-tmux-navigator'              " tmux + vim pane navigation
 Plug 'tpope/vim-surround'                          " easier surronding characters
-Plug 'tpope/vim-commentary'                        " commenting
+Plug 'tpope/vim-commentary'                        " quicker commenting
 Plug 'mattn/emmet-vim'                             " easier html tags
 Plug 'pangloss/vim-javascript'                     " enhanced js syntax highlighting and indentation
 Plug 'ntpeters/vim-better-whitespace'              " strip trailing whitespace
 Plug 'benekastah/neomake'                          " linting
-Plug 'nvie/vim-flake8'                             " python linter
 Plug 'junegunn/vim-emoji'                          " emojis
 Plug 'ajh17/VimCompletesMe'                        " improved tab completion in insert mode
-Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " tree for undo history
+Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " visualization of undo history
 
-" languages
-Plug 'hdima/python-syntax', { 'for': 'python' }
+" python
+Plug 'hdima/python-syntax', { 'for': 'python' }  " improved syntax highlighting
+Plug 'tmhedberg/SimpylFold', { 'for': 'python' } " better folding
 
+" files
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
 Plug 'junegunn/fzf.vim'                                           " fzf vim integration
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' }             " file tree
@@ -106,22 +107,33 @@ set statusline+=\ %P\                                                      " per
 " Key bindings {{{
 " ============================================================================
 
-if exists('plugs') && has_key(plugs, 'fzf.vim')
-  nnoremap <leader>f :Files<CR>
-  nnoremap <leader>b :Buffer<CR>
-  nnoremap <leader>h :History<CR>
-  nnoremap <leader>/ :Ag<CR>
-endif
-
-nnoremap U :UndotreeToggle<CR>
-
-nmap <silent> <C-n> :NERDTreeFocus<cr>
-
 nnoremap ; :
 noremap <Up> <nop>
 noremap <Down> <nop>
 noremap <Left> <nop>
 noremap <Right> <nop>
+
+nnoremap <leader>l :lopen<CR>
+if exists('plugs') 
+  if has_key(plugs, 'fzf.vim')
+    nnoremap <leader>f :Files<CR>
+    nnoremap <leader>b :Buffer<CR>
+    nnoremap <leader>h :History<CR>
+    nnoremap <leader>/ :Ag<CR>
+  endif
+
+  if has_key(plugs, 'undotree')
+    nnoremap U :UndotreeToggle<CR>
+  endif
+
+  if has_key(plugs, 'nerdtree')
+    nmap <silent> <C-n> :NERDTreeFocus<cr>
+  endif
+
+  if has_key(plugs, 'YouCompleteMe')
+    map <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+  endif
+endif
 
 " }}}
 " ============================================================================
@@ -162,6 +174,10 @@ set nowrap                 " no word wrapping
 set linebreak              " only insert linebreaks explicitly
 set mouse=a                " allow mouse scrolling
 
+" folding
+set foldmethod=indent
+set foldlevel=99
+
 " automatic indentation
 set autoindent
 set smartindent
@@ -179,7 +195,6 @@ set shiftwidth=2
 " ============================================================================
 
 let g:ycm_autoclose_preview_window_after_completion = 1
-map <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 let g:neomake_python_enabled_makers     = ['flake8']
 let g:neomake_javascript_enabled_makers = ['standard']
