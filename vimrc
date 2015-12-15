@@ -45,6 +45,7 @@ function! BuildYCM(info)
   endif
 endfunction
 
+" synchronous auto completion
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 
 if filereadable("~/.vimplugins.local")
