@@ -47,11 +47,12 @@ function! BuildYCM(info)
   endif
 endfunction
 
-" synchronous auto completion
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-
-if filereadable("~/.vimplugins.local")
-  source ~/.vimplugins.local
+if has('nvim')
+  " async auto completion
+  Plug 'Shougo/deoplete.nvim'
+else
+  " synchronous auto completion
+  Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 endif
 
 call plug#end()
@@ -200,10 +201,21 @@ set shiftwidth=2
 " ============================================================================
 
 let g:python_host_prog = '/usr/local/bin/python'
+let g:python3_host_prog = '/usr/local/bin/python3'
+
 let g:ycm_autoclose_preview_window_after_completion = 1
 
-let g:neomake_python_enabled_makers     = ['flake8']
 let g:neomake_javascript_enabled_makers = ['standard']
+let g:neomake_python_enabled_makers = ['flake8']
+let g:neomake_python_flake8_maker = {
+  \ 'args': ['--max-line-length=120']
+  \ }
+
+if has_key(plugs, 'deoplete.nvim')
+  set completeopt-=preview
+  let g:deoplete#enable_at_startup = 1
+  let g:deoplete#enable_smart_case = 1
+endif
 
 " }}}
 " ============================================================================
