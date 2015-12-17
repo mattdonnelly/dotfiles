@@ -34,6 +34,8 @@ Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " visualization of undo histo
 Plug 'hdima/python-syntax', { 'for': 'python' }  " improved syntax highlighting
 Plug 'tmhedberg/SimpylFold', { 'for': 'python' } " better folding
 
+Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
+
 " files
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
 Plug 'junegunn/fzf.vim'                                           " fzf vim integration
