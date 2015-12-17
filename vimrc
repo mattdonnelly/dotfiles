@@ -109,6 +109,7 @@ set statusline+=\ %P\                                                      " per
 " ============================================================================
 " Key bindings {{{
 " ============================================================================
+let mapleader = ' '
 
 nnoremap ; :
 noremap <Up> <nop>
@@ -117,7 +118,8 @@ noremap <Left> <nop>
 noremap <Right> <nop>
 
 nnoremap <leader>l :lopen<CR>
-if exists('plugs') 
+
+if exists('plugs')
   if has_key(plugs, 'fzf.vim')
     nnoremap <leader>f :Files<CR>
     nnoremap <leader>b :Buffer<CR>
@@ -197,6 +199,7 @@ set shiftwidth=2
 " Plugin configuration {{{
 " ============================================================================
 
+let g:python_host_prog = '/usr/local/bin/python'
 let g:ycm_autoclose_preview_window_after_completion = 1
 
 let g:neomake_python_enabled_makers     = ['flake8']
