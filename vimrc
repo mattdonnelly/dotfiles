@@ -1,5 +1,5 @@
 " ===========================================================================
-" .vimrc of Matt Donnelly 
+" .vimrc of Matt Donnelly
 " ============================================================================
 
 set nocompatible
@@ -15,6 +15,10 @@ silent! if plug#begin('~/.vim/plugged')
 Plug 'mattdonnelly/vim-noctu'
 Plug 'mattdonnelly/vim-hybrid'
 Plug 'mhinz/vim-startify'
+Plug 'morhetz/gruvbox'
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " integrations
 Plug 'airblade/vim-gitgutter'                      " git status
@@ -76,7 +80,7 @@ endif
 " ============================================================================
 
 set background=dark
-colorscheme noctu
+colorscheme gruvbox
 
 " statusline customization
 function! S_modified()
@@ -199,6 +203,13 @@ set shiftwidth=2
 " ============================================================================
 " Plugin configuration {{{
 " ============================================================================
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline_theme = 'gruvbox'
 
 let g:python_host_prog = '/usr/local/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
