@@ -17,11 +17,10 @@ Plug 'mattdonnelly/vim-hybrid'
 Plug 'mhinz/vim-startify'
 Plug 'morhetz/gruvbox'
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
 " integrations
 Plug 'airblade/vim-gitgutter'                      " git status
+Plug 'vim-airline/vim-airline'                     " status line
+Plug 'vim-airline/vim-airline-themes'              " themes
 Plug 'tpope/vim-fugitive'                          " git integration
 Plug 'christoomey/vim-tmux-navigator'              " tmux + vim pane navigation
 Plug 'tpope/vim-surround'                          " easier surronding characters
@@ -37,13 +36,14 @@ Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " visualization of undo histo
 " python
 Plug 'hdima/python-syntax', { 'for': 'python' }  " improved syntax highlighting
 Plug 'tmhedberg/SimpylFold', { 'for': 'python' } " better folding
+Plug 'zchee/deoplete-jedi', { 'for': 'python' }  " jedi completion
 
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 
 " files
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
 Plug 'junegunn/fzf.vim'                                           " fzf vim integration
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' }             " file tree
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }            " file tree
 
 function! BuildYCM(info)
   if a:info.status == 'installed' || a:info.force
@@ -80,7 +80,9 @@ endif
 " ============================================================================
 
 set background=dark
+" colorscheme noctu
 colorscheme gruvbox
+let g:gruvbox_termcolors=256
 
 " statusline customization
 function! S_modified()
@@ -101,14 +103,14 @@ function! S_fugitive()
   endif
 endfunction
 
-set statusline=                                                            " clear upon load
-set statusline+=\ %{emoji#available()?emoji#for('cherry_blossom').'\ ':''} " pretty flower
-set statusline+=\ %n:\ %f                                                  " buffer + filename
-set statusline+=%{S_modified()}                                            " modification
-set statusline+=%{strlen(&filetype)?'\ ['.&filetype.']\ ':''}              " file info
-set statusline+=%{S_fugitive()}                                            " git
-set statusline+=%=%-30.(line:\ %l\ of\ %L,\ col:\ %c%V%)                   " position
-set statusline+=\ %P\                                                      " percent
+" set statusline=                                                            " clear upon load
+" set statusline+=\ %{emoji#available()?emoji#for('cherry_blossom').'\ ':''} " pretty flower
+" set statusline+=\ %n:\ %f                                                  " buffer + filename
+" set statusline+=%{S_modified()}                                            " modification
+" set statusline+=%{strlen(&filetype)?'\ ['.&filetype.']\ ':''}              " file info
+" set statusline+=%{S_fugitive()}                                            " git
+" set statusline+=%=%-30.(line:\ %l\ of\ %L,\ col:\ %c%V%)                   " position
+" set statusline+=\ %P\                                                      " percent
 
 " }}}
 " ============================================================================
@@ -124,6 +126,9 @@ noremap <Right> <nop>
 
 nnoremap <leader>l :lopen<CR>
 
+nnoremap <C-n> :bprevious<CR>
+nnoremap <C-m> :bnext<CR>
+
 if exists('plugs')
   if has_key(plugs, 'fzf.vim')
     nnoremap <leader>f :Files<CR>
@@ -137,11 +142,11 @@ if exists('plugs')
   endif
 
   if has_key(plugs, 'nerdtree')
-    nmap <silent> <C-n> :NERDTreeFocus<cr>
+    nnoremap <leader>n :NERDTreeToggle<CR>
   endif
 
   if has_key(plugs, 'YouCompleteMe')
-    map <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+    nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
   endif
 endif
 
@@ -205,11 +210,20 @@ set shiftwidth=2
 " ============================================================================
 
 let g:airline#extensions#tabline#enabled = 1
+
+let g:airline_theme = 'gruvbox'
+let g:airline_powerline_fonts = 0
+
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline_theme = 'gruvbox'
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+let g:airline_symbols.whitespace = 'Ξ'
 
 let g:python_host_prog = '/usr/local/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
@@ -226,6 +240,7 @@ if has_key(plugs, 'deoplete.nvim')
   set completeopt-=preview
   let g:deoplete#enable_at_startup = 1
   let g:deoplete#enable_smart_case = 1
+  let g:deoplete#auto_completion_start_length = 1
 endif
 
 " }}}
