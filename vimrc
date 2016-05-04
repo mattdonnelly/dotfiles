@@ -15,7 +15,6 @@ silent! if plug#begin('~/.vim/plugged')
 Plug 'mattdonnelly/vim-noctu'
 Plug 'mattdonnelly/vim-hybrid'
 Plug 'mhinz/vim-startify'
-Plug 'morhetz/gruvbox'
 
 " integrations
 Plug 'airblade/vim-gitgutter'                      " git status
@@ -79,10 +78,8 @@ endif
 " Appearence {{{
 " ============================================================================
 
-set background=dark
-" colorscheme noctu
-colorscheme gruvbox
-let g:gruvbox_termcolors=256
+" let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
+colorscheme noctu
 
 " statusline customization
 function! S_modified()
@@ -211,7 +208,7 @@ set shiftwidth=2
 
 let g:airline#extensions#tabline#enabled = 1
 
-let g:airline_theme = 'gruvbox'
+let g:airline_theme = 'hybridline'
 let g:airline_powerline_fonts = 0
 
 let g:airline_left_sep = ''
