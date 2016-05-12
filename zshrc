@@ -21,5 +21,3 @@ bindkey "^F" forward-word
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
-
-[[ -f ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh ]] && source ~/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh
