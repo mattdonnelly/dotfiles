@@ -173,7 +173,6 @@ set hidden                 " nicer buffer behaviour
 set noswapfile             " no swap files
 set autoread               " auto read changes to files
 set nu                     " current line number
-set relativenumber         " relative line numbers
 set numberwidth=4          " gutter width
 set whichwrap+=<,>,h,l,[,] " cursor line wrapping
 set nohlsearch             " don't highlight search results
