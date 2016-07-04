@@ -21,3 +21,6 @@ bindkey "^F" forward-word
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
+
+fpath=(~/.zsh/completion $fpath)
+autoload -Uz compinit && compinit -i

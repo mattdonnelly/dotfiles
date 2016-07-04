@@ -263,6 +263,7 @@ augroup vimrcEx
   autocmd FileType python highlight Excess ctermbg=Red
   autocmd FileType python match Excess /\%120v.*/
   autocmd Filetype python setlocal
+    \ expandtab
     \ tabstop=4
     \ softtabstop=4
     \ shiftwidth=4
