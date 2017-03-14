@@ -14,4 +14,4 @@ set cmd:term-status/*xterm* "\e[11;0]\e]2;\T\007\e[11]"
 set cmd:term-status/*rxvt* "\e[11;0]\e]2;\T\007\e[11]"
 set cmd:set-term-status on
 set color:use-color auto
-
+set sftp:connect-program "ssh -a -x -i ~/.ssh/id_rsa"
