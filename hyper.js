@@ -114,7 +114,8 @@ module.exports = {
     'hyperterm-1password',
     'hyperfull',
     'hyperterm-cursor',
-    'hyper-tabs-enhanced'
+    'hyper-tabs-enhanced',
+    'hyper-autohide-tabs'
   ],
 
   // in development, you can create a directory under
