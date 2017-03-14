@@ -14,14 +14,18 @@ brew 'rcm'
 brew 'reattach-to-user-namespace'
 brew 'the_silver_searcher'
 brew 'tmux'
+brew 'yarn'
 brew 'zsh'
+
 cask 'appcleaner'
 cask 'google-chrome'
+cask 'hyper'
 cask 'keepingyouawake'
 cask 'sublime-text'
 cask 'transmission'
 cask 'transmit'
 cask 'viscosity'
+
 mas 'Airmail 3', id: 918858936
 mas '1Password', id: 443987910
 mas 'Keynote', id: 409183694

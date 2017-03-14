@@ -15,6 +15,7 @@ silent! if plug#begin('~/.vim/plugged')
 Plug 'mattdonnelly/vim-noctu'
 Plug 'mattdonnelly/vim-hybrid'
 Plug 'mhinz/vim-startify'
+Plug 'ayu-theme/ayu-vim'
 
 " integrations
 Plug 'airblade/vim-gitgutter'                      " git status
@@ -78,8 +79,12 @@ endif
 " Appearence {{{
 " ============================================================================
 
-" let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
-colorscheme noctu
+set termguicolors
+
+let ayucolor="dark"
+let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
+colorscheme ayu
+" colorscheme noctu
 
 " statusline customization
 function! S_modified()
