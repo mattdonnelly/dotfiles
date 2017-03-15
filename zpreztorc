@@ -29,15 +29,7 @@ zstyle ':prezto:load' pmodule \
   'syntax-highlighting' \
   'git' \
   'history-substring-search' \
-  'haskell' \
-  'homebrew' \
-  'node' \
-  'osx' \
-  'python' \
-  'ruby' \
-  'rails' \
-  'tmux' \
-  'node'
+  'osx'
 
 #
 # Editor

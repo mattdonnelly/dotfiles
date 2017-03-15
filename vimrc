@@ -26,17 +26,18 @@ Plug 'christoomey/vim-tmux-navigator'              " tmux + vim pane navigation
 Plug 'tpope/vim-surround'                          " easier surronding characters
 Plug 'tpope/vim-commentary'                        " quicker commenting
 Plug 'mattn/emmet-vim'                             " easier html tags
-Plug 'pangloss/vim-javascript'                     " enhanced js syntax highlighting and indentation
 Plug 'ntpeters/vim-better-whitespace'              " strip trailing whitespace
 Plug 'benekastah/neomake'                          " linting
 Plug 'junegunn/vim-emoji'                          " emojis
 Plug 'ajh17/VimCompletesMe'                        " improved tab completion in insert mode
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " visualization of undo history
 
+" js
+Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
+
 " python
 Plug 'hdima/python-syntax', { 'for': 'python' }  " improved syntax highlighting
 Plug 'tmhedberg/SimpylFold', { 'for': 'python' } " better folding
-Plug 'zchee/deoplete-jedi', { 'for': 'python' }  " jedi completion
 
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 
@@ -53,10 +54,16 @@ endfunction
 
 if has('nvim')
   " async auto completion
-  Plug 'Shougo/deoplete.nvim'
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript', 'do': 'npm install -g tern' }
+  Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 else
   " synchronous auto completion
   Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+endif
+
+if filereadable(glob("~/.vimplugins.local"))
+  source ~/.vimplugins.local
 endif
 
 call plug#end()
@@ -238,10 +245,23 @@ let g:neomake_python_flake8_maker = {
   \ }
 
 if has_key(plugs, 'deoplete.nvim')
-  set completeopt-=preview
+  " set completeopt-=preview
   let g:deoplete#enable_at_startup = 1
   let g:deoplete#enable_smart_case = 1
   let g:deoplete#auto_completion_start_length = 1
+  if !exists('g:deoplete#omni#input_patterns')
+    let g:deoplete#omni#input_patterns = {}
+  endif
+
+  inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+endif
+
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+
+if has_key(plugs, 'tern_for_vim')
+  let g:tern_request_timeout = 1
+  let g:tern_show_argument_hints = 'on_hold'
+  autocmd FileType javascript setlocal omnifunc=tern#Complete
 endif
 
 " }}}
@@ -253,6 +273,8 @@ augroup vimrcEx
   autocmd!
 
   autocmd! BufWritePost * Neomake
+
+  autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
   " when editing a file, always jump to the last known cursor position.
   " don't do it for commit messages, when the position is invalid, or when
@@ -267,7 +289,7 @@ augroup vimrcEx
 
   autocmd FileType python highlight Excess ctermbg=Red
   autocmd FileType python match Excess /\%120v.*/
-  autocmd Filetype python setlocal
+  autocmd FileType python,actionscript setlocal
     \ expandtab
     \ tabstop=4
     \ softtabstop=4
@@ -275,6 +297,10 @@ augroup vimrcEx
 
   " allow stylesheets to autocomplete hyphenated words
   autocmd FileType css,scss,sass setlocal iskeyword+=-
+
+  autocmd FileType markdown setlocal formatoptions=ant textwidth=119 wrapmargin=0
+
+  autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
 augroup END
 
 " }}}
