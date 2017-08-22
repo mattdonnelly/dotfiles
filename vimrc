@@ -28,7 +28,7 @@ Plug 'tpope/vim-surround'                          " easier surronding character
 Plug 'tpope/vim-commentary'                        " quicker commenting
 Plug 'mattn/emmet-vim'                             " easier html tags
 Plug 'ntpeters/vim-better-whitespace'              " strip trailing whitespace
-Plug 'benekastah/neomake'                          " linting
+Plug 'w0rp/ale'                                    " linting
 Plug 'junegunn/vim-emoji'                          " emojis
 Plug 'ajh17/VimCompletesMe'                        " improved tab completion in insert mode
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " visualization of undo history
@@ -247,6 +247,12 @@ let g:python3_host_prog = '/Users/mattdonnelly/.homebrew/bin/python3'
 
 let g:ycm_autoclose_preview_window_after_completion = 1
 
+let g:ale_linters = {
+\   'javascript': ['standard'],
+\}
+
+let g:ale_javascript_standard_use_global = 1
+
 let g:neomake_javascript_enabled_makers = ['standard']
 let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_python_flake8_maker = {
@@ -281,7 +287,7 @@ endif
 augroup vimrcEx
   autocmd!
 
-  autocmd! BufWritePost * Neomake
+  " autocmd! BufWritePost * Neomake
 
   autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
