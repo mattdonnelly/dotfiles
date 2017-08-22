@@ -18,6 +18,7 @@ Plug 'mhinz/vim-startify'
 Plug 'ayu-theme/ayu-vim'
 
 " integrations
+Plug 'junegunn/vim-easy-align'                     " alignment
 Plug 'airblade/vim-gitgutter'                      " git status
 Plug 'vim-airline/vim-airline'                     " status line
 Plug 'vim-airline/vim-airline-themes'              " themes
@@ -86,7 +87,10 @@ endif
 " Appearence {{{
 " ============================================================================
 
-set termguicolors
+if has("termguicolors")
+  set termguicolors
+endif
+
 let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
 
 let ayucolor="dark"
@@ -156,6 +160,11 @@ if exists('plugs')
 
   if has_key(plugs, 'YouCompleteMe')
     nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+  endif
+
+  if has_key(plugs, 'vim-easy-align')
+    xmap ga <Plug>(EasyAlign)
+    nmap ga <Plug>(EasyAlign)
   endif
 endif
 
@@ -233,8 +242,8 @@ endif
 
 let g:airline_symbols.whitespace = 'Ξ'
 
-let g:python_host_prog = '/usr/local/bin/python'
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python_host_prog = '/Users/mattdonnelly/.homebrew/bin/python'
+let g:python3_host_prog = '/Users/mattdonnelly/.homebrew/bin/python3'
 
 let g:ycm_autoclose_preview_window_after_completion = 1
 
