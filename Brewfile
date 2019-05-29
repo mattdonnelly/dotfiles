@@ -1,5 +1,4 @@
 tap 'homebrew/boneyard'
-tap 'neovim/neovim'
 tap 'thoughtbot/formulae'
 brew 'docker'
 brew 'docker-compose'
@@ -7,7 +6,7 @@ brew 'docker-machine'
 brew 'git'
 brew 'httpie'
 brew 'mas'
-brew 'neovim/neovim/neovim'
+brew 'neovim'
 brew 'nvm'
 brew 'python3'
 brew 'rcm'
@@ -19,14 +18,12 @@ brew 'zsh'
 
 cask 'appcleaner'
 cask 'google-chrome'
-cask 'hyper'
 cask 'keepingyouawake'
 cask 'sublime-text'
 cask 'transmission'
 cask 'transmit'
 cask 'viscosity'
 
-mas 'Airmail 3', id: 918858936
 mas '1Password', id: 443987910
 mas 'Keynote', id: 409183694
 mas 'Numbers', id: 409203825

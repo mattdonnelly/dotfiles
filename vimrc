@@ -63,8 +63,8 @@ else
   Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 endif
 
-if filereadable(glob("~/.vimplugins.local"))
-  source ~/.vimplugins.local
+if filereadable(glob("~/.localplugins.vim"))
+  source ~/.localplugins.vim
 endif
 
 call plug#end()
@@ -235,22 +235,40 @@ let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#ale#enabled = 1
 
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 
+function! LinterStatus() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+
+  return l:counts.total == 0 ? 'OK' : printf(
+  \   '%dW %dE',
+  \   all_non_errors,
+  \   all_errors
+  \)
+endfunction
+
+set statusline=%{LinterStatus()}
+
 let g:airline_symbols.whitespace = 'Ξ'
 
-let g:python_host_prog = '/Users/mattdonnelly/.homebrew/bin/python'
-let g:python3_host_prog = '/Users/mattdonnelly/.homebrew/bin/python3'
+let g:python_host_prog = '/Users/matthewdonnelly/.homebrew/bin/python2'
+let g:python3_host_prog = '/Users/matthewdonnelly/.homebrew/bin/python3'
 
 let g:ycm_autoclose_preview_window_after_completion = 1
 
 let g:ale_linters = {
 \   'javascript': ['standard'],
+\   'html':       ['htmlhint'],
 \}
 
+let g:ale_completion_enabled = 1
 let g:ale_javascript_standard_use_global = 1
 
 let g:neomake_javascript_enabled_makers = ['standard']
