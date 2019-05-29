@@ -26,12 +26,11 @@ Plug 'tpope/vim-fugitive'                          " git integration
 Plug 'christoomey/vim-tmux-navigator'              " tmux + vim pane navigation
 Plug 'tpope/vim-surround'                          " easier surronding characters
 Plug 'tpope/vim-commentary'                        " quicker commenting
-Plug 'mattn/emmet-vim'                             " easier html tags
 Plug 'ntpeters/vim-better-whitespace'              " strip trailing whitespace
-Plug 'w0rp/ale'                                    " linting
 Plug 'junegunn/vim-emoji'                          " emojis
 Plug 'ajh17/VimCompletesMe'                        " improved tab completion in insert mode
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " visualization of undo history
+Plug 'ludovicchabant/vim-gutentags'                " auto update ctags
 
 " js
 Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
@@ -43,8 +42,6 @@ Plug 'tmhedberg/SimpylFold', { 'for': 'python' } " better folding
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 
 " files
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
-Plug 'junegunn/fzf.vim'                                           " fzf vim integration
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }            " file tree
 
 function! BuildYCM(info)
@@ -55,11 +52,12 @@ endfunction
 
 if has('nvim')
   " async auto completion
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript', 'do': 'npm install -g tern' }
-  Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+  Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+  Plug 'Shougo/denite.nvim'
 else
   " synchronous auto completion
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
+  Plug 'junegunn/fzf.vim'                                           " fzf vim integration
   Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 endif
 
@@ -150,8 +148,57 @@ if exists('plugs')
     nnoremap <leader>/ :Ag<CR>
   endif
 
+  if has_key(plugs, 'denite.nvim')
+    nnoremap <leader>f :Denite file/rec<CR>
+    nnoremap <leader>b :Denite buffer<CR>
+    nnoremap <leader>/ :Denite grep<CR>
+
+    call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+
+    call denite#custom#map('insert,normal', '<down>', '<denite:move_to_next_line>', 'noremap')
+    call denite#custom#map('insert,normal', '<C-j>', '<denite:move_to_next_line>', 'noremap')
+    call denite#custom#map('insert,normal', '<up>', '<denite:move_to_previous_line>', 'noremap')
+    call denite#custom#map('insert,normal', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
+
+    " Ag command on grep source
+    call denite#custom#var('grep', 'command', ['ag'])
+    call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep'])
+    call denite#custom#var('grep', 'recursive_opts', [])
+    call denite#custom#var('grep', 'pattern_opt', [])
+    call denite#custom#var('grep', 'separator', ['--'])
+    call denite#custom#var('grep', 'final_opts', [])
+
+    call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+	      \ [ '.git/', '.ropeproject/', '__pycache__/',
+	      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+
+    let s:denite_options = {'default' : {
+      \ 'auto_resize': 1,
+      \ 'prompt': '>',
+      \ 'direction': 'rightbelow',
+      \ 'winminheight': '10',
+      \ 'highlight_mode_insert': 'Visual',
+      \ 'highlight_mode_normal': 'Visual',
+      \ 'prompt_highlight': 'Function',
+      \ 'highlight_matched_char': 'Function',
+      \ 'highlight_matched_range': 'Normal'
+      \ }}
+
+    " Loop through denite options and enable them
+    function! s:profile(opts) abort
+      for l:fname in keys(a:opts)
+        for l:dopt in keys(a:opts[l:fname])
+          call denite#custom#option(l:fname, l:dopt, a:opts[l:fname][l:dopt])
+        endfor
+      endfor
+    endfunction
+
+    call s:profile(s:denite_options)
+
+  endif
+
   if has_key(plugs, 'undotree')
-    nnoremap U :UndotreeToggle<CR>
+    nnoremap <leader>u :UndotreeToggle<CR>
   endif
 
   if has_key(plugs, 'nerdtree')
@@ -263,33 +310,20 @@ let g:python3_host_prog = '/Users/matthewdonnelly/.homebrew/bin/python3'
 
 let g:ycm_autoclose_preview_window_after_completion = 1
 
-let g:ale_linters = {
-\   'javascript': ['standard'],
-\   'html':       ['htmlhint'],
-\}
-
-let g:ale_completion_enabled = 1
-let g:ale_javascript_standard_use_global = 1
-
-let g:neomake_javascript_enabled_makers = ['standard']
-let g:neomake_python_enabled_makers = ['flake8']
-let g:neomake_python_flake8_maker = {
-  \ 'args': ['--max-line-length=120']
-  \ }
-
-if has_key(plugs, 'deoplete.nvim')
-  " set completeopt-=preview
-  let g:deoplete#enable_at_startup = 1
-  let g:deoplete#enable_smart_case = 1
-  let g:deoplete#auto_completion_start_length = 1
-  if !exists('g:deoplete#omni#input_patterns')
-    let g:deoplete#omni#input_patterns = {}
-  endif
-
-  inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-endif
-
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+"Close preview window when completion is done.
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 if has_key(plugs, 'tern_for_vim')
   let g:tern_request_timeout = 1
@@ -304,8 +338,6 @@ endif
 
 augroup vimrcEx
   autocmd!
-
-  " autocmd! BufWritePost * Neomake
 
   autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
