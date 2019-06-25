@@ -32,6 +32,9 @@ Plug 'ajh17/VimCompletesMe'                        " improved tab completion in 
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " visualization of undo history
 Plug 'ludovicchabant/vim-gutentags'                " auto update ctags
 
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
+Plug 'junegunn/fzf.vim'                                           " fzf vim integration
+
 " js
 Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
 
@@ -53,11 +56,8 @@ endfunction
 if has('nvim')
   " async auto completion
   Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
-  Plug 'Shougo/denite.nvim'
 else
   " synchronous auto completion
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
-  Plug 'junegunn/fzf.vim'                                           " fzf vim integration
   Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 endif
 
@@ -146,55 +146,38 @@ if exists('plugs')
     nnoremap <leader>b :Buffer<CR>
     nnoremap <leader>h :History<CR>
     nnoremap <leader>/ :Ag<CR>
-  endif
 
-  if has_key(plugs, 'denite.nvim')
-    nnoremap <leader>f :Denite file/rec<CR>
-    nnoremap <leader>b :Denite buffer<CR>
-    nnoremap <leader>/ :Denite grep<CR>
+    let $FZF_DEFAULT_OPTS='--layout=reverse'
 
-    call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+    " Using the custom window creation function
+    let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 
-    call denite#custom#map('insert,normal', '<down>', '<denite:move_to_next_line>', 'noremap')
-    call denite#custom#map('insert,normal', '<C-j>', '<denite:move_to_next_line>', 'noremap')
-    call denite#custom#map('insert,normal', '<up>', '<denite:move_to_previous_line>', 'noremap')
-    call denite#custom#map('insert,normal', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
+    " Function to create the custom floating window
+    function! FloatingFZF()
+      " creates a scratch, unlisted, new, empty, unnamed buffer
+      " to be used in the floating window
+      let buf = nvim_create_buf(v:false, v:true)
 
-    " Ag command on grep source
-    call denite#custom#var('grep', 'command', ['ag'])
-    call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep'])
-    call denite#custom#var('grep', 'recursive_opts', [])
-    call denite#custom#var('grep', 'pattern_opt', [])
-    call denite#custom#var('grep', 'separator', ['--'])
-    call denite#custom#var('grep', 'final_opts', [])
+      " 90% of the height
+      let height = float2nr(&lines * 0.4)
+      " 60% of the height
+      let width = float2nr(&columns * 0.6)
+      " horizontal position (centralized)
+      let horizontal = float2nr((&columns - width) / 2)
+      " vertical position (one line down of the top)
+      let vertical = 1
 
-    call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
-	      \ [ '.git/', '.ropeproject/', '__pycache__/',
-	      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+      let opts = {
+            \ 'relative': 'editor',
+            \ 'row': vertical,
+            \ 'col': horizontal,
+            \ 'width': width,
+            \ 'height': height
+            \ }
 
-    let s:denite_options = {'default' : {
-      \ 'auto_resize': 1,
-      \ 'prompt': '>',
-      \ 'direction': 'rightbelow',
-      \ 'winminheight': '10',
-      \ 'highlight_mode_insert': 'Visual',
-      \ 'highlight_mode_normal': 'Visual',
-      \ 'prompt_highlight': 'Function',
-      \ 'highlight_matched_char': 'Function',
-      \ 'highlight_matched_range': 'Normal'
-      \ }}
-
-    " Loop through denite options and enable them
-    function! s:profile(opts) abort
-      for l:fname in keys(a:opts)
-        for l:dopt in keys(a:opts[l:fname])
-          call denite#custom#option(l:fname, l:dopt, a:opts[l:fname][l:dopt])
-        endfor
-      endfor
+      " open the new window, floating, and enter to it
+      call nvim_open_win(buf, v:true, opts)
     endfunction
-
-    call s:profile(s:denite_options)
-
   endif
 
   if has_key(plugs, 'undotree')
