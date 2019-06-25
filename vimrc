@@ -146,7 +146,7 @@ if exists('plugs')
     nnoremap <leader>h :History<CR>
     nnoremap <leader>/ :Ag<CR>
 
-    let $FZF_DEFAULT_OPTS='--layout=reverse --preview "bat --style=numbers --color=always {} || (cat {}) 2> /dev/null | head -500"'
+    let $FZF_DEFAULT_OPTS='--layout=reverse --preview "(bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -500"'
 
     let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 
