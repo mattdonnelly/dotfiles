@@ -93,7 +93,6 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
 
 let ayucolor="dark"
 colorscheme ayu
-" colorscheme noctu
 
 " statusline customization
 function! S_modified()
@@ -147,24 +146,14 @@ if exists('plugs')
     nnoremap <leader>h :History<CR>
     nnoremap <leader>/ :Ag<CR>
 
-    let $FZF_DEFAULT_OPTS='--layout=reverse'
+    let $FZF_DEFAULT_OPTS='--layout=reverse --preview "bat --style=numbers --color=always {} || (cat {}) 2> /dev/null | head -500"'
 
-    " Using the custom window creation function
     let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 
-    " Function to create the custom floating window
     function! FloatingFZF()
-      " creates a scratch, unlisted, new, empty, unnamed buffer
-      " to be used in the floating window
-      let buf = nvim_create_buf(v:false, v:true)
-
-      " 90% of the height
       let height = float2nr(&lines * 0.4)
-      " 60% of the height
-      let width = float2nr(&columns * 0.6)
-      " horizontal position (centralized)
+      let width = float2nr(&columns * 0.75)
       let horizontal = float2nr((&columns - width) / 2)
-      " vertical position (one line down of the top)
       let vertical = 1
 
       let opts = {
@@ -175,8 +164,18 @@ if exists('plugs')
             \ 'height': height
             \ }
 
-      " open the new window, floating, and enter to it
-      call nvim_open_win(buf, v:true, opts)
+      let buf = nvim_create_buf(v:false, v:true)
+      let win = nvim_open_win(buf, v:true, opts)
+
+      call setwinvar(win, '&winhl', 'Normal:Pmenu')
+
+      setlocal
+            \ buftype=nofile
+            \ nobuflisted
+            \ bufhidden=hide
+            \ nonumber
+            \ norelativenumber
+            \ signcolumn=no
     endfunction
   endif
 
@@ -258,7 +257,7 @@ set shiftwidth=2
 
 let g:airline#extensions#tabline#enabled = 1
 
-let g:airline_theme = 'hybridline'
+let g:airline_theme = 'distinguished'
 let g:airline_powerline_fonts = 0
 
 let g:airline_left_sep = ''
