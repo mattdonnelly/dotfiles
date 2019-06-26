@@ -33,6 +33,7 @@ Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " visualization of undo histo
 Plug 'ludovicchabant/vim-gutentags'                " auto update ctags
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
+Plug 'junegunn/fzf.vim'
 
 " js
 Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
@@ -112,15 +113,6 @@ function! S_fugitive()
   endif
 endfunction
 
-" set statusline=                                                            " clear upon load
-" set statusline+=\ %{emoji#available()?emoji#for('cherry_blossom').'\ ':''} " pretty flower
-" set statusline+=\ %n:\ %f                                                  " buffer + filename
-" set statusline+=%{S_modified()}                                            " modification
-" set statusline+=%{strlen(&filetype)?'\ ['.&filetype.']\ ':''}              " file info
-" set statusline+=%{S_fugitive()}                                            " git
-" set statusline+=%=%-30.(line:\ %l\ of\ %L,\ col:\ %c%V%)                   " position
-" set statusline+=\ %P\                                                      " percent
-
 " }}}
 " ============================================================================
 " Key bindings {{{
@@ -150,7 +142,7 @@ if exists('plugs')
 
     let $FZF_DEFAULT_OPTS='--layout=reverse --preview "(bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -500"'
 
-    let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+    " let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 
     function! FloatingFZF()
       let height = float2nr(&lines * 0.4)
