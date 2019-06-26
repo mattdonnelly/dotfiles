@@ -150,6 +150,8 @@ if exists('plugs')
     nnoremap <leader>/ :Ag<CR>
 
     let $FZF_DEFAULT_OPTS='--layout=reverse --preview "(bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -500"'
+    let $FZF_DEFAULT_OPTS.='--color "fg:188,bg:233,hl:103,fg+:222,bg+:234,hl+:104"'
+    let $FZF_DEFAULT_OPTS.='--color "info:183,prompt:110,spinner:107,pointer:167,marker:215"'
 
     let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 
