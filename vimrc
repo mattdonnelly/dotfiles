@@ -85,33 +85,11 @@ endif
 " Appearence {{{
 " ============================================================================
 
-if has("termguicolors")
+if exists('+termguicolors')
   set termguicolors
 endif
 
-let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
-
-let ayucolor="dark"
 colorscheme ayu
-
-" statusline customization
-function! S_modified()
-  if !&modifiable || &readonly
-    return ' '.emoji#for('lock').' '
-  elseif &modified
-    return ' '.emoji#for('pencil').' '
-  else
-    return ''
-  endif
-endfunction
-
-function! S_fugitive()
-  if exists('*figutive#head') && strlen(fugitive#head())
-    return fugitive#head()
-  else
-    return ''
-  endif
-endfunction
 
 " }}}
 " ============================================================================
@@ -141,36 +119,6 @@ if exists('plugs')
     nnoremap <leader>/ :Ag<CR>
 
     let $FZF_DEFAULT_OPTS='--layout=reverse --preview "(bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -500"'
-
-    " let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-
-    function! FloatingFZF()
-      let height = float2nr(&lines * 0.4)
-      let width = float2nr(&columns * 0.75)
-      let horizontal = float2nr((&columns - width) / 2)
-      let vertical = 1
-
-      let opts = {
-            \ 'relative': 'editor',
-            \ 'row': vertical,
-            \ 'col': horizontal,
-            \ 'width': width,
-            \ 'height': height
-            \ }
-
-      let buf = nvim_create_buf(v:false, v:true)
-      let win = nvim_open_win(buf, v:true, opts)
-
-      call setwinvar(win, '&winhl', 'Normal:Pmenu')
-
-      setlocal
-            \ buftype=nofile
-            \ nobuflisted
-            \ bufhidden=hide
-            \ nonumber
-            \ norelativenumber
-            \ signcolumn=no
-    endfunction
   endif
 
   if has_key(plugs, 'undotree')
@@ -251,7 +199,7 @@ set shiftwidth=2
 
 let g:airline#extensions#tabline#enabled = 1
 
-let g:airline_theme = 'distinguished'
+let g:airline_theme = 'hybridline'
 let g:airline_powerline_fonts = 0
 
 let g:airline_left_sep = ''
@@ -263,21 +211,6 @@ let g:airline#extensions#ale#enabled = 1
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
-
-function! LinterStatus() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-
-  return l:counts.total == 0 ? 'OK' : printf(
-  \   '%dW %dE',
-  \   all_non_errors,
-  \   all_errors
-  \)
-endfunction
-
-set statusline=%{LinterStatus()}
 
 let g:airline_symbols.whitespace = 'Ξ'
 
@@ -300,12 +233,6 @@ inoremap <silent><expr> <TAB>
 
 "Close preview window when completion is done.
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-if has_key(plugs, 'tern_for_vim')
-  let g:tern_request_timeout = 1
-  let g:tern_show_argument_hints = 'on_hold'
-  autocmd FileType javascript setlocal omnifunc=tern#Complete
-endif
 
 " }}}
 " ============================================================================
