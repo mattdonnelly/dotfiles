@@ -139,6 +139,9 @@ nnoremap <leader>l :lopen<CR>
 nnoremap <C-n> :bprevious<CR>
 nnoremap <C-m> :bnext<CR>
 
+" Allows you to save files you opened without write permissions via sudo
+cmap w!! w !sudo tee %
+
 if exists('plugs')
   if has_key(plugs, 'fzf.vim')
     nnoremap <leader>f :Files<CR>
