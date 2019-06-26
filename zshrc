@@ -48,5 +48,3 @@ load-nvmrc
 [ -f "$HOME/.zshrc.local" ] && . "$HOME/.zshrc.local"
 [ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
