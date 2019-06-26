@@ -16,12 +16,12 @@ Plug 'mattdonnelly/vim-noctu'
 Plug 'mattdonnelly/vim-hybrid'
 Plug 'mhinz/vim-startify'
 Plug 'ayu-theme/ayu-vim'
+Plug 'itchyny/lightline.vim'
+Plug 'yarisgutierrez/ayu-lightline'
 
 " integrations
 Plug 'junegunn/vim-easy-align'                     " alignment
 Plug 'airblade/vim-gitgutter'                      " git status
-Plug 'vim-airline/vim-airline'                     " status line
-Plug 'vim-airline/vim-airline-themes'              " themes
 Plug 'tpope/vim-fugitive'                          " git integration
 Plug 'christoomey/vim-tmux-navigator'              " tmux + vim pane navigation
 Plug 'tpope/vim-surround'                          " easier surronding characters
@@ -121,6 +121,10 @@ if exists('plugs')
     let $FZF_DEFAULT_OPTS='--layout=reverse --preview "(bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -500"'
   endif
 
+  if has_key(plugs, 'lightline.vim')
+    set noshowmode
+  endif
+
   if has_key(plugs, 'undotree')
     nnoremap <leader>u :UndotreeToggle<CR>
   endif
@@ -196,23 +200,16 @@ set shiftwidth=2
 " ============================================================================
 " Plugin configuration {{{
 " ============================================================================
-
-let g:airline#extensions#tabline#enabled = 1
-
-let g:airline_theme = 'hybridline'
-let g:airline_powerline_fonts = 0
-
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#ale#enabled = 1
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-let g:airline_symbols.whitespace = 'Ξ'
+let g:lightline = {
+  \ 'colorscheme': 'deus',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+  \ },
+  \ 'component_function': {
+  \   'gitbranch': 'fugitive#head'
+  \ }
+  \ }
 
 let g:python_host_prog = '/Users/matthewdonnelly/.homebrew/bin/python2'
 let g:python3_host_prog = '/Users/matthewdonnelly/.homebrew/bin/python3'
