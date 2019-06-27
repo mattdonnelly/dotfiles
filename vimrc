@@ -17,7 +17,7 @@ Plug 'mattdonnelly/vim-hybrid'
 Plug 'mhinz/vim-startify'
 Plug 'ayu-theme/ayu-vim'
 Plug 'itchyny/lightline.vim'
-Plug 'yarisgutierrez/ayu-lightline'
+Plug 'mengelbrecht/lightline-bufferline'
 
 " integrations
 Plug 'junegunn/vim-easy-align'                     " alignment
@@ -151,6 +151,8 @@ endif
 if !has('nvim')
   set encoding=utf-8
 endif
+
+set showtabline=2
 "
 " open new split panes to right and bottom, which feels more natural
 set splitbelow
@@ -210,6 +212,24 @@ let g:lightline = {
   \   'gitbranch': 'fugitive#head'
   \ }
   \ }
+
+let g:lightline.tabline          = {'left': [['buffers']], 'right': [['close']]}
+let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
+let g:lightline.component_type   = {'buffers': 'tabsel'}
+
+if has_key(plugs, 'lightline-bufferline')
+  autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
+  nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+  nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+  nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+  nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+  nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+  nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+  nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+  nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+  nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+  nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+endif
 
 let g:python_host_prog = '/Users/matthewdonnelly/.homebrew/bin/python2'
 let g:python3_host_prog = '/Users/matthewdonnelly/.homebrew/bin/python3'
