@@ -250,8 +250,7 @@ if has_key(plugs, 'coc.nvim')
         \ <SID>check_back_space() ? "\<TAB>" :
         \ coc#refresh()
   inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-  "Close preview window when completion is done.
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
   autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
   inoremap <silent><expr> <c-space> coc#refresh()
