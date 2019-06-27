@@ -21,6 +21,7 @@ Plug 'mengelbrecht/lightline-bufferline'
 
 " integrations
 Plug 'junegunn/vim-easy-align'                     " alignment
+Plug 'easymotion/vim-easymotion'                   " fast movement
 Plug 'airblade/vim-gitgutter'                      " git status
 Plug 'tpope/vim-fugitive'                          " git integration
 Plug 'christoomey/vim-tmux-navigator'              " tmux + vim pane navigation
@@ -31,6 +32,7 @@ Plug 'junegunn/vim-emoji'                          " emojis
 Plug 'ajh17/VimCompletesMe'                        " improved tab completion in insert mode
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " visualization of undo history
 Plug 'ludovicchabant/vim-gutentags'                " auto update ctags
+Plug 'sheerun/vim-polyglot'                        " language packs
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
 Plug 'junegunn/fzf.vim'
@@ -55,7 +57,7 @@ endfunction
 
 if has('nvim')
   " async auto completion
-  Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 else
   " synchronous auto completion
   Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
@@ -161,6 +163,8 @@ set splitright
 set backspace=2
 set list listchars=tab:▸\ ,trail:·,nbsp:·,eol:¬ " display extra whitespace
 
+set updatetime=300
+
 " When the page starts to scroll, keep the cursor 8 lines from the top
 " and 8 lines from the bottom and 15 lines on the left
 set scrolloff=8
@@ -202,6 +206,10 @@ set shiftwidth=2
 " ============================================================================
 " Plugin configuration {{{
 " ============================================================================
+
+let g:python_host_prog = $HOME . '/.homebrew/bin/python2'
+let g:python3_host_prog = $HOME . '/.homebrew/bin/python3'
+
 let g:lightline = {
   \ 'colorscheme': 'deus',
   \ 'active': {
@@ -231,25 +239,31 @@ if has_key(plugs, 'lightline-bufferline')
   nmap <Leader>0 <Plug>lightline#bufferline#go(10)
 endif
 
-let g:python_host_prog = '/Users/matthewdonnelly/.homebrew/bin/python2'
-let g:python3_host_prog = '/Users/matthewdonnelly/.homebrew/bin/python3'
+if has_key(plugs, 'coc.nvim')
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+  endfunction
 
-let g:ycm_autoclose_preview_window_after_completion = 1
+  inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  "Close preview window when completion is done.
+  autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
+  inoremap <silent><expr> <c-space> coc#refresh()
 
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+  nmap <silent> [c <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
-"Close preview window when completion is done.
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
+endif
 
 " }}}
 " ============================================================================
