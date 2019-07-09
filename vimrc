@@ -91,7 +91,11 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
-colorscheme ayu
+try
+  colorscheme ayu
+catch
+  colorscheme koehler
+endtry
 
 " }}}
 " ============================================================================
@@ -142,6 +146,51 @@ if exists('plugs')
   if has_key(plugs, 'vim-easy-align')
     xmap ga <Plug>(EasyAlign)
     nmap ga <Plug>(EasyAlign)
+  endif
+
+  if has_key(plugs, 'lightline-bufferline')
+    autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
+    nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+    nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+    nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+    nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+    nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+    nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+    nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+    nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+    nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+    nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+  endif
+
+  if has_key(plugs, 'coc.nvim')
+    function! s:check_back_space() abort
+      let col = col('.') - 1
+      return !col || getline('.')[col - 1]  =~ '\s'
+    endfunction
+
+    inoremap <silent><expr> <TAB>
+          \ pumvisible() ? "\<C-n>" :
+          \ <SID>check_back_space() ? "\<TAB>" :
+          \ coc#refresh()
+    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+    inoremap <silent><expr> <c-space> coc#refresh()
+
+    nmap <silent> [c <Plug>(coc-diagnostic-prev)
+    nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+    nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> gy <Plug>(coc-type-definition)
+    nmap <silent> gi <Plug>(coc-implementation)
+    nmap <silent> gr <Plug>(coc-references)
+
+    command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+    nnoremap <leader>d :CocList diagnostics<CR>
+
+    set signcolumn=auto:2
   endif
 endif
 
@@ -227,51 +276,6 @@ let g:lightline = {
 let g:lightline.tabline          = {'left': [['buffers']], 'right': [['close']]}
 let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
 let g:lightline.component_type   = {'buffers': 'tabsel'}
-
-if has_key(plugs, 'lightline-bufferline')
-  autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
-  nmap <Leader>1 <Plug>lightline#bufferline#go(1)
-  nmap <Leader>2 <Plug>lightline#bufferline#go(2)
-  nmap <Leader>3 <Plug>lightline#bufferline#go(3)
-  nmap <Leader>4 <Plug>lightline#bufferline#go(4)
-  nmap <Leader>5 <Plug>lightline#bufferline#go(5)
-  nmap <Leader>6 <Plug>lightline#bufferline#go(6)
-  nmap <Leader>7 <Plug>lightline#bufferline#go(7)
-  nmap <Leader>8 <Plug>lightline#bufferline#go(8)
-  nmap <Leader>9 <Plug>lightline#bufferline#go(9)
-  nmap <Leader>0 <Plug>lightline#bufferline#go(10)
-endif
-
-if has_key(plugs, 'coc.nvim')
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-  endfunction
-
-  inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-  autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-  inoremap <silent><expr> <c-space> coc#refresh()
-
-  nmap <silent> [c <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]c <Plug>(coc-diagnostic-next)
-
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
-
-  command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
-  nnoremap <leader>d :CocList diagnostics<CR>
-
-  set signcolumn=auto:2
-endif
 
 " }}}
 " ============================================================================
