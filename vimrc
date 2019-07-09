@@ -154,6 +154,8 @@ if !has('nvim')
   set encoding=utf-8
 endif
 
+set noautochdir
+
 set showtabline=2
 "
 " open new split panes to right and bottom, which feels more natural
@@ -214,10 +216,11 @@ let g:lightline = {
   \ 'colorscheme': 'deus',
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
-  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+  \             [ 'cocstatus', 'gitbranch', 'readonly', 'filename', 'modified' ] ]
   \ },
   \ 'component_function': {
-  \   'gitbranch': 'fugitive#head'
+  \   'gitbranch': 'fugitive#head',
+  \   'cocstatus': 'coc#status'
   \ }
   \ }
 
@@ -262,6 +265,12 @@ if has_key(plugs, 'coc.nvim')
   nmap <silent> gy <Plug>(coc-type-definition)
   nmap <silent> gi <Plug>(coc-implementation)
   nmap <silent> gr <Plug>(coc-references)
+
+  command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+  nnoremap <leader>d :CocList diagnostics<CR>
+
+  set signcolumn=auto:2
 endif
 
 " }}}
