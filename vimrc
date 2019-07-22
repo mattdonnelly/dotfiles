@@ -16,6 +16,7 @@ Plug 'mattdonnelly/vim-noctu'
 Plug 'mattdonnelly/vim-hybrid'
 Plug 'mhinz/vim-startify'
 Plug 'ayu-theme/ayu-vim'
+Plug 'patstockwell/vim-monokai-tasty'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 
@@ -92,7 +93,8 @@ if exists('+termguicolors')
 endif
 
 try
-  colorscheme ayu
+  let g:vim_monokai_tasty_italic = 1
+  colorscheme vim-monokai-tasty
 catch
   colorscheme koehler
 endtry
@@ -124,7 +126,24 @@ if exists('plugs')
     nnoremap <leader>h :History<CR>
     nnoremap <leader>/ :Ag<CR>
 
-    let $FZF_DEFAULT_OPTS='--layout=reverse --preview "(bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -500"'
+    " let $FZF_DEFAULT_OPTS='--layout=reverse --preview \"(bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -500"'
+    let $FZF_DEFAULT_OPTS='--multi --layout=reverse'
+
+    " Augmenting Ag command using fzf#vim#with_preview function
+    "   * fzf#vim#with_preview([[options], preview window, [toggle keys...]])
+    "   * Preview script requires Ruby
+    "   * Install Highlight or CodeRay to enable syntax highlighting
+    "
+    "   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
+    "   :Ag! - Start fzf in fullscreen and display the preview window above
+    command! -bang -nargs=* Ag
+      \ call fzf#vim#ag(<q-args>,
+      \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+      \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \                 <bang>0)
+
+    command! -bang -nargs=? -complete=dir Files
+      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
   endif
 
   if has_key(plugs, 'lightline.vim')
@@ -262,7 +281,7 @@ let g:python_host_prog = $HOME . '/.homebrew/bin/python2'
 let g:python3_host_prog = $HOME . '/.homebrew/bin/python3'
 
 let g:lightline = {
-  \ 'colorscheme': 'deus',
+  \ 'colorscheme': 'monokai_tasty',
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
   \             [ 'cocstatus', 'gitbranch', 'readonly', 'filename', 'modified' ] ]
