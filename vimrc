@@ -16,7 +16,7 @@ if has("nvim")
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
   endif
 
-  call plug#begin('~/.config/nvim/plugged')
+  call plug#begin('~/.local/share/nvim/plugged')
 else
   if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
