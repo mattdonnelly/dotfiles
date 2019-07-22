@@ -24,7 +24,7 @@ else
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
   endif
 
-  silent! if plug#begin('~/.vim/plugged')
+  call plug#begin('~/.vim/plugged')
 endif
 
 " appearence plugins
@@ -85,7 +85,6 @@ if filereadable(glob("~/.localplugins.vim"))
 endif
 
 call plug#end()
-endif
 
 " }}}
 " ============================================================================
