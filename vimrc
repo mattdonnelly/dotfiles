@@ -35,6 +35,7 @@ Plug 'ayu-theme/ayu-vim'
 Plug 'patstockwell/vim-monokai-tasty'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
+Plug 'ryanoasis/vim-devicons'
 
 " integrations
 Plug 'junegunn/vim-easy-align'                     " alignment
@@ -48,7 +49,6 @@ Plug 'ntpeters/vim-better-whitespace'              " strip trailing whitespace
 Plug 'junegunn/vim-emoji'                          " emojis
 Plug 'ajh17/VimCompletesMe'                        " improved tab completion in insert mode
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " visualization of undo history
-Plug 'ludovicchabant/vim-gutentags'                " auto update ctags
 Plug 'sheerun/vim-polyglot'                        " language packs
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
@@ -295,6 +295,8 @@ set shiftwidth=2
 let g:python_host_prog = $HOME . '/.homebrew/bin/python2'
 let g:python3_host_prog = $HOME . '/.homebrew/bin/python3'
 
+let g:startify_change_to_dir = 0
+
 let g:lightline = {
   \ 'colorscheme': 'monokai_tasty',
   \ 'active': {
@@ -347,7 +349,11 @@ augroup vimrcEx
 
   autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
 augroup END
-
 " }}}
+
+if filereadable(glob("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
+
 " ============================================================================
 " vim: fdm=marker:sw=2:sts=2:et
