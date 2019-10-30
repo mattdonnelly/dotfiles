@@ -142,7 +142,7 @@ if exists('plugs')
     nnoremap <leader>/ :Ag<CR>
 
     " let $FZF_DEFAULT_OPTS='--layout=reverse --preview \"(bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -500"'
-    let $FZF_DEFAULT_OPTS='--multi --layout=reverse'
+    let $FZF_DEFAULT_OPTS='-i --multi --layout=reverse'
 
     " Augmenting Ag command using fzf#vim#with_preview function
     "   * fzf#vim#with_preview([[options], preview window, [toggle keys...]])
