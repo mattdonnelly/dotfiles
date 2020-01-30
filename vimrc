@@ -136,12 +136,12 @@ cmap w!! w !sudo tee %
 
 if exists('plugs')
   if has_key(plugs, 'fzf.vim')
-    nnoremap <leader>f :Files<CR>
+    nnoremap <leader>f :call Fzf_dev()<CR>
     nnoremap <leader>b :Buffer<CR>
     nnoremap <leader>h :History<CR>
     nnoremap <leader>/ :Ag<CR>
 
-    " let $FZF_DEFAULT_OPTS='--layout=reverse --preview \"(bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -500"'
+    let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
     let $FZF_DEFAULT_OPTS='-i --multi --layout=reverse'
 
     " Augmenting Ag command using fzf#vim#with_preview function
@@ -158,8 +158,66 @@ if exists('plugs')
       \                 <bang>0)
 
     command! -bang -nargs=? -complete=dir Files
-      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
   endif
+
+  function! CreateCenteredFloatingWindow()
+    let width = min([&columns - 4, max([80, &columns - 20])])
+    let height = min([&lines - 4, max([20, &lines - 10])])
+    let top = ((&lines - height) / 2) - 1
+    let left = (&columns - width) / 2
+    let opts = { 'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal' }
+
+    let top = "╭" . repeat("─", width - 2) . "╮"
+    let mid = "│" . repeat(" ", width - 2) . "│"
+    let bot = "╰" . repeat("─", width - 2) . "╯"
+    let lines = [top] + repeat([mid], height - 2) + [bot]
+    let s:buf = nvim_create_buf(v:false, v:true)
+    call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
+    call nvim_open_win(s:buf, v:true, opts)
+    set winhl=Normal:Floating
+    let opts.row += 1
+    let opts.height -= 2
+    let opts.col += 2
+    let opts.width -= 4
+    call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+    au BufWipeout <buffer> exe 'bw '.s:buf
+  endfunction
+
+  " Files + devicons + floating fzf
+  function! Fzf_dev()
+    let l:fzf_files_options = '--preview "bat --line-range :'.&lines.' --theme=\"Monokai Extended\" --style=numbers,changes --color always {2..-1}"'
+
+    function! s:files()
+      let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+      return s:prepend_icon(l:files)
+    endfunction
+
+    function! s:prepend_icon(candidates)
+      let l:result = []
+      for l:candidate in a:candidates
+        let l:filename = fnamemodify(l:candidate, ':p:t')
+        let l:icon = WebDevIconsGetFileTypeSymbol(l:filename, isdirectory(l:filename))
+        call add(l:result, printf('%s %s', l:icon, l:candidate))
+      endfor
+
+      return l:result
+    endfunction
+
+    function! s:edit_file(item)
+      let l:pos = stridx(a:item, ' ')
+      let l:file_path = a:item[pos+1:-1]
+      execute 'silent e' l:file_path
+    endfunction
+
+    call fzf#run({
+          \ 'source': <sid>files(),
+          \ 'sink':   function('s:edit_file'),
+          \ 'options': '-m --reverse ' . l:fzf_files_options,
+          \ 'down':    '40%',
+          \ 'window': 'call CreateCenteredFloatingWindow()'})
+
+  endfunction
 
   if has_key(plugs, 'lightline.vim')
     set noshowmode
@@ -222,7 +280,18 @@ if exists('plugs')
 
     command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
+    nnoremap <silent> K :call <SID>show_documentation()<CR>
+    function! s:show_documentation()
+      if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+      else
+        call CocAction('doHover')
+      endif
+    endfunction
+
     nnoremap <leader>d :CocList diagnostics<CR>
+
+    command! -nargs=0 Format :call CocAction('format')
 
     set signcolumn=auto:2
   endif
@@ -295,6 +364,8 @@ set shiftwidth=2
 let g:python_host_prog = $HOME . '/.homebrew/bin/python2'
 let g:python3_host_prog = $HOME . '/.homebrew/bin/python3'
 
+let g:NERDTreeWinSize=60
+
 let g:startify_change_to_dir = 0
 
 let g:lightline = {
@@ -318,6 +389,14 @@ let g:lightline.component_type   = {'buffers': 'tabsel'}
 " Autocmd {{{
 " ============================================================================
 
+fun! TrimWhitespace()
+  let l:save = winsaveview()
+  keeppatterns %s/\s\+$//e
+  call winrestview(l:save)
+endfun
+
+command! TrimWhitespace call TrimWhitespace()
+
 augroup vimrcEx
   autocmd!
 
@@ -333,6 +412,8 @@ augroup vimrcEx
 
   " set syntax hilighting
   autocmd BufRead,BufNewFile *.md set filetype=markdown
+
+  autocmd BufWritePre * :call TrimWhitespace()
 
   autocmd FileType python highlight Excess ctermbg=Red
   autocmd FileType python match Excess /\%120v.*/
