@@ -136,7 +136,7 @@ cmap w!! w !sudo tee %
 
 if exists('plugs')
   if has_key(plugs, 'fzf.vim')
-    nnoremap <leader>f :call Fzf_dev()<CR>
+    nnoremap <leader>f :Files<CR>
     nnoremap <leader>b :Buffer<CR>
     nnoremap <leader>h :History<CR>
     nnoremap <leader>/ :Ag<CR>
@@ -158,7 +158,7 @@ if exists('plugs')
       \                 <bang>0)
 
     command! -bang -nargs=? -complete=dir Files
-      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
+      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--multi', '--layout=reverse', '--info=inline']}), <bang>0)
   endif
 
   function! CreateCenteredFloatingWindow()
@@ -182,41 +182,6 @@ if exists('plugs')
     let opts.width -= 4
     call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
     au BufWipeout <buffer> exe 'bw '.s:buf
-  endfunction
-
-  " Files + devicons + floating fzf
-  function! Fzf_dev()
-    let l:fzf_files_options = '--preview "bat --line-range :'.&lines.' --theme=\"Monokai Extended\" --style=numbers,changes --color always {2..-1}"'
-
-    function! s:files()
-      let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
-      return s:prepend_icon(l:files)
-    endfunction
-
-    function! s:prepend_icon(candidates)
-      let l:result = []
-      for l:candidate in a:candidates
-        let l:filename = fnamemodify(l:candidate, ':p:t')
-        let l:icon = WebDevIconsGetFileTypeSymbol(l:filename, isdirectory(l:filename))
-        call add(l:result, printf('%s %s', l:icon, l:candidate))
-      endfor
-
-      return l:result
-    endfunction
-
-    function! s:edit_file(item)
-      let l:pos = stridx(a:item, ' ')
-      let l:file_path = a:item[pos+1:-1]
-      execute 'silent e' l:file_path
-    endfunction
-
-    call fzf#run({
-          \ 'source': <sid>files(),
-          \ 'sink':   function('s:edit_file'),
-          \ 'options': '-m --reverse ' . l:fzf_files_options,
-          \ 'down':    '40%',
-          \ 'window': 'call CreateCenteredFloatingWindow()'})
-
   endfunction
 
   if has_key(plugs, 'lightline.vim')
