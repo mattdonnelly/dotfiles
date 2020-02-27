@@ -38,20 +38,21 @@ Plug 'mengelbrecht/lightline-bufferline'
 Plug 'ryanoasis/vim-devicons'
 
 " integrations
-Plug 'junegunn/vim-easy-align'                     " alignment
-Plug 'easymotion/vim-easymotion'                   " fast movement
-Plug 'airblade/vim-gitgutter'                      " git status
-Plug 'tpope/vim-fugitive'                          " git integration
-Plug 'christoomey/vim-tmux-navigator'              " tmux + vim pane navigation
-Plug 'tpope/vim-surround'                          " easier surronding characters
-Plug 'tpope/vim-commentary'                        " quicker commenting
-Plug 'ntpeters/vim-better-whitespace'              " strip trailing whitespace
-Plug 'junegunn/vim-emoji'                          " emojis
-Plug 'ajh17/VimCompletesMe'                        " improved tab completion in insert mode
-Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " visualization of undo history
-Plug 'sheerun/vim-polyglot'                        " language packs
-
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy search
+Plug 'junegunn/vim-easy-align'
+Plug 'easymotion/vim-easymotion'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'junegunn/vim-emoji'
+Plug 'ajh17/VimCompletesMe'
+Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+Plug 'sheerun/vim-polyglot'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'pechorin/any-jump.nvim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " js
@@ -64,11 +65,6 @@ Plug 'tmhedberg/SimpylFold', { 'for': 'python' } " better folding
 " ruby
 Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 Plug 'jgdavey/tslime.vim', { 'for': 'ruby' }
-
-Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
-
-" files
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }            " file tree
 
 function! BuildYCM(info)
   if a:info.status == 'installed' || a:info.force
@@ -339,6 +335,8 @@ set shiftwidth=2
 
 let g:python_host_prog = $HOME . '/.homebrew/bin/python2'
 let g:python3_host_prog = $HOME . '/.homebrew/bin/python3'
+
+let g:any_jump_search_prefered_engine = 'ag'
 
 let g:NERDTreeWinSize=60
 
