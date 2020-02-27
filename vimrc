@@ -61,6 +61,10 @@ Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlightin
 Plug 'hdima/python-syntax', { 'for': 'python' }  " improved syntax highlighting
 Plug 'tmhedberg/SimpylFold', { 'for': 'python' } " better folding
 
+" ruby
+Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
+Plug 'jgdavey/tslime.vim', { 'for': 'ruby' }
+
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 
 " files
@@ -154,7 +158,7 @@ if exists('plugs')
     command! -bang -nargs=* Ag
       \ call fzf#vim#ag(<q-args>,
       \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-      \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \                         : {},
       \                 <bang>0)
 
     command! -bang -nargs=? -complete=dir Files
@@ -194,6 +198,7 @@ if exists('plugs')
 
   if has_key(plugs, 'nerdtree')
     nnoremap <leader>n :NERDTreeToggle<CR>
+    nnoremap <leader>- :NERDTreeFocus<CR>
   endif
 
   if has_key(plugs, 'YouCompleteMe')
@@ -259,6 +264,12 @@ if exists('plugs')
     command! -nargs=0 Format :call CocAction('format')
 
     set signcolumn=auto:2
+  endif
+
+  if has_key(plugs, 'vim-rspec')
+    map <Leader>t :call RunCurrentSpecFile()<CR>
+    map <Leader>s :call RunNearestSpec()<CR>
+    map <Leader>l :call RunLastSpec()<CR>
   endif
 endif
 
@@ -330,6 +341,8 @@ let g:python_host_prog = $HOME . '/.homebrew/bin/python2'
 let g:python3_host_prog = $HOME . '/.homebrew/bin/python3'
 
 let g:NERDTreeWinSize=60
+
+let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
 
 let g:startify_change_to_dir = 0
 
