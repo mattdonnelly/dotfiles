@@ -142,7 +142,7 @@ if exists('plugs')
     nnoremap <leader>/ :Ag<CR>
 
     let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
-    let $FZF_DEFAULT_OPTS='-i --multi --layout=reverse'
+    let $FZF_DEFAULT_OPTS='-i --multi --layout=reverse --margin=1,4'
 
     " Augmenting Ag command using fzf#vim#with_preview function
     "   * fzf#vim#with_preview([[options], preview window, [toggle keys...]])
@@ -158,7 +158,7 @@ if exists('plugs')
       \                 <bang>0)
 
     command! -bang -nargs=? -complete=dir Files
-      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--multi', '--layout=reverse', '--info=inline']}), <bang>0)
+      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--info=inline']}), <bang>0)
   endif
 
   function! CreateCenteredFloatingWindow()
@@ -180,6 +180,7 @@ if exists('plugs')
     let opts.height -= 2
     let opts.col += 2
     let opts.width -= 4
+    let opts.style = 'minimal'
     call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
     au BufWipeout <buffer> exe 'bw '.s:buf
   endfunction
@@ -297,8 +298,12 @@ set scrolloff=8
 set sidescrolloff=15
 set sidescroll=1
 
+" no swap files
+set noswapfile
+set nobackup
+set nowritebackup
+
 set hidden                 " nicer buffer behaviour
-set noswapfile             " no swap files
 set autoread               " auto read changes to files
 set nu                     " current line number
 set numberwidth=4          " gutter width
@@ -336,6 +341,10 @@ set shiftwidth=2
 let g:python_host_prog = $HOME . '/.homebrew/bin/python2'
 let g:python3_host_prog = $HOME . '/.homebrew/bin/python3'
 
+let g:better_whitespace_enabled=1
+let g:strip_whitespace_on_save=1
+let g:better_whitespace_filetypes_blacklist=['diff', 'gitcommit', 'unite', 'qf', 'help', 'markdown', 'any-jump']
+
 let g:any_jump_search_prefered_engine = 'ag'
 
 let g:NERDTreeWinSize=60
@@ -365,14 +374,6 @@ let g:lightline.component_type   = {'buffers': 'tabsel'}
 " Autocmd {{{
 " ============================================================================
 
-fun! TrimWhitespace()
-  let l:save = winsaveview()
-  keeppatterns %s/\s\+$//e
-  call winrestview(l:save)
-endfun
-
-command! TrimWhitespace call TrimWhitespace()
-
 augroup vimrcEx
   autocmd!
 
@@ -388,8 +389,6 @@ augroup vimrcEx
 
   " set syntax hilighting
   autocmd BufRead,BufNewFile *.md set filetype=markdown
-
-  autocmd BufWritePre * :call TrimWhitespace()
 
   autocmd FileType python highlight Excess ctermbg=Red
   autocmd FileType python match Excess /\%120v.*/
