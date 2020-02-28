@@ -298,12 +298,8 @@ set scrolloff=8
 set sidescrolloff=15
 set sidescroll=1
 
-" no swap files
-set noswapfile
-set nobackup
-set nowritebackup
-
 set hidden                 " nicer buffer behaviour
+set noswapfile             " no swap files
 set autoread               " auto read changes to files
 set nu                     " current line number
 set numberwidth=4          " gutter width
