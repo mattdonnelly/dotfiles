@@ -50,10 +50,8 @@ Plug 'junegunn/vim-emoji'
 Plug 'ajh17/VimCompletesMe'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'sheerun/vim-polyglot'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'pechorin/any-jump.nvim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'liuchengxu/vim-clap'
 
 " js
 Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
@@ -159,6 +157,19 @@ if exists('plugs')
 
     command! -bang -nargs=? -complete=dir Files
       \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--info=inline']}), <bang>0)
+  endif
+
+  if has_key(plugs, 'vim-clap')
+    nnoremap <leader>f :Clap files<CR>
+    nnoremap <leader>b :Clap buffers<CR>
+    nnoremap <leader>h :Clap history<CR>
+    nnoremap <leader>/ :Clap grep<CR>
+    nnoremap <leader>n :Clap filer<CR>
+
+    let g:clap_insert_mode_only = v:true
+    let g:clap_prompt_format = '%spinner% %provider_id% ❯ '
+    let g:clap_layout = { 'width': '80%', 'height': '60%', 'row': '20%', 'col': '10%' }
+    let g:clap_current_selection_sign = { 'text': '> ', 'texthl': "red", "linehl": "black" }
   endif
 
   function! CreateCenteredFloatingWindow()
