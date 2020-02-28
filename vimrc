@@ -51,7 +51,8 @@ Plug 'ajh17/VimCompletesMe'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'sheerun/vim-polyglot'
 Plug 'pechorin/any-jump.nvim'
-Plug 'liuchengxu/vim-clap'
+Plug 'junegunn/fzf', { 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
 
 " js
 Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
@@ -96,6 +97,12 @@ if has("persistent_undo")
   set undofile
 endif
 
+if executable('rg')
+  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+  set grepprg=rg\ --vimgrep
+  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+endif
+
 "}}}
 " ============================================================================
 " Appearence {{{
@@ -134,29 +141,58 @@ cmap w!! w !sudo tee %
 
 if exists('plugs')
   if has_key(plugs, 'fzf.vim')
-    nnoremap <leader>f :Files<CR>
+    nnoremap <leader>f :call FZFWithDevIcons()<CR>
+    nnoremap <leader>F :Files!<CR>
     nnoremap <leader>b :Buffer<CR>
     nnoremap <leader>h :History<CR>
-    nnoremap <leader>/ :Ag<CR>
+    nnoremap <leader>/ :RG<CR>
+    nnoremap <leader>? :RG!<CR>
 
     let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
     let $FZF_DEFAULT_OPTS='-i --multi --layout=reverse --margin=1,4'
 
-    " Augmenting Ag command using fzf#vim#with_preview function
-    "   * fzf#vim#with_preview([[options], preview window, [toggle keys...]])
-    "   * Preview script requires Ruby
-    "   * Install Highlight or CodeRay to enable syntax highlighting
-    "
-    "   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
-    "   :Ag! - Start fzf in fullscreen and display the preview window above
-    command! -bang -nargs=* Ag
-      \ call fzf#vim#ag(<q-args>,
-      \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-      \                         : {},
-      \                 <bang>0)
-
     command! -bang -nargs=? -complete=dir Files
       \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--info=inline']}), <bang>0)
+
+    function! RipgrepFzf(query, fullscreen)
+      let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+      let initial_command = printf(command_fmt, shellescape(a:query))
+      let reload_command = printf(command_fmt, '{q}')
+      let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+      call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+    endfunction
+
+    command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+    function! FZFWithDevIcons()
+      let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {2..-1} | head -'.&lines.'"'
+
+      function! s:files()
+        let l:files = split(system($FZF_DEFAULT_COMMAND.'| devicon-lookup'), '\n')
+        return l:files
+      endfunction
+
+      function! s:edit_file(items)
+        let items = a:items
+        let i = 1
+        let ln = len(items)
+        while i < ln
+          let item = items[i]
+          let parts = split(item, ' ')
+          let file_path = get(parts, 1, '')
+          let items[i] = file_path
+          let i += 1
+        endwhile
+        call s:Sink(items)
+      endfunction
+
+      let opts = fzf#wrap({})
+      let opts.source = <sid>files()
+      let s:Sink = opts['sink*']
+      let opts['sink*'] = function('s:edit_file')
+      let opts.options .= l:fzf_files_options
+      call fzf#run(opts)
+    endfunction
   endif
 
   if has_key(plugs, 'vim-clap')
