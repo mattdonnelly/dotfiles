@@ -53,6 +53,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'pechorin/any-jump.nvim'
 Plug 'junegunn/fzf', { 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
+Plug 'dense-analysis/ale'
 
 " js
 Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
@@ -357,6 +358,10 @@ let g:python3_host_prog = $HOME . '/.homebrew/bin/python3'
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
 let g:better_whitespace_filetypes_blacklist=['diff', 'gitcommit', 'unite', 'qf', 'help', 'markdown', 'any-jump']
+
+let g:ale_linters = {
+  \ 'ruby': ['rubocop'],
+  \ }
 
 let g:any_jump_search_prefered_engine = 'ag'
 
