@@ -55,6 +55,10 @@ Plug 'junegunn/fzf', { 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
 Plug 'maximbaz/lightline-ale'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'kristijanhusak/defx-icons'
+Plug 'kristijanhusak/defx-git'
 
 " js
 Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
@@ -66,20 +70,6 @@ Plug 'tmhedberg/SimpylFold', { 'for': 'python' } " better folding
 " ruby
 Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 Plug 'jgdavey/tslime.vim', { 'for': 'ruby' }
-
-function! BuildYCM(info)
-  if a:info.status == 'installed' || a:info.force
-    !./install.py
-  endif
-endfunction
-
-if has('nvim')
-  " async auto completion
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-else
-  " synchronous auto completion
-  Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-endif
 
 if filereadable(glob("~/.localplugins.vim"))
   source ~/.localplugins.vim
@@ -100,7 +90,7 @@ if has("persistent_undo")
 endif
 
 if executable('rg')
-  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --smart-case --glob "!.git/*"'
   set grepprg=rg\ --vimgrep
   command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 endif
@@ -165,44 +155,111 @@ if exists('plugs')
     endfunction
 
     command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+    function! CreateCenteredFloatingWindow()
+      let width = min([&columns - 4, max([80, &columns - 20])])
+      let height = min([&lines - 4, max([20, &lines - 10])])
+      let top = ((&lines - height) / 2) - 1
+      let left = (&columns - width) / 2
+      let opts = { 'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal' }
+
+      let top = "╭" . repeat("─", width - 2) . "╮"
+      let mid = "│" . repeat(" ", width - 2) . "│"
+      let bot = "╰" . repeat("─", width - 2) . "╯"
+      let lines = [top] + repeat([mid], height - 2) + [bot]
+      let s:buf = nvim_create_buf(v:false, v:true)
+      call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
+      call nvim_open_win(s:buf, v:true, opts)
+      set winhl=Normal:Floating
+      let opts.row += 1
+      let opts.height -= 2
+      let opts.col += 2
+      let opts.width -= 4
+      let opts.style = 'minimal'
+      call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+      au BufWipeout <buffer> exe 'bw '.s:buf
+    endfunction
   endif
 
-  if has_key(plugs, 'vim-clap')
-    nnoremap <leader>f :Clap files<CR>
-    nnoremap <leader>b :Clap buffers<CR>
-    nnoremap <leader>h :Clap history<CR>
-    nnoremap <leader>/ :Clap grep<CR>
-    nnoremap <leader>n :Clap filer<CR>
+  if has_key(plugs, 'defx.nvim')
+    nnoremap <leader>n :Defx<CR>
+    nnoremap <leader>N :Defx -search=`expand('%:p')` `getcwd()`<CR>
 
-    let g:clap_insert_mode_only = v:true
-    let g:clap_prompt_format = '%spinner% %provider_id% ❯ '
-    let g:clap_layout = { 'width': '80%', 'height': '60%', 'row': '20%', 'col': '10%' }
-    let g:clap_current_selection_sign = { 'text': '> ', 'texthl': "red", "linehl": "black" }
+    call defx#custom#option('_', {
+          \ 'columns': 'indent:git:icons:filename',
+          \ 'winwidth': 35,
+          \ 'split': 'vertical',
+          \ 'direction': 'topleft',
+          \ 'show_ignored_files': 0,
+          \ 'buffer_name': 'defxplorer',
+          \ })
+
+    augroup user_plugin_defx
+      autocmd!
+      " Delete defx if it's the only buffer left in the window
+      " autocmd WinEnter * if &filetype == 'defx' && winnr('$') == 1 | bd | endif
+
+      " Move focus to the next window if current buffer is defx
+      autocmd TabLeave * if &filetype == 'defx' | wincmd w | endif
+
+      autocmd TabClosed * call s:defx_close_tab(expand('<afile>'))
+
+      " Define defx window mappings
+      autocmd FileType defx call s:defx_mappings()
+    augroup END
+
+    function! s:defx_close_tab(tabnr)
+      " When a tab is closed, find and delete any associated defx buffers
+      for l:nr in range(1, bufnr('$'))
+        let l:defx = getbufvar(l:nr, 'defx')
+        if empty(l:defx)
+          continue
+        endif
+        let l:context = get(l:defx, 'context', {})
+        if get(l:context, 'buffer_name', '') ==# 'tab' . a:tabnr
+          silent! execute 'bdelete '.l:nr
+          break
+        endif
+      endfor
+    endfunction
+
+    function! s:defx_toggle_tree() abort
+      " Open current file, or toggle directory expand/collapse
+      if defx#is_directory()
+        return defx#do_action('open_or_close_tree')
+      endif
+      retur defx#do_action('drop')
+    endfunction
+
+    function! s:defx_mappings() abort
+      " Defx window keyboard mappings
+      setlocal signcolumn=no
+
+      nnoremap <silent><buffer><expr> <backspace> defx#async_action('cd', ['..'])
+      nnoremap <silent><buffer><expr> <CR>  defx#do_action('drop')
+      nnoremap <silent><buffer><expr> <TAB> defx#do_action('open_or_close_tree')
+      nnoremap <silent><buffer><expr> st    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
+      nnoremap <silent><buffer><expr> %     defx#do_action('open', 'botright vsplit')
+      nnoremap <silent><buffer><expr> -     defx#do_action('open', 'botright split')
+      nnoremap <silent><buffer><expr> K     defx#do_action('new_directory')
+      nnoremap <silent><buffer><expr> N     defx#do_action('new_file')
+      nnoremap <silent><buffer><expr> M     defx#do_action('new_multiple_files')
+      nnoremap <silent><buffer><expr> dd    defx#do_action('remove_trash')
+      nnoremap <silent><buffer><expr> r     defx#do_action('rename')
+      nnoremap <silent><buffer><expr> x     defx#do_action('execute_system')
+      nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')
+      nnoremap <silent><buffer><expr> yy    defx#do_action('yank_path')
+      nnoremap <silent><buffer><expr> q     defx#do_action('quit')
+      nnoremap <silent><buffer><expr> <ESC> defx#do_action('quit')
+      nnoremap <silent><buffer><expr><nowait> \  defx#do_action('cd', getcwd())
+      nnoremap <silent><buffer><expr><nowait> &  defx#do_action('cd', getcwd())
+      nnoremap <silent><buffer><expr><nowait> c  defx#do_action('copy')
+      nnoremap <silent><buffer><expr><nowait> m  defx#do_action('move')
+      nnoremap <silent><buffer><expr><nowait> p  defx#do_action('paste')
+      nnoremap <silent><buffer><expr> '      defx#do_action('toggle_select') . 'j'
+      nnoremap <silent><buffer><expr> *      defx#do_action('toggle_select_all')
+    endfunction
   endif
-
-  function! CreateCenteredFloatingWindow()
-    let width = min([&columns - 4, max([80, &columns - 20])])
-    let height = min([&lines - 4, max([20, &lines - 10])])
-    let top = ((&lines - height) / 2) - 1
-    let left = (&columns - width) / 2
-    let opts = { 'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal' }
-
-    let top = "╭" . repeat("─", width - 2) . "╮"
-    let mid = "│" . repeat(" ", width - 2) . "│"
-    let bot = "╰" . repeat("─", width - 2) . "╯"
-    let lines = [top] + repeat([mid], height - 2) + [bot]
-    let s:buf = nvim_create_buf(v:false, v:true)
-    call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
-    call nvim_open_win(s:buf, v:true, opts)
-    set winhl=Normal:Floating
-    let opts.row += 1
-    let opts.height -= 2
-    let opts.col += 2
-    let opts.width -= 4
-    let opts.style = 'minimal'
-    call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
-    au BufWipeout <buffer> exe 'bw '.s:buf
-  endfunction
 
   if has_key(plugs, 'lightline.vim')
     set noshowmode
@@ -210,15 +267,6 @@ if exists('plugs')
 
   if has_key(plugs, 'undotree')
     nnoremap <leader>u :UndotreeToggle<CR>
-  endif
-
-  if has_key(plugs, 'nerdtree')
-    nnoremap <leader>n :NERDTreeToggle<CR>
-    nnoremap <leader>- :NERDTreeFocus<CR>
-  endif
-
-  if has_key(plugs, 'YouCompleteMe')
-    nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
   endif
 
   if has_key(plugs, 'vim-easy-align')
@@ -356,9 +404,9 @@ set shiftwidth=2
 let g:python_host_prog = $HOME . '/.homebrew/bin/python2'
 let g:python3_host_prog = $HOME . '/.homebrew/bin/python3'
 
-let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
-let g:better_whitespace_filetypes_blacklist=['diff', 'gitcommit', 'unite', 'qf', 'help', 'markdown', 'any-jump']
+let g:strip_whitespace_confirm=0
+let g:better_whitespace_filetypes_blacklist=['diff', 'gitcommit', 'unite', 'qf', 'help', 'markdown']
 
 let g:ale_linters = {
   \ 'ruby': ['rubocop'],
@@ -366,9 +414,7 @@ let g:ale_linters = {
 
 let g:any_jump_search_prefered_engine = 'ag'
 
-let g:NERDTreeWinSize=60
-
-let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
+let g:rspec_command = "term bundle exec rspec {spec}"
 
 let g:startify_change_to_dir = 0
 
