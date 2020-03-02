@@ -54,6 +54,7 @@ Plug 'pechorin/any-jump.nvim'
 Plug 'junegunn/fzf', { 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
+Plug 'maximbaz/lightline-ale'
 
 " js
 Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
@@ -375,7 +376,9 @@ let g:lightline = {
   \ 'colorscheme': 'monokai_tasty',
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
-  \             [ 'cocstatus', 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+  \             [ 'cocstatus', 'gitbranch', 'readonly', 'filename', 'modified' ],
+  \             [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ]
+  \           ],
   \ },
   \ 'component_function': {
   \   'gitbranch': 'fugitive#head',
@@ -383,9 +386,29 @@ let g:lightline = {
   \ }
   \ }
 
-let g:lightline.tabline          = {'left': [['buffers']], 'right': [['close']]}
-let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
-let g:lightline.component_type   = {'buffers': 'tabsel'}
+let g:lightline.tabline = {'left': [['buffers']], 'right': [['close']]}
+let g:lightline.component_expand = {
+  \ 'buffers': 'lightline#bufferline#buffers',
+  \  'linter_checking': 'lightline#ale#checking',
+  \  'linter_infos': 'lightline#ale#infos',
+  \  'linter_warnings': 'lightline#ale#warnings',
+  \  'linter_errors': 'lightline#ale#errors',
+  \  'linter_ok': 'lightline#ale#ok',
+  \ }
+let g:lightline.component_type   = {
+  \ 'buffers': 'tabsel',
+  \ 'linter_checking': 'right',
+  \ 'linter_infos': 'right',
+  \ 'linter_warnings': 'warning',
+  \ 'linter_errors': 'error',
+  \ 'linter_ok': 'right',
+  \ }
+
+let g:lightline#ale#indicator_checking = "\uf110"
+let g:lightline#ale#indicator_infos = "\uf129"
+let g:lightline#ale#indicator_warnings = "\uf071"
+let g:lightline#ale#indicator_errors = "\uf05e"
+let g:lightline#ale#indicator_ok = "\uf00c"
 
 " }}}
 " ============================================================================
