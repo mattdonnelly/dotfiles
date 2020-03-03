@@ -412,7 +412,7 @@ let g:ale_linters = {
   \ 'ruby': ['rubocop'],
   \ }
 
-let g:any_jump_search_prefered_engine = 'ag'
+let g:any_jump_search_prefered_engine = 'rg'
 
 let g:rspec_command = "term bundle exec rspec {spec}"
 
