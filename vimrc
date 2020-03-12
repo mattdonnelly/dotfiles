@@ -45,7 +45,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-Plug 'ntpeters/vim-better-whitespace'
 Plug 'junegunn/vim-emoji'
 Plug 'ajh17/VimCompletesMe'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
@@ -99,6 +98,8 @@ endif
 " ============================================================================
 " Appearence {{{
 " ============================================================================
+
+let &t_ZM = "\e[3m"
 
 if exists('+termguicolors')
   set termguicolors
@@ -182,7 +183,7 @@ if exists('plugs')
   endif
 
   if has_key(plugs, 'defx.nvim')
-    nnoremap <leader>n :Defx<CR>
+    nnoremap <leader>n :Defx -toggle<CR>
     nnoremap <leader>N :Defx -search=`expand('%:p')` `getcwd()`<CR>
 
     call defx#custom#option('_', {
@@ -244,7 +245,7 @@ if exists('plugs')
       nnoremap <silent><buffer><expr> K     defx#do_action('new_directory')
       nnoremap <silent><buffer><expr> N     defx#do_action('new_file')
       nnoremap <silent><buffer><expr> M     defx#do_action('new_multiple_files')
-      nnoremap <silent><buffer><expr> dd    defx#do_action('remove_trash')
+      nnoremap <silent><buffer><expr> dd    defx#do_action('remove')
       nnoremap <silent><buffer><expr> r     defx#do_action('rename')
       nnoremap <silent><buffer><expr> x     defx#do_action('execute_system')
       nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')
@@ -304,15 +305,10 @@ if exists('plugs')
 
     inoremap <silent><expr> <c-space> coc#refresh()
 
-    nmap <silent> [c <Plug>(coc-diagnostic-prev)
-    nmap <silent> ]c <Plug>(coc-diagnostic-next)
-
     nmap <silent> gd <Plug>(coc-definition)
     nmap <silent> gy <Plug>(coc-type-definition)
     nmap <silent> gi <Plug>(coc-implementation)
     nmap <silent> gr <Plug>(coc-references)
-
-    command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
     nnoremap <silent> K :call <SID>show_documentation()<CR>
     function! s:show_documentation()
@@ -322,10 +318,6 @@ if exists('plugs')
         call CocAction('doHover')
       endif
     endfunction
-
-    nnoremap <leader>d :CocList diagnostics<CR>
-
-    command! -nargs=0 Format :call CocAction('format')
 
     set signcolumn=auto:2
   endif
@@ -404,13 +396,21 @@ set shiftwidth=2
 let g:python_host_prog = $HOME . '/.homebrew/bin/python2'
 let g:python3_host_prog = $HOME . '/.homebrew/bin/python3'
 
-let g:strip_whitespace_on_save=1
-let g:strip_whitespace_confirm=0
-let g:better_whitespace_filetypes_blacklist=['diff', 'gitcommit', 'unite', 'qf', 'help', 'markdown']
+let g:ale_sign_error = '✖'
+let g:ale_sign_warning = '⚠'
 
 let g:ale_linters = {
+  \  '*': ['remove_trailing_lines', 'trim_whitespace'],
+  \ 'javascript': ['prettier', 'eslint'],
   \ 'ruby': ['rubocop'],
   \ }
+
+let g:ale_fixers = {
+  \ 'javascript': ['prettier', 'eslint'],
+  \ 'ruby': ['rubocop'],
+  \ }
+
+let g:ale_fix_on_save = 1
 
 let g:any_jump_search_prefered_engine = 'rg'
 
@@ -420,6 +420,7 @@ let g:startify_change_to_dir = 0
 
 let g:lightline = {
   \ 'colorscheme': 'monokai_tasty',
+  \ 'separator': { 'left': "\uE0BC", 'right': "\uE0BA" },
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
   \             [ 'cocstatus', 'gitbranch', 'readonly', 'filename', 'modified' ],
