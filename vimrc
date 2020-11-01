@@ -34,8 +34,12 @@ Plug 'mhinz/vim-startify'
 Plug 'ayu-theme/ayu-vim'
 Plug 'patstockwell/vim-monokai-tasty'
 Plug 'itchyny/lightline.vim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'romgrk/barbar.nvim'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'ryanoasis/vim-devicons'
+Plug 'chuling/equinusocio-material.vim'
+Plug 'sainnhe/sonokai'
 
 " integrations
 Plug 'junegunn/vim-easy-align'
@@ -58,6 +62,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'kristijanhusak/defx-icons'
 Plug 'kristijanhusak/defx-git'
+Plug 'tpope/vim-endwise'
 
 " js
 Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
@@ -89,7 +94,7 @@ if has("persistent_undo")
 endif
 
 if executable('rg')
-  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --smart-case --glob "!.git/*"'
+  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --smart-case --glob "!{.git,node_modules,gems}/*" 2> /dev/null'
   set grepprg=rg\ --vimgrep
   command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 endif
@@ -106,8 +111,7 @@ if exists('+termguicolors')
 endif
 
 try
-  let g:vim_monokai_tasty_italic = 1
-  colorscheme vim-monokai-tasty
+  colorscheme sonokai
 catch
   colorscheme koehler
 endtry
@@ -184,7 +188,7 @@ if exists('plugs')
 
   if has_key(plugs, 'defx.nvim')
     nnoremap <leader>n :Defx -toggle<CR>
-    nnoremap <leader>N :Defx -search=`expand('%:p')` `getcwd()`<CR>
+    nnoremap <leader>N :Defx -toggle -search=`expand('%:p')` `getcwd()`<CR>
 
     call defx#custom#option('_', {
           \ 'columns': 'indent:git:icons:filename',
@@ -262,6 +266,36 @@ if exists('plugs')
     endfunction
   endif
 
+  if has_key(plugs, 'barbar.nvim')
+    let bg_current = get(nvim_get_hl_by_name('Normal', 1), 'background', '#000000')
+    let bg_visible = get(nvim_get_hl_by_name('TabLineSel', 1), 'background', '#000000')
+    let bg_inactive = get(nvim_get_hl_by_name('TabLine', 1), 'background', '#000000')
+
+    " For the current active buffer
+    hi default link BufferCurrent      Normal
+    " For the current active buffer when modified
+    hi default link BufferCurrentMod   Normal
+    " For the current active buffer icon
+    hi default link BufferCurrentSign  Normal
+    " For the current active buffer target when buffer-picking
+    exe 'hi default BufferCurrentTarget   guifg=red gui=bold guibg=' . bg_current
+
+    " For buffers visible but not the current one
+    hi default link BufferVisible      TabLineSel
+    hi default link BufferVisibleMod   TabLineSel
+    hi default link BufferVisibleSign  TabLineSel
+    exe 'hi default BufferVisibleTarget   guifg=red gui=bold guibg=' . bg_visible
+
+    " For buffers invisible buffers
+    hi default link BufferInactive     Comment
+    hi default link BufferInactiveMod  Comment
+    hi default link BufferInactiveSign Comment
+    exe 'hi default BufferInactiveTarget   guifg=red gui=bold guibg=' . bg_inactive
+
+    let bufferline = {}
+    let bufferline.clickable = v:true
+  endif
+
   if has_key(plugs, 'lightline.vim')
     set noshowmode
   endif
@@ -277,31 +311,55 @@ if exists('plugs')
 
   if has_key(plugs, 'lightline-bufferline')
     autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
-    nmap <Leader>1 <Plug>lightline#bufferline#go(1)
-    nmap <Leader>2 <Plug>lightline#bufferline#go(2)
-    nmap <Leader>3 <Plug>lightline#bufferline#go(3)
-    nmap <Leader>4 <Plug>lightline#bufferline#go(4)
-    nmap <Leader>5 <Plug>lightline#bufferline#go(5)
-    nmap <Leader>6 <Plug>lightline#bufferline#go(6)
-    nmap <Leader>7 <Plug>lightline#bufferline#go(7)
-    nmap <Leader>8 <Plug>lightline#bufferline#go(8)
-    nmap <Leader>9 <Plug>lightline#bufferline#go(9)
-    nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+    " nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+    " nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+    " nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+    " nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+    " nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+    " nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+    " nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+    " nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+    " nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+    " nmap <Leader>0 <Plug>lightline#bufferline#go(10)
   endif
 
   if has_key(plugs, 'coc.nvim')
-    function! s:check_back_space() abort
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~ '\s'
-    endfunction
+    let g:coc_global_extensions = [
+      \ 'coc-tsserver',
+      \ 'coc-css',
+      \ 'coc-json',
+      \ 'coc-html',
+      \ 'coc-vimlsp',
+      \ 'coc-highlight',
+      \ 'coc-emmet',
+      \ 'coc-pairs',
+      \ 'coc-snippets',
+      \ 'coc-lists',
+    \ ]
 
     inoremap <silent><expr> <TAB>
-          \ pumvisible() ? "\<C-n>" :
-          \ <SID>check_back_space() ? "\<TAB>" :
-          \ coc#refresh()
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-    autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+    function! s:check_back_space() abort
+      let col = col('.') - 1
+      return !col || getline('.')[col - 1]  =~# '\s'
+    endfunction
+
+    " Use <c-space> to trigger completion.
+    if has('nvim')
+      inoremap <silent><expr> <c-space> coc#refresh()
+    else
+      inoremap <silent><expr> <c-@> coc#refresh()
+    endif
+
+    " Make <CR> auto-select the first completion item and notify coc.nvim to
+    " format on enter, <cr> could be remapped by other vim plugin
+    let g:endwise_no_mappings = 1
+    inoremap <expr> <Plug>CustomCocCR pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+    imap <CR> <Plug>CustomCocCR<Plug>DiscretionaryEnd
 
     inoremap <silent><expr> <c-space> coc#refresh()
 
@@ -358,6 +416,8 @@ set sidescrolloff=15
 set sidescroll=1
 
 set hidden                 " nicer buffer behaviour
+set nobackup
+set nowritebackup
 set noswapfile             " no swap files
 set autoread               " auto read changes to files
 set nu                     " current line number
@@ -410,6 +470,7 @@ let g:ale_fixers = {
   \ 'ruby': ['rubocop'],
   \ }
 
+let g:ale_ruby_rubocop_executable = 'bundle'
 let g:ale_fix_on_save = 1
 
 let g:any_jump_search_prefered_engine = 'rg'
@@ -419,7 +480,7 @@ let g:rspec_command = "term bundle exec rspec {spec}"
 let g:startify_change_to_dir = 0
 
 let g:lightline = {
-  \ 'colorscheme': 'monokai_tasty',
+  \ 'colorscheme': 'sonokai',
   \ 'separator': { 'left': "\uE0BC", 'right': "\uE0BA" },
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
@@ -427,7 +488,6 @@ let g:lightline = {
   \             [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ]
   \           ],
   \ },
-  \ 'tabline': { 'left': [['buffers']], 'right': [['close']] },
   \ 'component_function': {
   \   'gitbranch': 'fugitive#head',
   \   'cocstatus': 'coc#status'
@@ -496,8 +556,6 @@ augroup vimrcEx
   autocmd FileType css,scss,sass setlocal iskeyword+=-
 
   autocmd FileType markdown setlocal formatoptions=ant textwidth=119 wrapmargin=0
-
-  autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
 augroup END
 " }}}
 
