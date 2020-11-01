@@ -33,13 +33,11 @@ Plug 'mattdonnelly/vim-hybrid'
 Plug 'mhinz/vim-startify'
 Plug 'ayu-theme/ayu-vim'
 Plug 'patstockwell/vim-monokai-tasty'
-Plug 'itchyny/lightline.vim'
+Plug 'glepnir/spaceline.vim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
-Plug 'mengelbrecht/lightline-bufferline'
 Plug 'ryanoasis/vim-devicons'
-Plug 'chuling/equinusocio-material.vim'
-Plug 'sainnhe/sonokai'
+Plug 'rakr/vim-one'
 
 " integrations
 Plug 'junegunn/vim-easy-align'
@@ -57,8 +55,7 @@ Plug 'pechorin/any-jump.nvim'
 Plug 'junegunn/fzf', { 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
-Plug 'maximbaz/lightline-ale'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'kristijanhusak/defx-icons'
 Plug 'kristijanhusak/defx-git'
@@ -86,6 +83,8 @@ call plug#end()
 " System {{{
 " ============================================================================
 
+set noshowmode
+
 set clipboard=unnamed
 
 if has("persistent_undo")
@@ -111,7 +110,7 @@ if exists('+termguicolors')
 endif
 
 try
-  colorscheme sonokai
+  colorscheme one
 catch
   colorscheme koehler
 endtry
@@ -267,37 +266,8 @@ if exists('plugs')
   endif
 
   if has_key(plugs, 'barbar.nvim')
-    let bg_current = get(nvim_get_hl_by_name('Normal', 1), 'background', '#000000')
-    let bg_visible = get(nvim_get_hl_by_name('TabLineSel', 1), 'background', '#000000')
-    let bg_inactive = get(nvim_get_hl_by_name('TabLine', 1), 'background', '#000000')
-
-    " For the current active buffer
-    hi default link BufferCurrent      Normal
-    " For the current active buffer when modified
-    hi default link BufferCurrentMod   Normal
-    " For the current active buffer icon
-    hi default link BufferCurrentSign  Normal
-    " For the current active buffer target when buffer-picking
-    exe 'hi default BufferCurrentTarget   guifg=red gui=bold guibg=' . bg_current
-
-    " For buffers visible but not the current one
-    hi default link BufferVisible      TabLineSel
-    hi default link BufferVisibleMod   TabLineSel
-    hi default link BufferVisibleSign  TabLineSel
-    exe 'hi default BufferVisibleTarget   guifg=red gui=bold guibg=' . bg_visible
-
-    " For buffers invisible buffers
-    hi default link BufferInactive     Comment
-    hi default link BufferInactiveMod  Comment
-    hi default link BufferInactiveSign Comment
-    exe 'hi default BufferInactiveTarget   guifg=red gui=bold guibg=' . bg_inactive
-
     let bufferline = {}
     let bufferline.clickable = v:true
-  endif
-
-  if has_key(plugs, 'lightline.vim')
-    set noshowmode
   endif
 
   if has_key(plugs, 'undotree')
@@ -307,20 +277,6 @@ if exists('plugs')
   if has_key(plugs, 'vim-easy-align')
     xmap ga <Plug>(EasyAlign)
     nmap ga <Plug>(EasyAlign)
-  endif
-
-  if has_key(plugs, 'lightline-bufferline')
-    autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
-    " nmap <Leader>1 <Plug>lightline#bufferline#go(1)
-    " nmap <Leader>2 <Plug>lightline#bufferline#go(2)
-    " nmap <Leader>3 <Plug>lightline#bufferline#go(3)
-    " nmap <Leader>4 <Plug>lightline#bufferline#go(4)
-    " nmap <Leader>5 <Plug>lightline#bufferline#go(5)
-    " nmap <Leader>6 <Plug>lightline#bufferline#go(6)
-    " nmap <Leader>7 <Plug>lightline#bufferline#go(7)
-    " nmap <Leader>8 <Plug>lightline#bufferline#go(8)
-    " nmap <Leader>9 <Plug>lightline#bufferline#go(9)
-    " nmap <Leader>0 <Plug>lightline#bufferline#go(10)
   endif
 
   if has_key(plugs, 'coc.nvim')
@@ -335,7 +291,7 @@ if exists('plugs')
       \ 'coc-pairs',
       \ 'coc-snippets',
       \ 'coc-lists',
-    \ ]
+      \ ]
 
     inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -478,50 +434,6 @@ let g:any_jump_search_prefered_engine = 'rg'
 let g:rspec_command = "term bundle exec rspec {spec}"
 
 let g:startify_change_to_dir = 0
-
-let g:lightline = {
-  \ 'colorscheme': 'sonokai',
-  \ 'separator': { 'left': "\uE0BC", 'right': "\uE0BA" },
-  \ 'active': {
-  \   'left': [ [ 'mode', 'paste' ],
-  \             [ 'cocstatus', 'gitbranch', 'readonly', 'filename', 'modified' ],
-  \             [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ]
-  \           ],
-  \ },
-  \ 'component_function': {
-  \   'gitbranch': 'fugitive#head',
-  \   'cocstatus': 'coc#status'
-  \ },
-  \ 'component_expand': {
-  \   'buffers': 'lightline#bufferline#buffers',
-  \   'linter_checking': 'lightline#ale#checking',
-  \   'linter_infos': 'lightline#ale#infos',
-  \   'linter_warnings': 'lightline#ale#warnings',
-  \   'linter_errors': 'lightline#ale#errors',
-  \   'linter_ok': 'lightline#ale#ok',
-  \ },
-  \ 'component_type': {
-  \   'buffers': 'tabsel',
-  \   'linter_checking': 'right',
-  \   'linter_infos': 'right',
-  \   'linter_warnings': 'warning',
-  \   'linter_errors': 'error',
-  \   'linter_ok': 'right',
-  \ },
-  \ 'ale': {
-  \    'indicator_checking': "\uf110",
-  \    'indicator_infos': "\uf129 ",
-  \    'indicator_warnings': "\uf071 ",
-  \    'indicator_errors': "\uf05e ",
-  \    'indicator_ok': "\uf00c",
-  \ }
-  \ }
-
-let g:lightline#ale#indicator_checking = "\uf110"
-let g:lightline#ale#indicator_infos = "\uf129 "
-let g:lightline#ale#indicator_warnings = "\uf071 "
-let g:lightline#ale#indicator_errors = "\uf05e "
-let g:lightline#ale#indicator_ok = "\uf00c"
 
 " }}}
 " ============================================================================
