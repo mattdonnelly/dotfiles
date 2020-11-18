@@ -265,7 +265,6 @@ if exists('plugs')
       \ 'coc-highlight',
       \ 'coc-emmet',
       \ 'coc-pairs',
-      \ 'coc-snippets',
       \ 'coc-lists',
       \ ]
 
@@ -388,8 +387,17 @@ set shiftwidth=2
 let g:python_host_prog = $HOME . '/.homebrew/bin/python2'
 let g:python3_host_prog = $HOME . '/.homebrew/bin/python3'
 
+let g:spaceline_diagnostic_tool = 'ale'
+let g:spaceline_git_branch_icon=' '
+let g:spaceline_diagnostic_oksign=''
+let g:spaceline_diagnostic_warnsign=' '
+let g:spaceline_diagnostic_errorsign='✖ '
+let g:spaceline_diff_tool='git-gutter'
+let spaceline_custom_diff_icon = ['+', '~', '-']
+
 let g:ale_sign_error = '✖'
-let g:ale_sign_warning = '⚠'
+let g:ale_sign_warning = ''
+let g:ale_disable_lsp = 1
 
 let g:ale_linters = {
   \  '*': ['remove_trailing_lines', 'trim_whitespace'],
