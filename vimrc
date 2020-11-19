@@ -31,13 +31,12 @@ endif
 Plug 'mattdonnelly/vim-noctu'
 Plug 'mattdonnelly/vim-hybrid'
 Plug 'mhinz/vim-startify'
-Plug 'ayu-theme/ayu-vim'
-Plug 'patstockwell/vim-monokai-tasty'
 Plug 'glepnir/spaceline.vim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'rakr/vim-one'
+Plug 'sainnhe/sonokai'
 
 " integrations
 Plug 'junegunn/vim-easy-align'
@@ -50,7 +49,6 @@ Plug 'tpope/vim-commentary'
 Plug 'junegunn/vim-emoji'
 Plug 'ajh17/VimCompletesMe'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-Plug 'sheerun/vim-polyglot'
 Plug 'pechorin/any-jump.nvim'
 Plug 'junegunn/fzf', { 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
@@ -60,6 +58,7 @@ Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'kristijanhusak/defx-icons'
 Plug 'kristijanhusak/defx-git'
 Plug 'tpope/vim-endwise'
+Plug 'nvim-treesitter/nvim-treesitter'
 
 " js
 Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
@@ -110,7 +109,9 @@ if exists('+termguicolors')
 endif
 
 try
-  colorscheme one
+  let g:sonokai_style = 'atlantis'
+  let g:sonokai_enable_italic = 1
+  colorscheme sonokai
 catch
   colorscheme koehler
 endtry
@@ -410,10 +411,11 @@ let g:ale_fixers = {
   \ 'ruby': ['rubocop'],
   \ }
 
-let g:ale_ruby_rubocop_executable = 'bundle'
+let g:ale_ruby_rubocop_executable = 'rubocop'
 let g:ale_fix_on_save = 1
 
 let g:any_jump_search_prefered_engine = 'rg'
+let g:any_jump_references_enabled = 0
 
 let g:rspec_command = "term bundle exec rspec {spec}"
 
