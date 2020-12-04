@@ -130,8 +130,8 @@ noremap <Right> <nop>
 
 nnoremap <leader>l :lopen<CR>
 
-nnoremap <C-n> :bprevious<CR>
-nnoremap <C-m> :bnext<CR>
+nnoremap <C-n> :BufferPrevious<CR>
+nnoremap <C-m> :BufferNext<CR>
 
 " Allows you to save files you opened without write permissions via sudo
 cmap w!! w !sudo tee %
@@ -413,6 +413,20 @@ let g:ale_fixers = {
 
 let g:ale_ruby_rubocop_executable = 'rubocop'
 let g:ale_fix_on_save = 1
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_delay = 0
+
+au VimEnter,BufEnter,ColorScheme *
+  \ exec "hi! ALEInfoLine
+    \ guifg=".(&background=='light'?'#808000':'#ffff00')."
+    \ guibg=".(&background=='light'?'#ffff00':'#555500') |
+  \ exec "hi! ALEWarningLine
+    \ guifg=".(&background=='light'?'#808000':'#ffff00')."
+    \ guibg=".(&background=='light'?'#ffff00':'#555500') |
+  \ exec "hi! ALEErrorLine
+    \ guifg=".(&background=='light'?'#ff0000':'#ff0000')."
+    \ guibg=".(&background=='light'?'#ffcccc':'#550000')
 
 let g:any_jump_search_prefered_engine = 'rg'
 let g:any_jump_references_enabled = 0
