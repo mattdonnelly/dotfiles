@@ -1,4 +1,4 @@
-" ===========================================================================
+" =============================================
 " .vimrc of Matt Donnelly
 " ============================================================================
 
@@ -54,11 +54,9 @@ Plug 'junegunn/fzf', { 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'kristijanhusak/defx-icons'
-Plug 'kristijanhusak/defx-git'
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 Plug 'tpope/vim-endwise'
-Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " js
 Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
@@ -162,84 +160,14 @@ if exists('plugs')
     command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
   endif
 
-  if has_key(plugs, 'defx.nvim')
-    nnoremap <leader>n :Defx -toggle<CR>
-    nnoremap <leader>N :Defx -toggle -search=`expand('%:p')` `getcwd()`<CR>
+  if has_key(plugs, 'chadtree')
+    nnoremap <leader>n :CHADopen<CR>
 
-    call defx#custom#option('_', {
-          \ 'columns': 'indent:git:icons:filename',
-          \ 'winwidth': 35,
-          \ 'split': 'vertical',
-          \ 'direction': 'topleft',
-          \ 'show_ignored_files': 0,
-          \ 'buffer_name': 'defxplorer',
-          \ })
-
-    augroup user_plugin_defx
-      autocmd!
-      " Delete defx if it's the only buffer left in the window
-      " autocmd WinEnter * if &filetype == 'defx' && winnr('$') == 1 | bd | endif
-
-      " Move focus to the next window if current buffer is defx
-      autocmd TabLeave * if &filetype == 'defx' | wincmd w | endif
-
-      autocmd TabClosed * call s:defx_close_tab(expand('<afile>'))
-
-      " Define defx window mappings
-      autocmd FileType defx call s:defx_mappings()
-    augroup END
-
-    function! s:defx_close_tab(tabnr)
-      " When a tab is closed, find and delete any associated defx buffers
-      for l:nr in range(1, bufnr('$'))
-        let l:defx = getbufvar(l:nr, 'defx')
-        if empty(l:defx)
-          continue
-        endif
-        let l:context = get(l:defx, 'context', {})
-        if get(l:context, 'buffer_name', '') ==# 'tab' . a:tabnr
-          silent! execute 'bdelete '.l:nr
-          break
-        endif
-      endfor
-    endfunction
-
-    function! s:defx_toggle_tree() abort
-      " Open current file, or toggle directory expand/collapse
-      if defx#is_directory()
-        return defx#do_action('open_or_close_tree')
-      endif
-      retur defx#do_action('drop')
-    endfunction
-
-    function! s:defx_mappings() abort
-      " Defx window keyboard mappings
-      setlocal signcolumn=no
-
-      nnoremap <silent><buffer><expr> <backspace> defx#async_action('cd', ['..'])
-      nnoremap <silent><buffer><expr> <CR>  defx#do_action('drop')
-      nnoremap <silent><buffer><expr> <TAB> defx#do_action('open_or_close_tree')
-      nnoremap <silent><buffer><expr> st    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
-      nnoremap <silent><buffer><expr> %     defx#do_action('open', 'botright vsplit')
-      nnoremap <silent><buffer><expr> -     defx#do_action('open', 'botright split')
-      nnoremap <silent><buffer><expr> K     defx#do_action('new_directory')
-      nnoremap <silent><buffer><expr> N     defx#do_action('new_file')
-      nnoremap <silent><buffer><expr> M     defx#do_action('new_multiple_files')
-      nnoremap <silent><buffer><expr> dd    defx#do_action('remove')
-      nnoremap <silent><buffer><expr> r     defx#do_action('rename')
-      nnoremap <silent><buffer><expr> x     defx#do_action('execute_system')
-      nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')
-      nnoremap <silent><buffer><expr> yy    defx#do_action('yank_path')
-      nnoremap <silent><buffer><expr> q     defx#do_action('quit')
-      nnoremap <silent><buffer><expr> <ESC> defx#do_action('quit')
-      nnoremap <silent><buffer><expr><nowait> \  defx#do_action('cd', getcwd())
-      nnoremap <silent><buffer><expr><nowait> &  defx#do_action('cd', getcwd())
-      nnoremap <silent><buffer><expr><nowait> c  defx#do_action('copy')
-      nnoremap <silent><buffer><expr><nowait> m  defx#do_action('move')
-      nnoremap <silent><buffer><expr><nowait> p  defx#do_action('paste')
-      nnoremap <silent><buffer><expr> '      defx#do_action('toggle_select') . 'j'
-      nnoremap <silent><buffer><expr> *      defx#do_action('toggle_select_all')
-    endfunction
+    let g:chadtree_settings = {
+          \ 'options.show_hidden': v:true,
+          \ 'view.sort_by': ["is_folder", "file_name", "ext"],
+          \ 'theme.text_colour_set': 'solarized_universal',
+          \ }
   endif
 
   if has_key(plugs, 'barbar.nvim')
@@ -290,8 +218,6 @@ if exists('plugs')
     " Make <CR> auto-select the first completion item and notify coc.nvim to
     " format on enter, <cr> could be remapped by other vim plugin
     let g:endwise_no_mappings = 1
-    inoremap <expr> <Plug>CustomCocCR pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-    imap <CR> <Plug>CustomCocCR<Plug>DiscretionaryEnd
 
     inoremap <silent><expr> <c-space> coc#refresh()
 
@@ -385,8 +311,8 @@ set shiftwidth=2
 " Plugin configuration {{{
 " ============================================================================
 
-let g:python_host_prog = $HOME . '/.homebrew/bin/python2'
-let g:python3_host_prog = $HOME . '/.homebrew/bin/python3'
+let g:python_host_prog = system('echo -n $(brew --prefix)') . '/bin/python'
+let g:python3_host_prog = system('echo -n $(brew --prefix)') . '/bin/python3'
 
 let g:spaceline_diagnostic_tool = 'ale'
 let g:spaceline_git_branch_icon=' '
@@ -466,8 +392,6 @@ augroup vimrcEx
 
   " allow stylesheets to autocomplete hyphenated words
   autocmd FileType css,scss,sass setlocal iskeyword+=-
-
-  autocmd FileType markdown setlocal formatoptions=ant textwidth=119 wrapmargin=0
 augroup END
 " }}}
 
