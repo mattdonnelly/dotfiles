@@ -37,6 +37,7 @@ Plug 'romgrk/barbar.nvim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'rakr/vim-one'
 Plug 'sainnhe/sonokai'
+Plug 'psliwka/vim-smoothie'
 
 " integrations
 Plug 'junegunn/vim-easy-align'
