@@ -31,18 +31,20 @@ endif
 Plug 'mattdonnelly/vim-noctu'
 Plug 'mattdonnelly/vim-hybrid'
 Plug 'mhinz/vim-startify'
-Plug 'glepnir/spaceline.vim'
+Plug 'glepnir/galaxyline.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'rakr/vim-one'
 Plug 'sainnhe/sonokai'
 Plug 'psliwka/vim-smoothie'
+Plug 'Yggdroot/indentLine'
 
 " integrations
 Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
-Plug 'airblade/vim-gitgutter'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
@@ -51,13 +53,18 @@ Plug 'junegunn/vim-emoji'
 Plug 'ajh17/VimCompletesMe'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'pechorin/any-jump.nvim'
-Plug 'junegunn/fzf', { 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
-Plug 'tpope/vim-endwise'
+Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'kristijanhusak/defx-icons'
+Plug 'kristijanhusak/defx-git'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'vim-test/vim-test'
+Plug 'JoosepAlviste/nvim-ts-context-commentstring', { 'branch': 'main' }
+Plug 'windwp/nvim-ts-autotag', { 'branch': 'main' }
 
 " js
 Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
@@ -67,7 +74,6 @@ Plug 'hdima/python-syntax', { 'for': 'python' }  " improved syntax highlighting
 Plug 'tmhedberg/SimpylFold', { 'for': 'python' } " better folding
 
 " ruby
-Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 Plug 'jgdavey/tslime.vim', { 'for': 'ruby' }
 
 if filereadable(glob("~/.localplugins.vim"))
@@ -88,12 +94,6 @@ set clipboard=unnamed
 if has("persistent_undo")
   set undodir=~/.vim-undo/
   set undofile
-endif
-
-if executable('rg')
-  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --smart-case --glob "!{.git,node_modules,gems}/*" 2> /dev/null'
-  set grepprg=rg\ --vimgrep
-  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 endif
 
 "}}}
@@ -136,39 +136,100 @@ nnoremap <C-m> :BufferNext<CR>
 cmap w!! w !sudo tee %
 
 if exists('plugs')
-  if has_key(plugs, 'fzf.vim')
-    nnoremap <leader>f :Files<CR>
-    nnoremap <leader>F :Files!<CR>
-    nnoremap <leader>b :Buffer<CR>
-    nnoremap <leader>h :History<CR>
-    nnoremap <leader>/ :RG<CR>
-    nnoremap <leader>? :RG!<CR>
-
-    let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
-    let $FZF_DEFAULT_OPTS='-i --multi --layout=reverse'
-
-    command! -bang -nargs=? -complete=dir Files
-      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--info=inline']}), <bang>0)
-
-    function! RipgrepFzf(query, fullscreen)
-      let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
-      let initial_command = printf(command_fmt, shellescape(a:query))
-      let reload_command = printf(command_fmt, '{q}')
-      let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-      call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-    endfunction
-
-    command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+  if has_key(plugs, 'telescope.nvim')
+    nnoremap <leader>f :Telescope find_files<CR>
+    nnoremap <leader>b :Telescope buffers<CR>
+    nnoremap <leader>/ :Telescope live_grep<CR>
   endif
 
-  if has_key(plugs, 'chadtree')
-    nnoremap <leader>n :CHADopen<CR>
+  if has_key(plugs, 'nvim-treesitter')
+    lua <<EOF
+    require'nvim-treesitter.configs'.setup {
+      highlight = {
+        enable = true
+      },
+    }
+EOF
+  endif
 
-    let g:chadtree_settings = {
-          \ 'options.show_hidden': v:true,
-          \ 'view.sort_by': ["is_folder", "file_name", "ext"],
-          \ 'theme.text_colour_set': 'solarized_universal',
-          \ }
+  if has_key(plugs, 'defx.nvim')
+    nnoremap <leader>n :Defx -toggle<CR>
+    nnoremap <leader>N :Defx -toggle -search=`expand('%:p')` `getcwd()`<CR>
+
+    call defx#custom#option('_', {
+          \ 'columns': 'indent:git:icons:filename',
+          \ 'winwidth': 35,
+          \ 'split': 'vertical',
+          \ 'direction': 'topleft',
+          \ 'show_ignored_files': 0,
+          \ 'buffer_name': 'defxplorer',
+          \ })
+
+    augroup user_plugin_defx
+      autocmd!
+      " Delete defx if it's the only buffer left in the window
+      " autocmd WinEnter * if &filetype == 'defx' && winnr('$') == 1 | bd | endif
+
+      " Move focus to the next window if current buffer is defx
+      autocmd TabLeave * if &filetype == 'defx' | wincmd w | endif
+
+      autocmd TabClosed * call s:defx_close_tab(expand('<afile>'))
+
+      " Define defx window mappings
+      autocmd FileType defx call s:defx_mappings()
+    augroup END
+
+    function! s:defx_close_tab(tabnr)
+      " When a tab is closed, find and delete any associated defx buffers
+      for l:nr in range(1, bufnr('$'))
+        let l:defx = getbufvar(l:nr, 'defx')
+        if empty(l:defx)
+          continue
+        endif
+        let l:context = get(l:defx, 'context', {})
+        if get(l:context, 'buffer_name', '') ==# 'tab' . a:tabnr
+          silent! execute 'bdelete '.l:nr
+          break
+        endif
+      endfor
+    endfunction
+
+    function! s:defx_toggle_tree() abort
+      " Open current file, or toggle directory expand/collapse
+      if defx#is_directory()
+        return defx#do_action('open_or_close_tree')
+      endif
+      retur defx#do_action('drop')
+    endfunction
+
+    function! s:defx_mappings() abort
+      " Defx window keyboard mappings
+      setlocal signcolumn=no
+
+      nnoremap <silent><buffer><expr> <backspace> defx#async_action('cd', ['..'])
+      nnoremap <silent><buffer><expr> <CR>  defx#do_action('drop')
+      nnoremap <silent><buffer><expr> <TAB> defx#do_action('open_or_close_tree')
+      nnoremap <silent><buffer><expr> st    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
+      nnoremap <silent><buffer><expr> %     defx#do_action('open', 'botright vsplit')
+      nnoremap <silent><buffer><expr> -     defx#do_action('open', 'botright split')
+      nnoremap <silent><buffer><expr> K     defx#do_action('new_directory')
+      nnoremap <silent><buffer><expr> N     defx#do_action('new_file')
+      nnoremap <silent><buffer><expr> M     defx#do_action('new_multiple_files')
+      nnoremap <silent><buffer><expr> dd    defx#do_action('remove')
+      nnoremap <silent><buffer><expr> r     defx#do_action('rename')
+      nnoremap <silent><buffer><expr> x     defx#do_action('execute_system')
+      nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')
+      nnoremap <silent><buffer><expr> yy    defx#do_action('yank_path')
+      nnoremap <silent><buffer><expr> q     defx#do_action('quit')
+      nnoremap <silent><buffer><expr> <ESC> defx#do_action('quit')
+      nnoremap <silent><buffer><expr><nowait> \  defx#do_action('cd', getcwd())
+      nnoremap <silent><buffer><expr><nowait> &  defx#do_action('cd', getcwd())
+      nnoremap <silent><buffer><expr><nowait> c  defx#do_action('copy')
+      nnoremap <silent><buffer><expr><nowait> m  defx#do_action('move')
+      nnoremap <silent><buffer><expr><nowait> p  defx#do_action('paste')
+      nnoremap <silent><buffer><expr> '      defx#do_action('toggle_select') . 'j'
+      nnoremap <silent><buffer><expr> *      defx#do_action('toggle_select_all')
+    endfunction
   endif
 
   if has_key(plugs, 'barbar.nvim')
@@ -202,7 +263,7 @@ if exists('plugs')
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
     function! s:check_back_space() abort
       let col = col('.') - 1
@@ -215,10 +276,6 @@ if exists('plugs')
     else
       inoremap <silent><expr> <c-@> coc#refresh()
     endif
-
-    " Make <CR> auto-select the first completion item and notify coc.nvim to
-    " format on enter, <cr> could be remapped by other vim plugin
-    let g:endwise_no_mappings = 1
 
     inoremap <silent><expr> <c-space> coc#refresh()
 
@@ -239,10 +296,46 @@ if exists('plugs')
     set signcolumn=auto:2
   endif
 
-  if has_key(plugs, 'vim-rspec')
-    map <Leader>t :call RunCurrentSpecFile()<CR>
-    map <Leader>s :call RunNearestSpec()<CR>
-    map <Leader>l :call RunLastSpec()<CR>
+  if has_key(plugs, 'vim-test')
+    map <Leader>t :TestFile<CR>
+    map <Leader>s :TestNearest<CR>
+    map <Leader>l :TestLast<CR>
+    let test#strategy = {
+      \ 'nearest': 'neovim',
+      \ 'file':    'neovim',
+      \ 'suite':   'basic',
+      \}
+  endif
+
+  if has_key(plugs, 'nvim-ts-autotag')
+    lua <<EOF
+      require'nvim-treesitter.configs'.setup {
+        ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+        highlight = {
+          enable = true,              -- false will disable the whole extension
+        },
+        autotag = {
+          enable = true,
+        },
+      }
+EOF
+  endif
+
+  if has_key(plugs, 'gitsigns.nvim')
+    lua <<EOF
+      require('gitsigns').setup()
+EOF
+  endif
+
+  if has_key(plugs, 'galaxyline.nvim')
+    function! ConfigStatusLine()
+      lua require('plugins.status-line')
+    endfunction
+
+    augroup status_line_init
+      autocmd!
+      autocmd VimEnter * call ConfigStatusLine()
+    augroup END
   endif
 endif
 
@@ -315,14 +408,6 @@ set shiftwidth=2
 let g:python_host_prog = system('echo -n $(brew --prefix)') . '/bin/python'
 let g:python3_host_prog = system('echo -n $(brew --prefix)') . '/bin/python3'
 
-let g:spaceline_diagnostic_tool = 'ale'
-let g:spaceline_git_branch_icon=' '
-let g:spaceline_diagnostic_oksign=''
-let g:spaceline_diagnostic_warnsign=' '
-let g:spaceline_diagnostic_errorsign='✖ '
-let g:spaceline_diff_tool='git-gutter'
-let spaceline_custom_diff_icon = ['+', '~', '-']
-
 let g:ale_sign_error = '✖'
 let g:ale_sign_warning = ''
 let g:ale_disable_lsp = 1
@@ -369,9 +454,6 @@ let g:startify_change_to_dir = 0
 
 augroup vimrcEx
   autocmd!
-
-  autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
   " when editing a file, always jump to the last known cursor position.
   " don't do it for commit messages, when the position is invalid, or when
   " inside an event handler (happens when dropping a file on gvim).

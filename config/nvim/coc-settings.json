@@ -1,0 +1,13 @@
+{
+  "diagnostic.enable": false,
+  "solargraph.completion": true,
+  "solargraph.definitions": true,
+  "solargraph.diagnostics": false,
+  "solargraph.autoformat": false,
+  "solargraph.formatting": false,
+  "solargraph.hover": true,
+  "tsserver.enableJavascript": true,
+  "typescript.suggest.autoImports": true,
+  "javascript.suggest.autoImports": true
+}
+
