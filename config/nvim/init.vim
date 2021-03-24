@@ -9,23 +9,13 @@ filetype plugin indent on
 " Plugins {{{
 " ============================================================================
 
-if has("nvim")
-  if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
-      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  endif
-
-  call plug#begin('~/.local/share/nvim/plugged')
-else
-  if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  endif
-
-  call plug#begin('~/.vim/plugged')
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
+
+call plug#begin('~/.local/share/nvim/plugged')
 
 " appearence plugins
 Plug 'mattdonnelly/vim-noctu'
@@ -143,13 +133,7 @@ if exists('plugs')
   endif
 
   if has_key(plugs, 'nvim-treesitter')
-    lua <<EOF
-    require'nvim-treesitter.configs'.setup {
-      highlight = {
-        enable = true
-      },
-    }
-EOF
+    lua require('plugins.treesitter')
   endif
 
   if has_key(plugs, 'defx.nvim')
@@ -308,28 +292,16 @@ EOF
   endif
 
   if has_key(plugs, 'nvim-ts-autotag')
-    lua <<EOF
-      require'nvim-treesitter.configs'.setup {
-        ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-        highlight = {
-          enable = true,              -- false will disable the whole extension
-        },
-        autotag = {
-          enable = true,
-        },
-      }
-EOF
+    lua require('nvim-ts-autotag').setup()
   endif
 
   if has_key(plugs, 'gitsigns.nvim')
-    lua <<EOF
-      require('gitsigns').setup()
-EOF
+    lua require('gitsigns').setup()
   endif
 
   if has_key(plugs, 'galaxyline.nvim')
     function! ConfigStatusLine()
-      lua require('plugins.status-line')
+      lua require('plugins.galaxyline')
     endfunction
 
     augroup status_line_init
