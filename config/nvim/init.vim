@@ -21,7 +21,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'mattdonnelly/vim-noctu'
 Plug 'mattdonnelly/vim-hybrid'
 Plug 'mhinz/vim-startify'
-Plug 'glepnir/galaxyline.nvim'
+Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
 Plug 'ryanoasis/vim-devicons'
@@ -34,7 +34,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'lewis6991/gitsigns.nvim'
+Plug 'lewis6991/gitsigns.nvim', { 'branch': 'main' }
 Plug 'tpope/vim-fugitive'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
