@@ -277,9 +277,11 @@ let g:ale_linters = {
   \  '*': ['remove_trailing_lines', 'trim_whitespace'],
   \ 'javascript': ['prettier', 'eslint'],
   \ 'ruby': ['rubocop'],
+  \ 'vim': ['vimlsp'],
   \ }
 
 let g:ale_fixers = {
+  \  '*': ['remove_trailing_lines', 'trim_whitespace'],
   \ 'javascript': ['prettier', 'eslint'],
   \ 'ruby': ['rubocop'],
   \ }
