@@ -47,6 +47,7 @@ Plug 'vim-test/vim-test'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring', { 'branch': 'main' }
 Plug 'windwp/nvim-autopairs'
 Plug 'windwp/nvim-ts-autotag', { 'branch': 'main' }
+Plug 'lukas-reineke/indent-blankline.nvim', { 'branch': 'lua' }
 
 if filereadable(glob("~/.localplugins.vim"))
   source ~/.localplugins.vim
@@ -118,6 +119,10 @@ if exists('plugs')
   if has_key(plugs, 'nvim-autopairs')
     lua require('plugins.nvim-autopairs')
   end
+
+  if has_key(plugs, 'indent-blankline.nvim')
+    lua require('plugins.indent-blankline')
+  endif
 
   if has_key(plugs, 'barbar.nvim')
     let bufferline = {}
