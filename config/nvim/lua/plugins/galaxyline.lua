@@ -42,15 +42,6 @@ local checkwidth = function()
 end
 
 gls.left[1] = {
-    FirstElement = {
-        provider = function()
-            vim.api.nvim_command('hi GalaxyFirstElement guibg='..mode_color())
-            return " "
-        end,
-    }
-}
-
-gls.left[2] = {
     ViMode = {
         provider = function()
           local alias = {
@@ -62,8 +53,12 @@ gls.left[2] = {
             v = 'VISUAL',
             R = 'REPLACE',
           }
-          vim.api.nvim_command('hi GalaxyViMode guibg='..mode_color())
-          return "  " ..alias[vim.fn.mode()]..' '
+          local color = mode_color()
+          if color ~= nil then
+            vim.api.nvim_command('hi GalaxyViMode guibg='..color)
+            return "   " ..alias[vim.fn.mode()]..' '
+          end
+          return "   "
         end,
         highlight = {colors.bg, colors.nord},
         separator = " ",
@@ -71,7 +66,7 @@ gls.left[2] = {
     }
 }
 
-gls.left[3] = {
+gls.left[2] = {
     FileIcon = {
         provider = "FileIcon",
         condition = buffer_not_empty,
@@ -79,7 +74,7 @@ gls.left[3] = {
     }
 }
 
-gls.left[4] = {
+gls.left[3] = {
     FileName = {
         provider = {"FileName", "FileSize"},
         condition = buffer_not_empty,
@@ -87,7 +82,7 @@ gls.left[4] = {
     }
 }
 
-gls.left[5] = {
+gls.left[4] = {
     FileInfoEnd = {
         provider = function()
             return ""
@@ -98,7 +93,7 @@ gls.left[5] = {
     }
 }
 
-gls.left[11] = {
+gls.left[5] = {
     LeftEnd = {
         provider = function()
             return " "
@@ -109,7 +104,7 @@ gls.left[11] = {
     }
 }
 
-gls.left[12] = {
+gls.left[6] = {
     DiagnosticError = {
         provider = "DiagnosticError",
         icon = "  ",
@@ -117,7 +112,7 @@ gls.left[12] = {
     }
 }
 
-gls.left[13] = {
+gls.left[7] = {
     Space = {
         provider = function()
             return " "
@@ -126,7 +121,7 @@ gls.left[13] = {
     }
 }
 
-gls.left[14] = {
+gls.left[8] = {
     DiagnosticWarn = {
         provider = "DiagnosticWarn",
         icon = "  ",
