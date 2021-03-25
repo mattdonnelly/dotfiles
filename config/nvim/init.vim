@@ -141,7 +141,6 @@ if exists('plugs')
       \ 'coc-html',
       \ 'coc-vimlsp',
       \ 'coc-highlight',
-      \ 'coc-emmet',
       \ 'coc-lists',
       \ ]
 
