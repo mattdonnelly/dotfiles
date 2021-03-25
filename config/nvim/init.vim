@@ -24,22 +24,16 @@ Plug 'mhinz/vim-startify'
 Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
-Plug 'ryanoasis/vim-devicons'
 Plug 'rakr/vim-one'
 Plug 'sainnhe/sonokai'
 Plug 'psliwka/vim-smoothie'
 
 " integrations
-Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim', { 'branch': 'main' }
-Plug 'tpope/vim-fugitive'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'junegunn/vim-emoji'
-Plug 'ajh17/VimCompletesMe'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'pechorin/any-jump.nvim'
 Plug 'nvim-lua/popup.nvim'
@@ -47,23 +41,12 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'kristijanhusak/defx-icons'
-Plug 'kristijanhusak/defx-git'
+Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'vim-test/vim-test'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring', { 'branch': 'main' }
+Plug 'windwp/nvim-autopairs'
 Plug 'windwp/nvim-ts-autotag', { 'branch': 'main' }
-
-" js
-Plug 'othree/yajs.vim', { 'for': 'javascript' } " enhanced js syntax highlighting
-
-" python
-Plug 'hdima/python-syntax', { 'for': 'python' }  " improved syntax highlighting
-Plug 'tmhedberg/SimpylFold', { 'for': 'python' } " better folding
-
-" ruby
-Plug 'jgdavey/tslime.vim', { 'for': 'ruby' }
 
 if filereadable(glob("~/.localplugins.vim"))
   source ~/.localplugins.vim
@@ -116,104 +99,25 @@ noremap <Down> <nop>
 noremap <Left> <nop>
 noremap <Right> <nop>
 
-nnoremap <leader>l :lopen<CR>
-
 nnoremap <C-n> :BufferPrevious<CR>
 nnoremap <C-m> :BufferNext<CR>
 
-" Allows you to save files you opened without write permissions via sudo
-cmap w!! w !sudo tee %
-
 if exists('plugs')
   if has_key(plugs, 'telescope.nvim')
-    nnoremap <leader>f :Telescope find_files<CR>
-    nnoremap <leader>b :Telescope buffers<CR>
-    nnoremap <leader>/ :Telescope live_grep<CR>
+    lua require('plugins.telescope')
   endif
 
   if has_key(plugs, 'nvim-treesitter')
-    lua require('plugins.treesitter')
+    lua require('plugins.nvim-treesitter')
   endif
 
-  if has_key(plugs, 'defx.nvim')
-    nnoremap <leader>n :Defx -toggle<CR>
-    nnoremap <leader>N :Defx -toggle -search=`expand('%:p')` `getcwd()`<CR>
-
-    call defx#custom#option('_', {
-          \ 'columns': 'indent:git:icons:filename',
-          \ 'winwidth': 35,
-          \ 'split': 'vertical',
-          \ 'direction': 'topleft',
-          \ 'show_ignored_files': 0,
-          \ 'buffer_name': 'defxplorer',
-          \ })
-
-    augroup user_plugin_defx
-      autocmd!
-      " Delete defx if it's the only buffer left in the window
-      " autocmd WinEnter * if &filetype == 'defx' && winnr('$') == 1 | bd | endif
-
-      " Move focus to the next window if current buffer is defx
-      autocmd TabLeave * if &filetype == 'defx' | wincmd w | endif
-
-      autocmd TabClosed * call s:defx_close_tab(expand('<afile>'))
-
-      " Define defx window mappings
-      autocmd FileType defx call s:defx_mappings()
-    augroup END
-
-    function! s:defx_close_tab(tabnr)
-      " When a tab is closed, find and delete any associated defx buffers
-      for l:nr in range(1, bufnr('$'))
-        let l:defx = getbufvar(l:nr, 'defx')
-        if empty(l:defx)
-          continue
-        endif
-        let l:context = get(l:defx, 'context', {})
-        if get(l:context, 'buffer_name', '') ==# 'tab' . a:tabnr
-          silent! execute 'bdelete '.l:nr
-          break
-        endif
-      endfor
-    endfunction
-
-    function! s:defx_toggle_tree() abort
-      " Open current file, or toggle directory expand/collapse
-      if defx#is_directory()
-        return defx#do_action('open_or_close_tree')
-      endif
-      retur defx#do_action('drop')
-    endfunction
-
-    function! s:defx_mappings() abort
-      " Defx window keyboard mappings
-      setlocal signcolumn=no
-
-      nnoremap <silent><buffer><expr> <backspace> defx#async_action('cd', ['..'])
-      nnoremap <silent><buffer><expr> <CR>  defx#do_action('drop')
-      nnoremap <silent><buffer><expr> <TAB> defx#do_action('open_or_close_tree')
-      nnoremap <silent><buffer><expr> st    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
-      nnoremap <silent><buffer><expr> %     defx#do_action('open', 'botright vsplit')
-      nnoremap <silent><buffer><expr> -     defx#do_action('open', 'botright split')
-      nnoremap <silent><buffer><expr> K     defx#do_action('new_directory')
-      nnoremap <silent><buffer><expr> N     defx#do_action('new_file')
-      nnoremap <silent><buffer><expr> M     defx#do_action('new_multiple_files')
-      nnoremap <silent><buffer><expr> dd    defx#do_action('remove')
-      nnoremap <silent><buffer><expr> r     defx#do_action('rename')
-      nnoremap <silent><buffer><expr> x     defx#do_action('execute_system')
-      nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')
-      nnoremap <silent><buffer><expr> yy    defx#do_action('yank_path')
-      nnoremap <silent><buffer><expr> q     defx#do_action('quit')
-      nnoremap <silent><buffer><expr> <ESC> defx#do_action('quit')
-      nnoremap <silent><buffer><expr><nowait> \  defx#do_action('cd', getcwd())
-      nnoremap <silent><buffer><expr><nowait> &  defx#do_action('cd', getcwd())
-      nnoremap <silent><buffer><expr><nowait> c  defx#do_action('copy')
-      nnoremap <silent><buffer><expr><nowait> m  defx#do_action('move')
-      nnoremap <silent><buffer><expr><nowait> p  defx#do_action('paste')
-      nnoremap <silent><buffer><expr> '      defx#do_action('toggle_select') . 'j'
-      nnoremap <silent><buffer><expr> *      defx#do_action('toggle_select_all')
-    endfunction
+  if has_key(plugs, 'nvim-tree.lua')
+    lua require('plugins.nvim-tree')
   endif
+
+  if has_key(plugs, 'nvim-autopairs')
+    lua require('plugins.nvim-autopairs')
+  end
 
   if has_key(plugs, 'barbar.nvim')
     let bufferline = {}
@@ -222,11 +126,6 @@ if exists('plugs')
 
   if has_key(plugs, 'undotree')
     nnoremap <leader>u :UndotreeToggle<CR>
-  endif
-
-  if has_key(plugs, 'vim-easy-align')
-    xmap ga <Plug>(EasyAlign)
-    nmap ga <Plug>(EasyAlign)
   endif
 
   if has_key(plugs, 'coc.nvim')
@@ -238,7 +137,6 @@ if exists('plugs')
       \ 'coc-vimlsp',
       \ 'coc-highlight',
       \ 'coc-emmet',
-      \ 'coc-pairs',
       \ 'coc-lists',
       \ ]
 
@@ -254,12 +152,6 @@ if exists('plugs')
     endfunction
 
     " Use <c-space> to trigger completion.
-    if has('nvim')
-      inoremap <silent><expr> <c-space> coc#refresh()
-    else
-      inoremap <silent><expr> <c-@> coc#refresh()
-    endif
-
     inoremap <silent><expr> <c-space> coc#refresh()
 
     nmap <silent> gd <Plug>(coc-definition)
@@ -299,14 +191,7 @@ if exists('plugs')
   endif
 
   if has_key(plugs, 'galaxyline.nvim')
-    function! ConfigStatusLine()
-      lua require('plugins.galaxyline')
-    endfunction
-
-    augroup status_line_init
-      autocmd!
-      autocmd VimEnter * call ConfigStatusLine()
-    augroup END
+    lua require('plugins.galaxyline')
   endif
 endif
 
@@ -336,7 +221,7 @@ set updatetime=300
 " and 8 lines from the bottom and 15 lines on the left
 set scrolloff=8
 set sidescrolloff=15
-set sidescroll=1
+set sidescroll=8
 
 set hidden                 " nicer buffer behaviour
 set nobackup
@@ -414,10 +299,6 @@ au VimEnter,BufEnter,ColorScheme *
 let g:any_jump_search_prefered_engine = 'rg'
 let g:any_jump_references_enabled = 0
 
-let g:rspec_command = "term bundle exec rspec {spec}"
-
-let g:startify_change_to_dir = 0
-
 " }}}
 " ============================================================================
 " Autocmd {{{
@@ -435,14 +316,6 @@ augroup vimrcEx
 
   " set syntax hilighting
   autocmd BufRead,BufNewFile *.md set filetype=markdown
-
-  autocmd FileType python highlight Excess ctermbg=Red
-  autocmd FileType python match Excess /\%120v.*/
-  autocmd FileType python,actionscript setlocal
-    \ expandtab
-    \ tabstop=4
-    \ softtabstop=4
-    \ shiftwidth=4
 
   " allow stylesheets to autocomplete hyphenated words
   autocmd FileType css,scss,sass setlocal iskeyword+=-
