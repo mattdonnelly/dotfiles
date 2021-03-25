@@ -28,7 +28,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'rakr/vim-one'
 Plug 'sainnhe/sonokai'
 Plug 'psliwka/vim-smoothie'
-Plug 'Yggdroot/indentLine'
 
 " integrations
 Plug 'junegunn/vim-easy-align'
