@@ -4,28 +4,26 @@ gl.short_line_list = {'defx', 'packager', 'vista', 'NvimTree', 'coc-explorer'}
 
 local colors = {
     bg = "#282c34",
-    line_bg = "#282c34",
-    fg = "#D8DEE9",
-    fg_green = "#65a380",
-    yellow = "#A3BE8C",
+    fg = "#e1e3e4",
+    yellow = "#eacb64",
     cyan = "#22262C",
     darkblue = "#61afef",
-    green = "#BBE67E",
-    orange = "#FF8800",
-    purple = "#252930",
+    green = "#a5e179",
+    orange = "#f69c5e",
+    purple = "#ba9cf3",
     magenta = "#c678dd",
-    blue = "#22262C",
-    red = "#DF8890",
-    lightbg = "#3C4048",
+    blue = "#72cce8",
+    red = "#ff6d7e",
+    lightbg = "#424b5b",
     nord = "#81A1C1",
-    greenYel = "#EBCB8B"
+    paleYellow = "#EBCB8B"
 }
 
 local mode_color = function()
   local mode_colors = {
     n = colors.nord,
     i = colors.green,
-    c = colors.greenYel,
+    c = colors.paleYellow,
     V = colors.magenta,
     [''] = colors.magenta,
     v = colors.magenta,
@@ -95,8 +93,8 @@ gls.left[5] = {
             return ""
         end,
         separator = " ",
-        separator_highlight = {colors.line_bg, colors.line_bg},
-        highlight = {colors.line_bg, colors.line_bg}
+        separator_highlight = {colors.bg, colors.bg},
+        highlight = {colors.bg, colors.bg}
     }
 }
 
@@ -106,8 +104,8 @@ gls.left[11] = {
             return " "
         end,
         separator = " ",
-        separator_highlight = {colors.line_bg, colors.line_bg},
-        highlight = {colors.line_bg, colors.line_bg}
+        separator_highlight = {colors.bg, colors.bg},
+        highlight = {colors.bg, colors.bg}
     }
 }
 
@@ -124,7 +122,7 @@ gls.left[13] = {
         provider = function()
             return " "
         end,
-        highlight = {colors.line_bg, colors.line_bg}
+        highlight = {colors.bg, colors.bg}
     }
 }
 
@@ -141,7 +139,7 @@ gls.right[1] = {
         provider = "DiffAdd",
         condition = checkwidth,
         icon = "   ",
-        highlight = {colors.green, colors.line_bg}
+        highlight = {colors.green, colors.bg}
     }
 }
 
@@ -149,7 +147,7 @@ gls.right[2] = {
     DiffModified = {
         provider = "DiffModified",
         icon = " ",
-        highlight = {colors.orange, colors.line_bg}
+        highlight = {colors.orange, colors.bg}
     }
 }
 
@@ -158,7 +156,7 @@ gls.right[3] = {
         provider = "DiffRemove",
         condition = checkwidth,
         icon = " ",
-        highlight = {colors.red, colors.line_bg}
+        highlight = {colors.red, colors.bg}
     }
 }
 
@@ -168,7 +166,7 @@ gls.right[4] = {
             return "   "
         end,
         condition = require("galaxyline.provider_vcs").check_git_workspace,
-        highlight = {colors.greenYel, colors.line_bg}
+        highlight = {colors.paleYellow, colors.bg}
     }
 }
 
@@ -176,22 +174,31 @@ gls.right[5] = {
     GitBranch = {
         provider = "GitBranch",
         condition = require("galaxyline.provider_vcs").check_git_workspace,
-        highlight = {colors.greenYel, colors.line_bg}
+        highlight = {colors.paleYellow, colors.bg}
     }
 }
 
 gls.right[6] = {
+    ScrollBarSpace = {
+        provider = function()
+            return " "
+        end,
+        highlight = {colors.bg, colors.bg}
+    }
+}
+
+gls.right[7] = {
   ScrollBar = {
     provider = 'ScrollBar',
     highlight = {colors.darkblue, colors.bg},
   }
 }
 
-gls.right[7] = {
+gls.right[8] = {
     PerCent = {
         provider = "LinePercent",
         separator = " ",
-        separator_highlight = {colors.red, colors.line_bg},
+        separator_highlight = {colors.red, colors.bg},
         highlight = {colors.bg, colors.fg}
     }
 }
