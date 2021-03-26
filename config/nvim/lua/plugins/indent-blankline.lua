@@ -1,5 +1,6 @@
 vim.g.indent_blankline_filetype_exclude = {
     'startify',
+    'dashboard',
     'markdown',
     'pandoc',
     'vimwiki',

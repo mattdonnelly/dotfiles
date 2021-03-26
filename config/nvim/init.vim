@@ -18,13 +18,10 @@ endif
 call plug#begin('~/.local/share/nvim/plugged')
 
 " appearence plugins
-Plug 'mattdonnelly/vim-noctu'
-Plug 'mattdonnelly/vim-hybrid'
-Plug 'mhinz/vim-startify'
+Plug 'glepnir/dashboard-nvim'
 Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
-Plug 'rakr/vim-one'
 Plug 'sainnhe/sonokai'
 Plug 'psliwka/vim-smoothie'
 
@@ -264,6 +261,28 @@ set shiftwidth=2
 " ============================================================================
 " Plugin configuration {{{
 " ============================================================================
+
+let g:dashboard_default_executive = 'telescope'
+let g:dashboard_custom_section = {
+  \ '1': {
+      \ 'description': ['  History                                        SPC h'],
+      \ 'command': ':Telescope oldfiles' },
+  \ '2': {
+      \ 'description': ['  File file                                      SPC f'],
+      \ 'command': ':Telescope find_files' },
+  \ '3': {
+      \ 'description': ['  Search text                                    SPC /'],
+      \ 'command': ':Telescope live_grep' },
+  \ '4': {
+      \ 'description': ['  Empty buffer                                 SPC b e'],
+      \ 'command': ':enew' },
+  \ '5': {
+      \ 'description': ['  Quit                                           SPC q'],
+      \ 'command': ':q' },
+  \ }
+if filereadable(expand('~/.config/nvim/dashboard-header.txt'))
+  let g:dashboard_custom_header = readfile(expand('~/.config/nvim/dashboard-header.txt'))
+endif
 
 let g:python_host_prog = system('echo -n $(brew --prefix)') . '/bin/python'
 let g:python3_host_prog = system('echo -n $(brew --prefix)') . '/bin/python3'
