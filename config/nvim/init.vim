@@ -101,35 +101,6 @@ nnoremap <C-n> :BufferPrevious<CR>
 nnoremap <C-m> :BufferNext<CR>
 
 if exists('plugs')
-  if has_key(plugs, 'telescope.nvim')
-    lua require('plugins.telescope')
-  endif
-
-  if has_key(plugs, 'nvim-treesitter')
-    lua require('plugins.nvim-treesitter')
-  endif
-
-  if has_key(plugs, 'nvim-tree.lua')
-    lua require('plugins.nvim-tree')
-  endif
-
-  if has_key(plugs, 'nvim-autopairs')
-    lua require('plugins.nvim-autopairs')
-  end
-
-  if has_key(plugs, 'indent-blankline.nvim')
-    lua require('plugins.indent-blankline')
-  endif
-
-  if has_key(plugs, 'barbar.nvim')
-    let bufferline = {}
-    let bufferline.clickable = v:true
-  endif
-
-  if has_key(plugs, 'undotree')
-    nnoremap <leader>u :UndotreeToggle<CR>
-  endif
-
   if has_key(plugs, 'coc.nvim')
     let g:coc_global_extensions = [
       \ 'coc-tsserver',
@@ -183,16 +154,49 @@ if exists('plugs')
       \}
   endif
 
-  if has_key(plugs, 'nvim-ts-autotag')
-    lua require('nvim-ts-autotag').setup()
+  if has_key(plugs, 'undotree')
+    nnoremap <leader>u :UndotreeToggle<CR>
+  endif
+
+  if has_key(plugs, 'barbar.nvim')
+    let bufferline = {}
+    let bufferline.clickable = v:true
   endif
 
   if has_key(plugs, 'gitsigns.nvim')
     lua require('gitsigns').setup()
   endif
 
+  if has_key(plugs, 'telescope.nvim')
+    lua require('plugins.telescope')
+  endif
+
+  if has_key(plugs, 'nvim-treesitter')
+    lua require('plugins.nvim-treesitter')
+  endif
+
+  if has_key(plugs, 'nvim-tree.lua')
+    lua require('plugins.nvim-tree')
+  endif
+
+  if has_key(plugs, 'nvim-autopairs')
+    lua require('plugins.nvim-autopairs')
+  end
+
+  if has_key(plugs, 'indent-blankline.nvim')
+    lua require('plugins.indent-blankline')
+  endif
+
+  if has_key(plugs, 'nvim-ts-autotag')
+    lua require('nvim-ts-autotag').setup()
+  endif
+
   if has_key(plugs, 'galaxyline.nvim')
     lua require('plugins.galaxyline')
+  endif
+
+  if has_key(plugs, 'nvim-web-devicons')
+    lua require('plugins.nvim-web-devicons')
   endif
 endif
 
