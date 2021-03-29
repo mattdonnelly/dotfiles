@@ -33,9 +33,9 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'pechorin/any-jump.nvim'
-Plug 'nvim-lua/popup.nvim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'kyazdani42/nvim-tree.lua'
@@ -101,6 +101,36 @@ nnoremap <C-n> :BufferPrevious<CR>
 nnoremap <C-m> :BufferNext<CR>
 
 if exists('plugs')
+  if has_key(plugs, 'fzf.vim')
+    if executable('rg')
+      nnoremap <leader>f :Files<CR>
+      nnoremap <leader>F :Files!<CR>
+      nnoremap <leader>b :Buffer<CR>
+      nnoremap <leader>h :History<CR>
+      nnoremap <leader>/ :RG<CR>
+      nnoremap <leader>? :RG!<CR>
+
+      let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --smart-case --glob "!{.git,node_modules,gems}/*" 2> /dev/null'
+      set grepprg=rg\ --vimgrep
+      command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+
+      let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
+      let $FZF_DEFAULT_OPTS='-i --multi --layout=reverse'
+
+      command! -bang -nargs=? -complete=dir Files
+            \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--info=inline']}), <bang>0)
+
+      function! RipgrepFzf(query, fullscreen)
+        let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+        let initial_command = printf(command_fmt, shellescape(a:query))
+        let reload_command = printf(command_fmt, '{q}')
+        let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+        call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+      endfunction
+
+      command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+    endif
+  endif
   if has_key(plugs, 'coc.nvim')
     let g:coc_global_extensions = [
       \ 'coc-tsserver',
@@ -165,10 +195,6 @@ if exists('plugs')
 
   if has_key(plugs, 'gitsigns.nvim')
     lua require('gitsigns').setup()
-  endif
-
-  if has_key(plugs, 'telescope.nvim')
-    lua require('plugins.telescope')
   endif
 
   if has_key(plugs, 'nvim-treesitter')
