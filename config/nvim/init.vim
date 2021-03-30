@@ -33,7 +33,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'pechorin/any-jump.nvim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'dense-analysis/ale'
@@ -189,7 +189,7 @@ if exists('plugs')
   endif
 
   if has_key(plugs, 'barbar.nvim')
-    let bufferline = {}
+    let bufferline = get(g:, 'bufferline', {})
     let bufferline.clickable = v:true
   endif
 
