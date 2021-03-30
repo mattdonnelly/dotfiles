@@ -46,8 +46,8 @@ Plug 'windwp/nvim-autopairs'
 Plug 'windwp/nvim-ts-autotag', { 'branch': 'main' }
 Plug 'lukas-reineke/indent-blankline.nvim', { 'branch': 'lua' }
 
-if filereadable(glob("~/.localplugins.vim"))
-  source ~/.localplugins.vim
+if filereadable(glob("~/.config/plugins.local.vim"))
+  source ~/.config/plugins.local.vim
 endif
 
 call plug#end()
@@ -377,8 +377,8 @@ augroup vimrcEx
 augroup END
 " }}}
 
-if filereadable(glob("~/.vimrc.local"))
-  source ~/.vimrc.local
+if filereadable(glob("~/.config/init.local.vim"))
+  source ~/.config/init.local.vim
 endif
 
 " ============================================================================
