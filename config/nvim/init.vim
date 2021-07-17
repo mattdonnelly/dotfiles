@@ -26,13 +26,13 @@ Plug 'sainnhe/sonokai'
 Plug 'psliwka/vim-smoothie'
 
 " integrations
-Plug 'easymotion/vim-easymotion'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim', { 'branch': 'main' }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'ggandor/lightspeed.nvim'
+Plug 'pechorin/any-jump.nvim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'nvim-lua/plenary.nvim'
@@ -367,6 +367,9 @@ au VimEnter,BufEnter,ColorScheme *
   \ exec "hi! ALEErrorLine
     \ guifg=".(&background=='light'?'#ff0000':'#ff0000')."
     \ guibg=".(&background=='light'?'#ffcccc':'#550000')
+
+let g:any_jump_search_prefered_engine = 'rg'
+let g:any_jump_references_enabled = 0
 
 " }}}
 " ============================================================================
