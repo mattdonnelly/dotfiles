@@ -7,23 +7,23 @@ local colors = {
     fg = "#e1e3e4",
     yellow = "#eacb64",
     cyan = "#22262C",
-    darkblue = "#61afef",
+    dark_blue = "#61afef",
     green = "#a5e179",
     orange = "#f69c5e",
     purple = "#ba9cf3",
     magenta = "#c678dd",
     blue = "#72cce8",
     red = "#ff6d7e",
-    lightbg = "#424b5b",
-    nord = "#81A1C1",
-    paleYellow = "#EBCB8B"
+    light_bg = "#424b5b",
+    nord_blue = "#81A1C1",
+    pale_yellow = "#EBCB8B"
 }
 
 local mode_color = function()
   local mode_colors = {
-    n = colors.nord,
+    n = colors.nord_blue,
     i = colors.green,
-    c = colors.paleYellow,
+    c = colors.pale_yellow,
     V = colors.magenta,
     [''] = colors.magenta,
     v = colors.magenta,
@@ -60,9 +60,9 @@ gls.left[1] = {
           end
           return "   "
         end,
-        highlight = {colors.bg, colors.nord},
+        highlight = {colors.bg, colors.nord_blue},
         separator = " ",
-        separator_highlight = {colors.lightbg, colors.lightbg}
+        separator_highlight = {colors.light_bg, colors.light_bg}
     }
 }
 
@@ -70,7 +70,7 @@ gls.left[2] = {
     FileIcon = {
         provider = "FileIcon",
         condition = buffer_not_empty,
-        highlight = {require("galaxyline.provider_fileinfo").get_file_icon_color, colors.lightbg}
+        highlight = {require("galaxyline.provider_fileinfo").get_file_icon_color, colors.light_bg}
     }
 }
 
@@ -78,7 +78,7 @@ gls.left[3] = {
     FileName = {
         provider = {"FileName", "FileSize"},
         condition = buffer_not_empty,
-        highlight = {colors.fg, colors.lightbg}
+        highlight = {colors.fg, colors.light_bg}
     }
 }
 
@@ -161,7 +161,7 @@ gls.right[4] = {
             return "   "
         end,
         condition = require("galaxyline.provider_vcs").check_git_workspace,
-        highlight = {colors.paleYellow, colors.bg}
+        highlight = {colors.pale_yellow, colors.bg}
     }
 }
 
@@ -169,7 +169,7 @@ gls.right[5] = {
     GitBranch = {
         provider = "GitBranch",
         condition = require("galaxyline.provider_vcs").check_git_workspace,
-        highlight = {colors.paleYellow, colors.bg}
+        highlight = {colors.pale_yellow, colors.bg}
     }
 }
 
@@ -185,7 +185,7 @@ gls.right[6] = {
 gls.right[7] = {
   ScrollBar = {
     provider = 'ScrollBar',
-    highlight = {colors.darkblue, colors.bg},
+    highlight = {colors.dark_blue, colors.bg},
   }
 }
 
@@ -197,4 +197,3 @@ gls.right[8] = {
         highlight = {colors.bg, colors.fg}
     }
 }
-

@@ -32,7 +32,7 @@ Plug 'lewis6991/gitsigns.nvim', { 'branch': 'main' }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-Plug 'pechorin/any-jump.nvim'
+Plug 'ggandor/lightspeed.nvim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'nvim-lua/plenary.nvim'
@@ -44,7 +44,7 @@ Plug 'vim-test/vim-test'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring', { 'branch': 'main' }
 Plug 'windwp/nvim-autopairs'
 Plug 'windwp/nvim-ts-autotag', { 'branch': 'main' }
-Plug 'lukas-reineke/indent-blankline.nvim', { 'branch': 'lua' }
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 if filereadable(glob("~/.config/plugins.local.vim"))
   source ~/.config/plugins.local.vim
@@ -224,6 +224,10 @@ if exists('plugs')
   if has_key(plugs, 'nvim-web-devicons')
     lua require('plugins.nvim-web-devicons')
   endif
+
+  if has_key(plugs, 'lightspeed.nvim')
+    lua require('plugins.lightspeed')
+  endif
 endif
 
 " }}}
@@ -363,9 +367,6 @@ au VimEnter,BufEnter,ColorScheme *
   \ exec "hi! ALEErrorLine
     \ guifg=".(&background=='light'?'#ff0000':'#ff0000')."
     \ guibg=".(&background=='light'?'#ffcccc':'#550000')
-
-let g:any_jump_search_prefered_engine = 'rg'
-let g:any_jump_references_enabled = 0
 
 " }}}
 " ============================================================================
