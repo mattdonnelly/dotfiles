@@ -22,8 +22,8 @@ Plug 'glepnir/dashboard-nvim'
 Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
-Plug 'sainnhe/sonokai'
 Plug 'psliwka/vim-smoothie'
+Plug 'folke/tokyonight.nvim'
 
 " integrations
 Plug 'nvim-lua/plenary.nvim'
@@ -78,9 +78,9 @@ if exists('+termguicolors')
 endif
 
 try
-  let g:sonokai_style = 'atlantis'
-  let g:sonokai_enable_italic = 1
-  colorscheme sonokai
+  let g:tokyonight_style = "night"
+  let g:tokyonight_italic_functions = 1
+  colorscheme tokyonight
 catch
   colorscheme koehler
 endtry
@@ -114,8 +114,23 @@ if exists('plugs')
       set grepprg=rg\ --vimgrep
       command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 
-      let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
       let $FZF_DEFAULT_OPTS='-i --multi --layout=reverse'
+      let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
+      let g:fzf_colors =
+      \ { 'fg':         ['fg', 'Normal'],
+        \ 'bg':         ['bg', 'Normal'],
+        \ 'preview-bg': ['bg', 'NormalFloat'],
+        \ 'hl':         ['fg', 'Comment'],
+        \ 'fg+':        ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+        \ 'bg+':        ['bg', 'CursorLine', 'CursorColumn'],
+        \ 'hl+':        ['fg', 'Statement'],
+        \ 'info':       ['fg', 'PreProc'],
+        \ 'border':     ['fg', 'Ignore'],
+        \ 'prompt':     ['fg', 'Conditional'],
+        \ 'pointer':    ['fg', 'Exception'],
+        \ 'marker':     ['fg', 'Keyword'],
+        \ 'spinner':    ['fg', 'Label'],
+        \ 'header':     ['fg', 'Comment'] }
 
       command! -bang -nargs=? -complete=dir Files
             \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--info=inline']}), <bang>0)

@@ -1,29 +1,29 @@
 local gl = require("galaxyline")
+local tokyonight_colors = require("tokyonight.colors").setup({})
 local gls = gl.section
 gl.short_line_list = {'defx', 'packager', 'vista', 'NvimTree', 'coc-explorer'}
 
 local colors = {
-    bg = "#282c34",
-    fg = "#e1e3e4",
-    yellow = "#eacb64",
-    cyan = "#22262C",
-    dark_blue = "#61afef",
-    green = "#a5e179",
-    orange = "#f69c5e",
-    purple = "#ba9cf3",
-    magenta = "#c678dd",
-    blue = "#72cce8",
-    red = "#ff6d7e",
-    light_bg = "#424b5b",
-    nord_blue = "#81A1C1",
-    pale_yellow = "#EBCB8B"
+    bg = tokyonight_colors.bg_dark,
+    fg = tokyonight_colors.fg,
+    yellow = tokyonight_colors.yellow,
+    cyan = tokyonight_colors.cyan,
+    dark_blue = tokyonight_colors.blue0,
+    green = tokyonight_colors.green,
+    orange = tokyonight_colors.orange,
+    purple = tokyonight_colors.purple,
+    magenta = tokyonight_colors.magenta,
+    blue = tokyonight_colors.blue,
+    red = tokyonight_colors.red,
+    light_bg = tokyonight_colors.bg_highlight,
+    primary_blue = tokyonight_colors.blue5,
 }
 
 local mode_color = function()
   local mode_colors = {
-    n = colors.nord_blue,
+    n = colors.primary_blue,
     i = colors.green,
-    c = colors.pale_yellow,
+    c = colors.yellow,
     V = colors.magenta,
     [''] = colors.magenta,
     v = colors.magenta,
@@ -60,7 +60,7 @@ gls.left[1] = {
           end
           return "   "
         end,
-        highlight = {colors.bg, colors.nord_blue},
+        highlight = {colors.bg, colors.primary_blue},
         separator = " ",
         separator_highlight = {colors.light_bg, colors.light_bg}
     }
