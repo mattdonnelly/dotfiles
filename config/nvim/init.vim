@@ -19,7 +19,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " appearence plugins
 Plug 'glepnir/dashboard-nvim'
-Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
+Plug 'glepnir/galaxyline.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
 Plug 'psliwka/vim-smoothie'
@@ -27,7 +27,7 @@ Plug 'folke/tokyonight.nvim'
 
 " integrations
 Plug 'nvim-lua/plenary.nvim'
-Plug 'lewis6991/gitsigns.nvim', { 'branch': 'main' }
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
@@ -41,10 +41,12 @@ Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'vim-test/vim-test'
-Plug 'JoosepAlviste/nvim-ts-context-commentstring', { 'branch': 'main' }
+Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'windwp/nvim-autopairs'
-Plug 'windwp/nvim-ts-autotag', { 'branch': 'main' }
+Plug 'windwp/nvim-ts-autotag'
 Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'voldikss/vim-floaterm'
+Plug 'micmine/jumpwire.nvim'
 
 if filereadable(glob("~/.config/plugins.local.vim"))
   source ~/.config/plugins.local.vim
@@ -105,7 +107,7 @@ if exists('plugs')
     if executable('rg')
       nnoremap <leader>f :Files<CR>
       nnoremap <leader>F :Files!<CR>
-      nnoremap <leader>b :Buffer<CR>
+      nnoremap <leader>b :Buffers<CR>
       nnoremap <leader>h :History<CR>
       nnoremap <leader>/ :RG<CR>
       nnoremap <leader>? :RG!<CR>
@@ -146,6 +148,7 @@ if exists('plugs')
       command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
     endif
   endif
+
   if has_key(plugs, 'coc.nvim')
     let g:coc_global_extensions = [
       \ 'coc-tsserver',
@@ -193,10 +196,17 @@ if exists('plugs')
     map <Leader>s :TestNearest<CR>
     map <Leader>l :TestLast<CR>
     let test#strategy = {
-      \ 'nearest': 'neovim',
-      \ 'file':    'neovim',
+      \ 'nearest': 'floaterm',
+      \ 'file':    'floaterm',
       \ 'suite':   'basic',
       \}
+  endif
+
+  if has_key(plugs, 'jumpwire.nvim')
+    noremap <leader>mt :lua require('jumpwire').jump('test')<CR>
+    noremap <leader>mi :lua require('jumpwire').jump('implementation')<CR>
+    noremap <leader>mm :lua require('jumpwire').jump('markup')<CR>
+    noremap <leader>ms :lua require('jumpwire').jump('style')<CR>
   endif
 
   if has_key(plugs, 'undotree')
