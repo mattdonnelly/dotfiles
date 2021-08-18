@@ -41,31 +41,7 @@ local vi_mode_colors = {
 }
 
 local vi_mode_utils = require('feline.providers.vi_mode')
-
-local diagnostics_counts = function (bufnr)
-  bufnr = bufnr or vim.fn.bufnr()
-  return vim.fn['ale#statusline#Count'](bufnr) or {}
-end
-
-local diagnostics_errors = function (bufnr)
-  local dc = diagnostics_counts(bufnr)
-  return (dc.error + dc.style_error) or 0
-end
-
-local diagnostics_warnings = function (bufnr)
-  local dc = diagnostics_counts(bufnr)
-  return (dc.warning + dc.style_warning) or 0
-end
-
-local diagnostics_hints = function (bufnr)
-  local dc = diagnostics_counts(bufnr)
-  return dc.hint or 0
-end
-
-local diagnostics_info = function (bufnr)
-  local dc = diagnostics_counts(bufnr)
-  return dc.info or 0
-end
+local lsp = require('feline.providers.lsp')
 
 local comps = {
   vi_mode = {
@@ -186,26 +162,34 @@ local comps = {
   },
   diagnostics = {
     errors = {
-      provider = function () return ' ' .. diagnostics_errors() end,
-      enabled = function() return diagnostics_errors() > 0 end,
+      provider = 'diagnostic_errors',
+      enabled = function()
+        return lsp.diagnostics_exist('Error')
+      end,
       hl = { fg = colors.red },
       left_sep = ' '
     },
     warnings = {
-      provider = function () return ' ' .. diagnostics_warnings() end,
-      enabled = function() return diagnostics_warnings() > 0 end,
+      provider = 'diagnostic_warnings',
+      enabled = function()
+        return lsp.diagnostics_exist('Warn')
+      end,
       hl = { fg = colors.yellow },
       left_sep = ' '
     },
     hints = {
-      provider = function () return ' ' .. diagnostics_hints() end,
-      enabled = function() return diagnostics_hints() > 0 end,
+      provider = 'diagnostic_hints',
+      enabled = function()
+        return lsp.diagnostics_exist('Hint')
+      end,
       hl = { fg = colors.cyan },
       left_sep = ' '
     },
     info = {
-      provider = function () return ' ' .. diagnostics_info() end,
-      enabled = function() return diagnostics_info() > 0 end,
+      provider = 'diagnostic_info',
+      enabled = function()
+        return lsp.diagnostics_exist('Info')
+      end,
       hl = { fg = colors.blue },
       left_sep = ' '
     }

@@ -15,45 +15,7 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin('~/.local/share/nvim/plugged')
-
-" appearence plugins
-Plug 'glepnir/dashboard-nvim'
-Plug 'famiu/feline.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'romgrk/barbar.nvim'
-Plug 'psliwka/vim-smoothie'
-Plug 'folke/tokyonight.nvim'
-
-" integrations
-Plug 'nvim-lua/plenary.nvim'
-Plug 'lewis6991/gitsigns.nvim'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'tpope/vim-surround'
-Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-Plug 'ggandor/lightspeed.nvim'
-Plug 'pechorin/any-jump.nvim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'dense-analysis/ale'
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'kyazdani42/nvim-tree.lua'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'vim-test/vim-test'
-Plug 'JoosepAlviste/nvim-ts-context-commentstring'
-Plug 'windwp/nvim-autopairs'
-Plug 'windwp/nvim-ts-autotag'
-Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'voldikss/vim-floaterm'
-Plug 'micmine/jumpwire.nvim'
-Plug 'numToStr/Comment.nvim'
-
-if filereadable(glob("~/.config/nvim/plugins.local.vim"))
-  source ~/.config/nvim/plugins.local.vim
-endif
-
-call plug#end()
+source ~/.config/nvim/plugins.vim
 
 " }}}
 " ============================================================================
@@ -104,6 +66,10 @@ nnoremap <C-n> :BufferPrevious<CR>
 nnoremap <C-m> :BufferNext<CR>
 
 if exists('plugs')
+  if has_key(plugs, 'nvim-lspconfig')
+    lua require('plugins.lsp')
+  endif
+
   if has_key(plugs, 'fzf.vim')
     if executable('rg')
       nnoremap <leader>f :Files<CR>
@@ -148,48 +114,6 @@ if exists('plugs')
 
       command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
     endif
-  endif
-
-  if has_key(plugs, 'coc.nvim')
-    let g:coc_global_extensions = [
-      \ 'coc-tsserver',
-      \ 'coc-css',
-      \ 'coc-json',
-      \ 'coc-html',
-      \ 'coc-vimlsp',
-      \ 'coc-highlight',
-      \ 'coc-lists',
-      \ ]
-
-    inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-    function! s:check_back_space() abort
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~# '\s'
-    endfunction
-
-    " Use <c-space> to trigger completion.
-    inoremap <silent><expr> <c-space> coc#refresh()
-
-    nmap <silent> gd <Plug>(coc-definition)
-    nmap <silent> gy <Plug>(coc-type-definition)
-    nmap <silent> gi <Plug>(coc-implementation)
-    nmap <silent> gr <Plug>(coc-references)
-
-    nnoremap <silent> K :call <SID>show_documentation()<CR>
-    function! s:show_documentation()
-      if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-      else
-        call CocAction('doHover')
-      endif
-    endfunction
-
-    set signcolumn=auto:2
   endif
 
   if has_key(plugs, 'vim-test')
@@ -386,17 +310,6 @@ let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_delay = 0
-
-au VimEnter,BufEnter,ColorScheme *
-  \ exec "hi! ALEInfoLine
-    \ guifg=".(&background=='light'?'#808000':'#ffff00')."
-    \ guibg=".(&background=='light'?'#ffff00':'#555500') |
-  \ exec "hi! ALEWarningLine
-    \ guifg=".(&background=='light'?'#808000':'#ffff00')."
-    \ guibg=".(&background=='light'?'#ffff00':'#555500') |
-  \ exec "hi! ALEErrorLine
-    \ guifg=".(&background=='light'?'#ff0000':'#ff0000')."
-    \ guibg=".(&background=='light'?'#ffcccc':'#550000')
 
 let g:any_jump_search_prefered_engine = 'rg'
 let g:any_jump_references_enabled = 0
