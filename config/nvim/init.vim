@@ -48,8 +48,8 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'voldikss/vim-floaterm'
 Plug 'micmine/jumpwire.nvim'
 
-if filereadable(glob("~/.config/plugins.local.vim"))
-  source ~/.config/plugins.local.vim
+if filereadable(glob("~/.config/nvim/plugins.local.vim"))
+  source ~/.config/nvim/plugins.local.vim
 endif
 
 call plug#end()
@@ -419,8 +419,8 @@ augroup vimrcEx
 augroup END
 " }}}
 
-if filereadable(glob("~/.config/init.local.vim"))
-  source ~/.config/init.local.vim
+if filereadable(glob("~/.config/nvim/init.local.vim"))
+  source ~/.config/nvim/init.local.vim
 endif
 
 " ============================================================================
