@@ -19,7 +19,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " appearence plugins
 Plug 'glepnir/dashboard-nvim'
-Plug 'glepnir/galaxyline.nvim'
+Plug 'famiu/feline.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'romgrk/barbar.nvim'
 Plug 'psliwka/vim-smoothie'
@@ -242,8 +242,8 @@ if exists('plugs')
     lua require('nvim-ts-autotag').setup()
   endif
 
-  if has_key(plugs, 'galaxyline.nvim')
-    lua require('plugins.galaxyline')
+  if has_key(plugs, 'feline.nvim')
+    lua require('plugins.feline')
   endif
 
   if has_key(plugs, 'nvim-web-devicons')
