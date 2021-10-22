@@ -47,6 +47,7 @@ Plug 'windwp/nvim-ts-autotag'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'voldikss/vim-floaterm'
 Plug 'micmine/jumpwire.nvim'
+Plug 'numToStr/Comment.nvim'
 
 if filereadable(glob("~/.config/nvim/plugins.local.vim"))
   source ~/.config/nvim/plugins.local.vim
@@ -253,6 +254,10 @@ if exists('plugs')
   if has_key(plugs, 'lightspeed.nvim')
     lua require('plugins.lightspeed')
   endif
+
+  if has_key(plugs, 'Comment.nvim')
+    lua require('Comment').setup()
+  end
 endif
 
 " }}}
