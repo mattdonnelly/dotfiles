@@ -69,7 +69,7 @@ lspconfig.tsserver.setup(coq.lsp_ensure_capabilities({
   },
   root_dir = function(fname)
     return lspconfig.util.root_pattern('tsconfig.json')(fname)
-    or not lspconfig.util.root_pattern('.flowconfig')(fname) 
+    and not lspconfig.util.root_pattern('.flowconfig')(fname) 
     and lspconfig.util.root_pattern('package.json', 'jsconfig.json', '.git')(fname)
   end
 }))
