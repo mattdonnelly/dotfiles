@@ -1,4 +1,4 @@
-local nvim_lsp = require('lspconfig')
+local lspconfig = require('lspconfig')
 local coq = require('coq')()
 local saga = require('lspsaga')
 
@@ -46,15 +46,32 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = {'tsserver', 'solargraph', 'ember', 'html', 'cssls', 'bashls'}
-for _, server in ipairs(servers) do
-  local config = {
-    on_attach = on_attach,
-    flags = {
-      debounce_text_changes = 150,
-    }
+local default_config = coq.lsp_ensure_capabilities({
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
   }
-  nvim_lsp[server].setup(coq.lsp_ensure_capabilities(config))
-end
+})
+
+lspconfig.eslint.setup(default_config)
+lspconfig.solargraph.setup(default_config)
+lspconfig.ember.setup(default_config)
+lspconfig.html.setup(default_config)
+lspconfig.cssls.setup(default_config)
+lspconfig.bashls.setup(default_config)
+lspconfig.jsonls.setup(default_config)
+lspconfig.vimls.setup(default_config)
+
+lspconfig.tsserver.setup(coq.lsp_ensure_capabilities({
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  },
+  root_dir = function(fname)
+    return lspconfig.util.root_pattern('tsconfig.json')(fname)
+    or not lspconfig.util.root_pattern('.flowconfig')(fname) 
+    and lspconfig.util.root_pattern('package.json', 'jsconfig.json', '.git')(fname)
+  end
+}))
 
 vim.cmd [[COQnow -s]]
