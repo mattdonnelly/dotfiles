@@ -167,7 +167,7 @@ local comps = {
         return lsp.diagnostics_exist('Error')
       end,
       hl = { fg = colors.red },
-      left_sep = ' '
+      right_sep = ' '
     },
     warnings = {
       provider = 'diagnostic_warnings',
@@ -175,7 +175,7 @@ local comps = {
         return lsp.diagnostics_exist('Warn')
       end,
       hl = { fg = colors.yellow },
-      left_sep = ' '
+      right_sep = ' '
     },
     hints = {
       provider = 'diagnostic_hints',
@@ -183,7 +183,7 @@ local comps = {
         return lsp.diagnostics_exist('Hint')
       end,
       hl = { fg = colors.cyan },
-      left_sep = ' '
+      right_sep = ' '
     },
     info = {
       provider = 'diagnostic_info',
@@ -191,7 +191,7 @@ local comps = {
         return lsp.diagnostics_exist('Info')
       end,
       hl = { fg = colors.blue },
-      left_sep = ' '
+      right_sep = ' '
     }
   }
 }
