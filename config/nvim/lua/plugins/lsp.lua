@@ -61,7 +61,7 @@ lspconfig.cssls.setup(default_config)
 lspconfig.bashls.setup(default_config)
 lspconfig.jsonls.setup(default_config)
 lspconfig.vimls.setup(default_config)
-
+lspconfig.flow.setup(default_config)
 lspconfig.tsserver.setup(coq.lsp_ensure_capabilities({
   on_attach = on_attach,
   flags = {
