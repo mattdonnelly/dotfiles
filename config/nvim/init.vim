@@ -67,7 +67,16 @@ nnoremap <C-m> :BufferNext<CR>
 
 if exists('plugs')
   if has_key(plugs, 'nvim-lspconfig')
-    lua require('plugins.lsp')
+    lua require('lsp')
+  endif
+
+  if has_key(plugs, 'telescope.nvim')
+    nnoremap <leader>f <cmd>Telescope find_files<CR>
+    nnoremap <leader>b <cmd>Telescope buffers<CR>
+    nnoremap <leader>h <cmd>Telescope oldfiles<CR>
+    nnoremap <leader>/ <cmd>Telescope live_grep<CR>
+
+    lua require('plugins.telescope')
   endif
 
   if has_key(plugs, 'fzf.vim')
@@ -252,13 +261,13 @@ let g:dashboard_default_executive = 'fzf'
 let g:dashboard_custom_section = {
   \ '1': {
       \ 'description': ['  History                                        SPC h'],
-      \ 'command': ':History' },
+      \ 'command': ':Telescope oldfiles' },
   \ '2': {
       \ 'description': ['  File file                                      SPC f'],
-      \ 'command': ':Files' },
+      \ 'command': ':Telescope find_files' },
   \ '3': {
       \ 'description': ['  Search text                                    SPC /'],
-      \ 'command': ':Rg' },
+      \ 'command': ':Telescope live_grep' },
   \ '4': {
       \ 'description': ['  Empty buffer                                   :enew'],
       \ 'command': ':enew' },
@@ -287,29 +296,6 @@ let g:dashboard_custom_header = [
 
 let g:python_host_prog = system('echo -n $(brew --prefix)') . '/bin/python'
 let g:python3_host_prog = system('echo -n $(brew --prefix)') . '/bin/python3'
-
-let g:ale_sign_error = '✖'
-let g:ale_sign_warning = ''
-let g:ale_disable_lsp = 1
-
-let g:ale_linters = {
-  \  '*': ['remove_trailing_lines', 'trim_whitespace'],
-  \ 'javascript': ['prettier', 'eslint'],
-  \ 'ruby': ['rubocop'],
-  \ 'vim': ['vimlsp'],
-  \ }
-
-let g:ale_fixers = {
-  \  '*': ['remove_trailing_lines', 'trim_whitespace'],
-  \ 'javascript': ['prettier', 'eslint'],
-  \ 'ruby': ['rubocop'],
-  \ }
-
-let g:ale_ruby_rubocop_executable = 'rubocop'
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_delay = 0
 
 let g:any_jump_search_prefered_engine = 'rg'
 let g:any_jump_references_enabled = 0

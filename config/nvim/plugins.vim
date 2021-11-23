@@ -12,15 +12,15 @@ Plug 'folke/tokyonight.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
-Plug 'glepnir/lspsaga.nvim'
+Plug 'RishabhRD/popfix'
+Plug 'RishabhRD/nvim-lsputils'
 Plug 'lewis6991/gitsigns.nvim', { 'branch': 'main' }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'ggandor/lightspeed.nvim'
 Plug 'pechorin/any-jump.nvim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -33,8 +33,8 @@ Plug 'voldikss/vim-floaterm'
 Plug 'micmine/jumpwire.nvim'
 Plug 'numToStr/Comment.nvim'
 
-if filereadable(glob("~/.config/plugins.local.vim"))
-  source ~/.config/plugins.local.vim
+if filereadable(glob("~/.config/nvim/plugins.local.vim"))
+  source ~/.config/nvim/plugins.local.vim
 endif
 
 call plug#end()

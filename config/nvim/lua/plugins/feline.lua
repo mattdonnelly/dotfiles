@@ -6,6 +6,8 @@ local tokyonight_colors = require('tokyonight.colors').setup({})
 local vi_mode_utils = require('feline.providers.vi_mode')
 local cursor = require('feline.providers.cursor')
 
+local lsp = vim.lsp
+
 local colors = {
   bg = tokyonight_colors.bg_dark,
   fg = tokyonight_colors.fg,
@@ -161,11 +163,19 @@ local comps = {
     }
   },
   diagnostics = {
+    lsp_clients = {
+      provider = "lsp_client_names",
+      hl = {
+        fg = colors.fg,
+      },
+      right_sep = '  '
+    },
     errors = {
       provider = 'diagnostic_errors',
       enabled = function()
         return lsp.diagnostics_exist('Error')
       end,
+      icon = ' ',
       hl = { fg = colors.red },
       right_sep = ' '
     },
@@ -174,6 +184,7 @@ local comps = {
       enabled = function()
         return lsp.diagnostics_exist('Warn')
       end,
+      icon = ' ',
       hl = { fg = colors.yellow },
       right_sep = ' '
     },
@@ -182,6 +193,7 @@ local comps = {
       enabled = function()
         return lsp.diagnostics_exist('Hint')
       end,
+      icon = ' ',
       hl = { fg = colors.cyan },
       right_sep = ' '
     },
@@ -190,6 +202,7 @@ local comps = {
       enabled = function()
         return lsp.diagnostics_exist('Info')
       end,
+      icon = ' ',
       hl = { fg = colors.blue },
       right_sep = ' '
     }
@@ -212,6 +225,7 @@ table.insert(components.active[1], comps.file.info)
 table.insert(components.active[1], comps.file.size)
 table.insert(components.active[1], comps.file.end_subsection)
 
+table.insert(components.active[1], comps.diagnostics.lsp_clients)
 table.insert(components.active[1], comps.diagnostics.errors)
 table.insert(components.active[1], comps.diagnostics.warnings)
 table.insert(components.active[1], comps.diagnostics.hints)

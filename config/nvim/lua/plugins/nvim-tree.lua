@@ -12,8 +12,10 @@ require('nvim-tree').setup {
   open_on_setup       = false,
   disable_netrw       = true,
   auto_close          = true,
-  lsp_diagnostics     = true,
   ignore_ft_on_setup  = { 'startify', 'dashboard' },
+  diagnostics = {
+    enable = true,
+  },
   update_focused_file = {
     enable = true,
   },
