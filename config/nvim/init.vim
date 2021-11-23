@@ -75,54 +75,9 @@ if exists('plugs')
     nnoremap <leader>b <cmd>Telescope buffers<CR>
     nnoremap <leader>h <cmd>Telescope oldfiles<CR>
     nnoremap <leader>/ <cmd>Telescope live_grep<CR>
+    nnoremap <leader>c <cmd>Telescope lsp_code_actions<CR>
 
     lua require('plugins.telescope')
-  endif
-
-  if has_key(plugs, 'fzf.vim')
-    if executable('rg')
-      nnoremap <leader>f :Files<CR>
-      nnoremap <leader>F :Files!<CR>
-      nnoremap <leader>b :Buffers<CR>
-      nnoremap <leader>h :History<CR>
-      nnoremap <leader>/ :RG<CR>
-      nnoremap <leader>? :RG!<CR>
-
-      let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --smart-case --glob "!{.git,node_modules,gems}/*" 2> /dev/null'
-      set grepprg=rg\ --vimgrep
-      command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
-
-      let $FZF_DEFAULT_OPTS='-i --multi --layout=reverse'
-      let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
-      let g:fzf_colors =
-      \ { 'fg':         ['fg', 'Normal'],
-        \ 'bg':         ['bg', 'Normal'],
-        \ 'preview-bg': ['bg', 'NormalFloat'],
-        \ 'hl':         ['fg', 'Comment'],
-        \ 'fg+':        ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-        \ 'bg+':        ['bg', 'CursorLine', 'CursorColumn'],
-        \ 'hl+':        ['fg', 'Statement'],
-        \ 'info':       ['fg', 'PreProc'],
-        \ 'border':     ['fg', 'Ignore'],
-        \ 'prompt':     ['fg', 'Conditional'],
-        \ 'pointer':    ['fg', 'Exception'],
-        \ 'marker':     ['fg', 'Keyword'],
-        \ 'spinner':    ['fg', 'Label'],
-        \ 'header':     ['fg', 'Comment'] }
-
-      command! -bang -nargs=? -complete=dir Files
-            \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--info=inline']}), <bang>0)
-
-      function! RipgrepFzf(query, fullscreen)
-        let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
-        let initial_command = printf(command_fmt, shellescape(a:query))
-        let reload_command = printf(command_fmt, '{q}')
-        let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-        call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-      endfunction
-
-      command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-    endif
   endif
 
   if has_key(plugs, 'vim-test')

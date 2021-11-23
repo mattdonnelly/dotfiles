@@ -10,6 +10,10 @@ Plug 'folke/tokyonight.nvim'
 
 " integrations
 Plug 'neovim/nvim-lspconfig'
+Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 Plug 'RishabhRD/popfix'
@@ -21,7 +25,6 @@ Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'ggandor/lightspeed.nvim'
 Plug 'pechorin/any-jump.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-lua/plenary.nvim'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'vim-test/vim-test'
