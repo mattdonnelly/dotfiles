@@ -1,9 +1,7 @@
 local keymap = vim.api.nvim_set_keymap
 keymap("n", "<leader>n", ":NvimTreeToggle<CR>", {})
 
-vim.g.nvim_tree_ignore = { '.git', '.cache' }
 vim.g.nvim_tree_quit_on_open = 1
-vim.g.nvim_tree_hide_dotfiles = 0
 vim.g.nvim_tree_icons = {
   default = '',
   symlink = '',
@@ -18,6 +16,10 @@ require('nvim-tree').setup {
   },
   update_focused_file = {
     enable = true,
+  },
+  filters = {
+    dotfiles = false,
+    custom = { '.git', '.cache' }
   },
   view = {
     width       = 40,
