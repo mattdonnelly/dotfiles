@@ -200,7 +200,7 @@ local comps = {
     info = {
       provider = 'diagnostic_info',
       enabled = function()
-        return lsp.diagnostics_exist('Info')
+        return lsp.diagnostics_exist('Information')
       end,
       icon = ' ',
       hl = { fg = colors.blue },
