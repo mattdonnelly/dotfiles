@@ -69,30 +69,46 @@ lspconfig.ember.setup(coq.lsp_ensure_capabilities({
   on_attach = on_attach,
   root_dir = lspconfig.util.root_pattern("ember-cli-build.js", ".git")
 }))
-lspconfig.solargraph.setup(coq.lsp_ensure_capabilities(default_config))
+lspconfig.solargraph.setup(coq.lsp_ensure_capabilities({
+  on_attach = function(client, bufnr) 
+    client.resolved_capabilities.document_formatting = false
+    client.resolved_capabilities.document_range_formatting = false
+
+    on_attach(client, bufnr)
+  end,
+  flags = {
+    debounce_text_changes = 150,
+  },
+  init_options = {
+    formatting = true
+  },
+  settings = {
+    solargraph = {
+      formatting = false
+    }
+  }
+}))
 lspconfig.ember.setup(coq.lsp_ensure_capabilities(default_config))
 lspconfig.html.setup(coq.lsp_ensure_capabilities(default_config))
 lspconfig.cssls.setup(coq.lsp_ensure_capabilities(default_config))
 lspconfig.bashls.setup(coq.lsp_ensure_capabilities(default_config))
 lspconfig.jsonls.setup(coq.lsp_ensure_capabilities(default_config))
 lspconfig.vimls.setup(coq.lsp_ensure_capabilities(default_config))
-lspconfig.flow.setup(coq.lsp_ensure_capabilities({
-  on_attach = on_attach,
-  flags = {
-    debounce_text_changes = 150,
-  }
-}))
 lspconfig.tsserver.setup(coq.lsp_ensure_capabilities({
   on_attach = function(client, bufnr)
     client.resolved_capabilities.document_formatting = false
     client.resolved_capabilities.document_range_formatting = false
 
     ts_utils.setup({
-      eslint_bin = "eslint_d",
-      eslint_enable_diagnostics = true,
-      eslint_enable_code_actions = true,
-      enable_formatting = true,
-      formatter = "prettier",
+      import_all_timeout = 5000,
+      import_all_priorities = {
+        same_file = 1,
+        local_files = 2,
+        buffer_content = 3,
+        buffers = 4,
+      },
+      import_all_scan_buffers = 100,
+      import_all_select_source = false,
     })
     ts_utils.setup_client(client)
 
@@ -106,20 +122,23 @@ lspconfig.tsserver.setup(coq.lsp_ensure_capabilities({
   flags = {
     debounce_text_changes = 150,
   },
-  root_dir = function(fname)
-    return lspconfig.util.root_pattern("tsconfig.json")(fname)
-    and not lspconfig.util.root_pattern(".flowconfig")(fname) 
-    and lspconfig.util.root_pattern("package.json", "jsconfig.json", ".git")(fname)
-  end
 }))
 
 local sources = {
-  null_ls.builtins.formatting.prettier,
-  null_ls.builtins.diagnostics.eslint_d,
-  null_ls.builtins.code_actions.eslint_d,
+  null_ls.builtins.formatting.prettier.with({
+    filetypes = { "html", "json", "yaml", "markdown", "html.handlebars" },
+    prefer_local = "node_modules/.bin",
+  }),
+  null_ls.builtins.diagnostics.eslint.with({
+    prefer_local = "node_modules/.bin",
+  }),
+  null_ls.builtins.code_actions.eslint.with({
+    prefer_local = "node_modules/.bin",
+  }),
+  null_ls.builtins.formatting.rubocop,
+  null_ls.builtins.diagnostics.rubocop,
 }
 
-null_ls.config({ 
+null_ls.setup({ 
   sources = sources,
 })
-lspconfig["null-ls"].setup({ on_attach = on_attach })

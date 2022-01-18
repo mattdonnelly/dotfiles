@@ -113,10 +113,7 @@ local comps = {
     right_sep = ' ',
   },
   position = {
-    provider = function()
-      pos = cursor.position()
-      return ' '..pos..' '
-    end,
+    provider = 'position',
     left_sep = ' ',
     hl = function()
       local val = {
@@ -200,7 +197,7 @@ local comps = {
     info = {
       provider = 'diagnostic_info',
       enabled = function()
-        return lsp.diagnostics_exist('Information')
+        return lsp.diagnostics_exist('Info')
       end,
       icon = ' ',
       hl = { fg = colors.blue },
@@ -244,7 +241,7 @@ table.insert(components.active[2], comps.line_percentage)
 table.insert(components.active[2], comps.position)
 
 require('feline').setup({
-  colors = { bg = colors.bg, fg = colors.fg },
+  theme = colors,
   components = components,
   vi_mode_colors = vi_mode_colors,
   force_inactive = {
