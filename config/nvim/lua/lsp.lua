@@ -1,5 +1,6 @@
 local lspconfig = require("lspconfig")
 local null_ls = require("null-ls")
+local null_ls_helpers = require("null-ls.helpers")
 local ts_utils = require("nvim-lsp-ts-utils")
 
 vim.g.coq_settings = { auto_start = "shut-up" }
@@ -52,7 +53,12 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<space>=", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
   if client.resolved_capabilities.document_formatting then
-    vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+    vim.cmd([[
+      augroup LspFormatting
+      autocmd! * <buffer>
+      autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 2000)
+      augroup END
+    ]])
   end
 end
 
@@ -66,14 +72,18 @@ local default_config = {
 }
 
 lspconfig.ember.setup(coq.lsp_ensure_capabilities({
-  on_attach = on_attach,
+  on_attach = function(client, bufnr)
+    client.resolved_capabilities.document_formatting = false
+    client.resolved_capabilities.document_range_formatting = false
+
+    on_attach(client, bufnr)
+  end,
   root_dir = lspconfig.util.root_pattern("ember-cli-build.js", ".git")
 }))
 lspconfig.solargraph.setup(coq.lsp_ensure_capabilities({
   on_attach = function(client, bufnr) 
     client.resolved_capabilities.document_formatting = false
     client.resolved_capabilities.document_range_formatting = false
-
     on_attach(client, bufnr)
   end,
   flags = {
@@ -88,7 +98,6 @@ lspconfig.solargraph.setup(coq.lsp_ensure_capabilities({
     }
   }
 }))
-lspconfig.ember.setup(coq.lsp_ensure_capabilities(default_config))
 lspconfig.html.setup(coq.lsp_ensure_capabilities(default_config))
 lspconfig.cssls.setup(coq.lsp_ensure_capabilities(default_config))
 lspconfig.bashls.setup(coq.lsp_ensure_capabilities(default_config))
@@ -124,9 +133,21 @@ lspconfig.tsserver.setup(coq.lsp_ensure_capabilities({
   },
 }))
 
+local ember_template_lint = {
+  name = "ember-template-lint",
+  method = null_ls.methods.FORMATTING,
+  filetypes = { "html.handlebars" },
+  generator = null_ls_helpers.formatter_factory {
+    args = { "--fix", "$FILENAME" },
+    command = "ember-template-lint",
+  }
+}
+
 local sources = {
+  ember_template_lint,
   null_ls.builtins.formatting.prettier.with({
-    filetypes = { "html", "json", "yaml", "markdown", "html.handlebars" },
+    filetypes = { "html", "json", "yaml", "markdown" },
+    disabled_filetypes = { 'html.handlebars' },
     prefer_local = "node_modules/.bin",
   }),
   null_ls.builtins.diagnostics.eslint.with({
@@ -139,6 +160,16 @@ local sources = {
   null_ls.builtins.diagnostics.rubocop,
 }
 
-null_ls.setup({ 
+null_ls.setup({
   sources = sources,
+  on_attach = function(client)
+    if client.resolved_capabilities.document_formatting then
+      vim.cmd([[
+      augroup NullLsFormatting
+      autocmd! * <buffer>
+      autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 2000)
+      augroup END
+      ]])
+    end
+  end,
 })
