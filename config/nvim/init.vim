@@ -62,8 +62,9 @@ noremap <Down> <nop>
 noremap <Left> <nop>
 noremap <Right> <nop>
 
-nnoremap <C-n> :BufferPrevious<CR>
-nnoremap <C-m> :BufferNext<CR>
+nnoremap gn :bn<cr>
+nnoremap gp :bp<cr>
+nnoremap gd :bd<cr>
 
 if exists('plugs')
   if has_key(plugs, 'nvim-lspconfig')
@@ -73,7 +74,7 @@ if exists('plugs')
   if has_key(plugs, 'telescope.nvim')
     nnoremap <leader>f <cmd>Telescope find_files<CR>
     nnoremap <leader>b <cmd>Telescope buffers<CR>
-    nnoremap <leader>h <cmd>Telescope oldfiles<CR>
+    nnoremap <leader>h <cmd>lua require("telescope.builtin").oldfiles({ only_cwd = true })<CR>
     nnoremap <leader>/ <cmd>Telescope live_grep<CR>
     nnoremap <leader>c <cmd>Telescope lsp_code_actions<CR>
 
@@ -216,7 +217,7 @@ let g:dashboard_default_executive = 'fzf'
 let g:dashboard_custom_section = {
   \ '1': {
       \ 'description': ['  History                                        SPC h'],
-      \ 'command': ':Telescope oldfiles' },
+      \ 'command': ':lua require("telescope.builtin").oldfiles({ only_cwd = true })' },
   \ '2': {
       \ 'description': ['  File file                                      SPC f'],
       \ 'command': ':Telescope find_files' },
