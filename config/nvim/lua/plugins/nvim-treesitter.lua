@@ -10,4 +10,7 @@ require'nvim-treesitter.configs'.setup {
     "ruby",
     "lua"
   },
+  endwise = {
+    enable = true,
+  },
 }

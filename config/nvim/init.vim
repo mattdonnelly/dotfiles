@@ -72,12 +72,6 @@ if exists('plugs')
   endif
 
   if has_key(plugs, 'telescope.nvim')
-    nnoremap <leader>f <cmd>Telescope find_files<CR>
-    nnoremap <leader>b <cmd>Telescope buffers<CR>
-    nnoremap <leader>h <cmd>lua require("telescope.builtin").oldfiles({ only_cwd = true })<CR>
-    nnoremap <leader>/ <cmd>Telescope live_grep<CR>
-    nnoremap <leader>c <cmd>Telescope lsp_code_actions<CR>
-
     lua require('plugins.telescope')
   endif
 
@@ -147,6 +141,14 @@ if exists('plugs')
   if has_key(plugs, 'Comment.nvim')
     lua require('Comment').setup()
   end
+
+  if has_key(plugs, 'dashboard-nvim')
+    lua require('plugins.dashboard')
+  end
+
+  if has_key(plugs, 'trouble.nvim')
+    lua require('plugins.trouble')
+  end
 endif
 
 " }}}
@@ -212,43 +214,6 @@ set shiftwidth=2
 " ============================================================================
 " Plugin configuration {{{
 " ============================================================================
-
-let g:dashboard_default_executive = 'fzf'
-let g:dashboard_custom_section = {
-  \ '1': {
-      \ 'description': ['  History                                        SPC h'],
-      \ 'command': ':lua require("telescope.builtin").oldfiles({ only_cwd = true })' },
-  \ '2': {
-      \ 'description': ['  File file                                      SPC f'],
-      \ 'command': ':Telescope find_files' },
-  \ '3': {
-      \ 'description': ['  Search text                                    SPC /'],
-      \ 'command': ':Telescope live_grep' },
-  \ '4': {
-      \ 'description': ['  Empty buffer                                   :enew'],
-      \ 'command': ':enew' },
-  \ }
-let g:dashboard_custom_header = [
-  \ '                              ',
-  \ ' g@@@@@@@@@@@@@@@@@@@@@@@@b_  ',
-  \ '0@@@@@@@@@@@@@@@@@@@@@@@@@@@k  ',
-  \ '0@@@@@@@@@@@@@^^#@@@@@@@@@@@@L  ',
-  \ ' #@@@@@@@@@@"   J@@@@@@@@@@@@@  ',
-  \ '               J@@@@@@@@@@@@@@b  ',
-  \ '              d@@@@@##@@@@@@@@@L  ',
-  \ '             d@@@@#   ^@@@@@@@@Q  ',
-  \ '            d@@@@@@r    #@@@@@@@[  ',
-  \ '           d@@@@@@@[     #@@@@@@@r  ',
-  \ '          0@@@@@@@P       0@@@@@@%  ',
-  \ '         0@@@@P            0@@@@@@L  ',
-  \ '        0@@@@^              0@@@@@@  ',
-  \ '       #@@@F                 0@@@@@b  ',
-  \ '      1@@@^                   `@@@@@L  ',
-  \ '                               ^@@@@@  ',
-  \ '                                ^@@@@[  ',
-  \ '                                  ##P  ',
-  \ '',
-  \ ]
 
 let g:python_host_prog = system('echo -n $(brew --prefix)') . '/bin/python'
 let g:python3_host_prog = system('echo -n $(brew --prefix)') . '/bin/python3'

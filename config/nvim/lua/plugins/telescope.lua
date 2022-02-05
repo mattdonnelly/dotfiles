@@ -61,6 +61,22 @@ require('telescope').setup{
     color_devicons = true,
   }
 }
+ 
+vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<CR>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader>fo", "<cmd>lua require('telescope.builtin').oldfiles({ only_cwd = true })<CR>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>Telescope buffers<CR>",
+  {silent = true, noremap = true}
+)
+vim.api.nvim_set_keymap("n", "<leader>c", "<cmd>Telescope lsp_code_actions<CR>",
+  {silent = true, noremap = true}
+)
 
 local colors = require('tokyonight.colors').setup({})
 
