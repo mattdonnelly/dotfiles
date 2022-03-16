@@ -62,9 +62,8 @@ noremap <Down> <nop>
 noremap <Left> <nop>
 noremap <Right> <nop>
 
-nnoremap gn :bn<cr>
-nnoremap gp :bp<cr>
-nnoremap gd :bd<cr>
+nnoremap gn :BufferNext<cr>
+nnoremap gp :BufferPrevious<cr>
 
 if exists('plugs')
   if has_key(plugs, 'nvim-lspconfig')

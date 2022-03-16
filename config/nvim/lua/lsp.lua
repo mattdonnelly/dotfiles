@@ -101,7 +101,7 @@ lspconfig.solargraph.setup(coq.lsp_ensure_capabilities({
 lspconfig.html.setup(coq.lsp_ensure_capabilities(default_config))
 lspconfig.cssls.setup(coq.lsp_ensure_capabilities(default_config))
 lspconfig.bashls.setup(coq.lsp_ensure_capabilities(default_config))
-lspconfig.jsonls.setup(coq.lsp_ensure_capabilities(default_config))
+-- lspconfig.jsonls.setup(coq.lsp_ensure_capabilities(default_config))
 lspconfig.vimls.setup(coq.lsp_ensure_capabilities(default_config))
 lspconfig.tsserver.setup(coq.lsp_ensure_capabilities({
   on_attach = function(client, bufnr)
@@ -146,15 +146,14 @@ local ember_template_lint = {
 local sources = {
   ember_template_lint,
   null_ls.builtins.formatting.prettier.with({
-    filetypes = { "html", "json", "yaml", "markdown" },
     disabled_filetypes = { 'html.handlebars' },
-    prefer_local = "node_modules/.bin",
+    dynamic_command = require("null-ls.helpers.command_resolver").from_node_modules
   }),
   null_ls.builtins.diagnostics.eslint.with({
-    prefer_local = "node_modules/.bin",
+    dynamic_command = require("null-ls.helpers.command_resolver").from_node_modules
   }),
   null_ls.builtins.code_actions.eslint.with({
-    prefer_local = "node_modules/.bin",
+    dynamic_command = require("null-ls.helpers.command_resolver").from_node_modules
   }),
   null_ls.builtins.formatting.rubocop,
   null_ls.builtins.diagnostics.rubocop,

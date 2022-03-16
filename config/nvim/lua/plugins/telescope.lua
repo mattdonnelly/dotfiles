@@ -68,6 +68,9 @@ vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>",
 vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<CR>",
   {silent = true, noremap = true}
 )
+vim.api.nvim_set_keymap("n", "<leader>f/", "<cmd>Telescope live_grep<CR>",
+  {silent = true, noremap = true}
+)
 vim.api.nvim_set_keymap("n", "<leader>fo", "<cmd>lua require('telescope.builtin').oldfiles({ only_cwd = true })<CR>",
   {silent = true, noremap = true}
 )
