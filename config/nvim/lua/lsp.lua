@@ -3,7 +3,14 @@ local null_ls = require("null-ls")
 local null_ls_helpers = require("null-ls.helpers")
 local ts_utils = require("nvim-lsp-ts-utils")
 
-vim.g.coq_settings = { auto_start = "shut-up" }
+vim.g.coq_settings = {
+  auto_start = "shut-up",
+  clients = {
+    lsp = {
+      resolve_timeout = 5000
+    }
+  }
+}
 local coq = require("coq")
 
 vim.lsp.handlers["textDocument/codeAction"] = require"lsputil.codeAction".code_action_handler
@@ -78,7 +85,7 @@ lspconfig.ember.setup(coq.lsp_ensure_capabilities({
 
     on_attach(client, bufnr)
   end,
-  root_dir = lspconfig.util.root_pattern("ember-cli-build.js", ".git")
+  root_dir = lspconfig.util.root_pattern("ember-cli-build.js")
 }))
 lspconfig.solargraph.setup(coq.lsp_ensure_capabilities({
   on_attach = function(client, bufnr) 
