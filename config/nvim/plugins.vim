@@ -35,6 +35,7 @@ Plug 'voldikss/vim-floaterm'
 Plug 'micmine/jumpwire.nvim'
 Plug 'numToStr/Comment.nvim'
 Plug 'folke/trouble.nvim'
+Plug 'petertriho/nvim-scrollbar'
 
 if filereadable(glob("~/.config/nvim/plugins.local.vim"))
   source ~/.config/nvim/plugins.local.vim

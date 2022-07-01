@@ -1,10 +1,6 @@
 local keymap = vim.api.nvim_set_keymap
 keymap("n", "<leader>n", ":NvimTreeToggle<CR>", {})
 
-vim.g.nvim_tree_icons = {
-  default = '',
-  symlink = '',
-}
 require('nvim-tree').setup {
   disable_netrw       = true,
   ignore_ft_on_setup  = { 'startify', 'dashboard' },
@@ -27,4 +23,14 @@ require('nvim-tree').setup {
   view = {
     width = 40,
   },
+  renderer = {
+    icons = {
+      glyphs = {
+        default = '',
+        symlink = '',
+      }
+    }
+  }
 }
+
+vim.cmd('autocmd BufEnter * ++nested if winnr(\'$\') == 1 && bufname() == \'NvimTree_\' . tabpagenr() | quit | endif')
