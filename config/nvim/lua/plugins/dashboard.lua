@@ -1,9 +1,10 @@
-local g = vim.g
+local db = require('dashboard')
 
-g.dashboard_disable_at_vimenter = 0
-g.dashboard_disable_statusline = 1
-g.dashboard_default_executive = "telescope"
-g.dashboard_custom_header = {
+-- g.dashboard_disable_at_vimenter = 0
+-- g.dashboard_disable_statusline = 1
+-- g.dashboard_default_executive = "telescope"
+
+db.custom_header = {
   "                                        ",
   " g@@@@@@@@@@@@@@@@@@@@@@@@b_            ",
   "0@@@@@@@@@@@@@@@@@@@@@@@@@@@k           ",
@@ -25,12 +26,12 @@ g.dashboard_custom_header = {
   "                                        ",
 }
 
-g.dashboard_custom_section = {
-   a = { description = { "  Find File                 SPC f f" }, command = "Telescope find_files" },
-   b = { description = { "  Recents                   SPC f o" }, command = "Telescope oldfiles" },
-   c = { description = { "  Find Word                 SPC f /" }, command = "Telescope live_grep" },
-   d = { description = { "洛 New File                  SPC f n" }, command = "DashboardNewFile" },
-   f = { description = { "  Load Last Session         SPC l  " }, command = "SessionLoad" },
+db.custom_center = {
+  { icon = "  ", desc = "Find file                ", shortcut = "SPC f f", action = "Telescope find_files" },
+  { icon = "  ", desc = "Recent files             ", shortcut = "SPC f o", action = "Telescope oldfiles" },
+  { icon = "  ", desc = "Find word                ", shortcut = "SPC f /", action = "Telescope live_grep" },
+  { icon = "  ", desc = "New file                 ", shortcut = "SPC f n", action = "enew" },
+  { icon = "  ", desc = "Settings              ", shortcut = "e $MYVIMRC", action = "edit $MYVIMRC"}
 }
 
 vim.api.nvim_set_keymap("n", "<leader>fn", "<cmd>DashboardNewFile<CR>",
