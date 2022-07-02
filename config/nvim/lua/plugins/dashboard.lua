@@ -1,9 +1,5 @@
 local db = require('dashboard')
 
--- g.dashboard_disable_at_vimenter = 0
--- g.dashboard_disable_statusline = 1
--- g.dashboard_default_executive = "telescope"
-
 db.custom_header = {
   "                                        ",
   " g@@@@@@@@@@@@@@@@@@@@@@@@b_            ",
@@ -29,7 +25,7 @@ db.custom_header = {
 db.custom_center = {
   { icon = "  ", desc = "Find file                ", shortcut = "SPC f f", action = "Telescope find_files" },
   { icon = "  ", desc = "Recent files             ", shortcut = "SPC f o", action = "Telescope oldfiles" },
-  { icon = "  ", desc = "Find word                ", shortcut = "SPC f /", action = "Telescope live_grep" },
+  { icon = "  ", desc = "Find word                ", shortcut = "SPC f /", action = "Telescope live_grep" },
   { icon = "  ", desc = "New file                 ", shortcut = "SPC f n", action = "enew" },
   { icon = "  ", desc = "Settings              ", shortcut = "e $MYVIMRC", action = "edit $MYVIMRC"}
 }
