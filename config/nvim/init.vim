@@ -151,7 +151,6 @@ if exists('plugs')
 
   if has_key(plugs, 'nvim-scrollbar')
     lua require("scrollbar").setup()
-    lua require("scrollbar.handlers.search").setup()
   end
 endif
 
