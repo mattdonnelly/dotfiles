@@ -1,16 +1,77 @@
 local lspconfig = require("lspconfig")
+local cmp = require("cmp")
 local null_ls = require("null-ls")
 local null_ls_helpers = require("null-ls.helpers")
 
-vim.g.coq_settings = {
-  auto_start = "shut-up",
-  clients = {
-    lsp = {
-      resolve_timeout = 5000
-    }
+local cmp = require'cmp'
+
+cmp.setup({
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+        return
+      end
+      fallback()
+    end
+    , { 'i', 'c' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+        return
+      end
+      fallback()
+    end
+    , { 'i', 'c' }),
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+-- Set configuration for specific filetype.
+cmp.setup.filetype('gitcommit', {
+  sources = cmp.config.sources({
+    { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
   }
-}
-local coq = require("coq")
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  }),
+  completion = {
+    autocomplete = false,
+  }
+})
+
+vim.cmd [[
+  set completeopt=menuone,noinsert,noselect
+  highlight! default link CmpItemKind CmpItemMenuDefault
+]]
+
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 vim.lsp.handlers["textDocument/codeAction"] = require"lsputil.codeAction".code_action_handler
 vim.lsp.handlers["textDocument/references"] = require"lsputil.locations".references_handler
@@ -86,13 +147,15 @@ end
 -- Use a loop to conveniently call "setup" on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local default_config = {
+  capabilities = capabilities,
   on_attach = on_attach,
   flags = {
     debounce_text_changes = 150,
   }
 }
 
-lspconfig.ember.setup(coq.lsp_ensure_capabilities({
+lspconfig.ember.setup({
+  capabilities = capabilities,
   on_attach = function(client, bufnr)
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
@@ -100,8 +163,9 @@ lspconfig.ember.setup(coq.lsp_ensure_capabilities({
     on_attach(client, bufnr)
   end,
   root_dir = lspconfig.util.root_pattern("ember-cli-build.js")
-}))
-lspconfig.solargraph.setup(coq.lsp_ensure_capabilities({
+})
+lspconfig.solargraph.setup({
+  capabilities = capabilities,
   on_attach = function(client, bufnr) 
     on_attach(client, bufnr)
   end,
@@ -116,13 +180,14 @@ lspconfig.solargraph.setup(coq.lsp_ensure_capabilities({
       formatting = false
     }
   }
-}))
-lspconfig.html.setup(coq.lsp_ensure_capabilities(default_config))
-lspconfig.cssls.setup(coq.lsp_ensure_capabilities(default_config))
-lspconfig.bashls.setup(coq.lsp_ensure_capabilities(default_config))
--- lspconfig.jsonls.setup(coq.lsp_ensure_capabilities(default_config))
-lspconfig.vimls.setup(coq.lsp_ensure_capabilities(default_config))
-require('typescript').setup(coq.lsp_ensure_capabilities({
+})
+lspconfig.html.setup(default_config)
+lspconfig.cssls.setup(default_config)
+lspconfig.bashls.setup(default_config)
+-- lspconfig.jsonls.setup(default_config))
+lspconfig.vimls.setup(default_config)
+require('typescript').setup({
+  capabilities = capabilities,
   go_to_source_definition = {
     fallback = true, -- fall back to standard LSP definition on failure
   },
@@ -139,7 +204,7 @@ require('typescript').setup(coq.lsp_ensure_capabilities({
       debounce_text_changes = 150,
     },
   }
-}))
+})
 
 local ember_template_lint = {
   name = "ember-template-lint",
@@ -166,6 +231,7 @@ local sources = {
   }),
   null_ls.builtins.formatting.rubocop,
   null_ls.builtins.diagnostics.rubocop,
+  require("typescript.extensions.null-ls.code-actions"),
 }
 
 null_ls.setup({
