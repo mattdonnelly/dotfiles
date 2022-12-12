@@ -23,6 +23,7 @@ Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'ggandor/lightspeed.nvim'
 Plug 'pechorin/any-jump.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'BurntSushi/ripgrep'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'RRethy/nvim-treesitter-endwise'

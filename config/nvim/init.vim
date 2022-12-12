@@ -43,9 +43,7 @@ if exists('+termguicolors')
 endif
 
 try
-  let g:tokyonight_style = "night"
-  let g:tokyonight_italic_functions = 1
-  colorscheme tokyonight
+  colorscheme tokyonight-night
 catch
   colorscheme koehler
 endtry
@@ -99,6 +97,7 @@ if exists('plugs')
   if has_key(plugs, 'barbar.nvim')
     let bufferline = get(g:, 'bufferline', {})
     let bufferline.clickable = v:true
+    let bufferline.exclude_ft = ['qf', 'nerdtree']
   endif
 
   if has_key(plugs, 'gitsigns.nvim')
