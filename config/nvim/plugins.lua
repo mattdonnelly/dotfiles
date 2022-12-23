@@ -1,3 +1,4 @@
+vim.cmd([[
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'glepnir/dashboard-nvim'
@@ -46,3 +47,4 @@ if filereadable(glob("~/.config/nvim/plugins.local.vim"))
 endif
 
 call plug#end()
+]])
