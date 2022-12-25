@@ -3,9 +3,48 @@ local cmp = require("cmp")
 local null_ls = require("null-ls")
 local null_ls_helpers = require("null-ls.helpers")
 
-local cmp = require'cmp'
+local lsp_symbols = {
+    Text = "   (Text) ",
+    Method = "   (Method)",
+    Function = "   (Function)",
+    Constructor = "   (Constructor)",
+    Field = " ﴲ  (Field)",
+    Variable = "[] (Variable)",
+    Class = "   (Class)",
+    Interface = " ﰮ  (Interface)",
+    Module = "   (Module)",
+    Property = " 襁 (Property)",
+    Unit = "   (Unit)",
+    Value = "   (Value)",
+    Enum = " 練 (Enum)",
+    Keyword = "   (Keyword)",
+    Snippet = "   (Snippet)",
+    Color = "   (Color)",
+    File = "   (File)",
+    Reference = "   (Reference)",
+    Folder = "   (Folder)",
+    EnumMember = "   (EnumMember)",
+    Constant = " ﲀ  (Constant)",
+    Struct = " ﳤ  (Struct)",
+    Event = "   (Event)",
+    Operator = "   (Operator)",
+    TypeParameter = "   (TypeParameter)",
+}
 
 cmp.setup({
+  formatting = {
+    format = function(entry, item)
+      item.kind = lsp_symbols[item.kind]
+      item.menu = ({
+          buffer = "[Buffer]",
+          nvim_lsp = "[LSP]",
+          luasnip = "[Snippet]",
+          neorg = "[Neorg]",
+      })[entry.source.name]
+
+      return item
+    end
+  },
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
