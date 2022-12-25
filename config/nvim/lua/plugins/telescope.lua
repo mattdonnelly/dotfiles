@@ -16,6 +16,13 @@ function fzf_multi_select(prompt_bufnr)
 end
 
 require('telescope').setup{
+  extensions = {
+    fzf = {
+      fuzzy = true,
+      override_generic_sorter = true,
+      override_file_sorter = true,
+    }
+  },
   defaults = {
     mappings = {
       i = {
@@ -61,6 +68,8 @@ require('telescope').setup{
     color_devicons = true,
   }
 }
+
+require('telescope').load_extension('fzf')
  
 vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>",
   {silent = true, noremap = true}

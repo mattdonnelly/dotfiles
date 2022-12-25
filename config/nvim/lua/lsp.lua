@@ -82,7 +82,8 @@ vim.lsp.handlers["textDocument/implementation"] = require"lsputil.locations".imp
 vim.lsp.handlers["textDocument/documentSymbol"] = require"lsputil.symbols".document_handler
 vim.lsp.handlers["workspace/symbol"] = require"lsputil.symbols".workspace_handler
 
-local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
+local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
+-- local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
 for type, icon in pairs(signs) do
   local hl_name = vim.fn.has("nvim-0.6") and "DiagnosticSign" or "LspDiagnosticsSign"
   local hl = hl_name .. type
