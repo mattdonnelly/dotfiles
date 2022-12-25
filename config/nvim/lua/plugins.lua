@@ -59,9 +59,12 @@ return packer.startup(function(use)
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-cmdline',
+      'L3MON4D3/LuaSnip',
       'neovim/nvim-lspconfig',
     },
     config = function()
+      require("luasnip.loaders.from_lua").lazy_load()
+      require("luasnip.loaders.from_vscode").lazy_load()
       require('lsp')
     end
   }

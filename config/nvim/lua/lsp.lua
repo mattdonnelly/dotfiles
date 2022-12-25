@@ -2,6 +2,7 @@ local lspconfig = require("lspconfig")
 local cmp = require("cmp")
 local null_ls = require("null-ls")
 local null_ls_helpers = require("null-ls.helpers")
+local luasnip = require('luasnip')
 
 local lsp_symbols = {
   Text = "   (Text) ",
@@ -32,6 +33,11 @@ local lsp_symbols = {
 }
 
 cmp.setup({
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end
+  },
   formatting = {
     format = function(entry, item)
       item.kind = lsp_symbols[item.kind]
@@ -69,9 +75,10 @@ cmp.setup({
       , { 'i', 'c' }),
   }),
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-  }, {
-    { name = 'buffer' },
+    { name = 'path' },
+    { name = 'nvim_lsp', keyword_length = 3 },
+    { name = 'buffer', keyword_length = 3 },
+    { name = 'luasnip', keyword_length = 2 },
   })
 })
 
@@ -223,7 +230,33 @@ lspconfig.solargraph.setup({
 lspconfig.html.setup(default_config)
 lspconfig.cssls.setup(default_config)
 lspconfig.bashls.setup(default_config)
-lspconfig.sumneko_lua.setup(default_config)
+
+local lua_rtp = vim.split(package.path, ';')
+table.insert(lua_rtp, 'lua/?.lua')
+table.insert(lua_rtp, 'lua/?/init.lua')
+
+lspconfig.sumneko_lua.setup({
+  capabilities = capabilities,
+  on_attach = on_attach,
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+        path = lua_rtp,
+      },
+      diagnostics = {
+        globals = { 'vim' },
+      },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file('', true),
+      },
+      telemetry = {
+        enable = false,
+      },
+    }
+  },
+})
+
 -- lspconfig.jsonls.setup(default_config))
 lspconfig.vimls.setup(default_config)
 require('typescript').setup({
