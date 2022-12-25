@@ -33,7 +33,7 @@ vim.opt.sidescroll = 8
 vim.opt.hidden = true
 vim.opt.backup = false
 vim.opt.writebackup = false
-vim.opt.autochdir = false 
+vim.opt.autochdir = false
 vim.opt.swapfile = true
 vim.opt.autoread = true
 vim.opt.number = true
@@ -95,7 +95,7 @@ vim.api.nvim_create_autocmd('BufReadPost *', {
 
 vim.api.nvim_create_autocmd("BufReadPost", {
   group = group_name,
-  command = [[ 
+  command = [[
     if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
       exe "normal g`\"" |
     endif
@@ -109,4 +109,3 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 pcall(require, 'local.init')
-

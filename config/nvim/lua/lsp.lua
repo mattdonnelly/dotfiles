@@ -4,31 +4,31 @@ local null_ls = require("null-ls")
 local null_ls_helpers = require("null-ls.helpers")
 
 local lsp_symbols = {
-    Text = "   (Text) ",
-    Method = "   (Method)",
-    Function = "   (Function)",
-    Constructor = "   (Constructor)",
-    Field = " ﴲ  (Field)",
-    Variable = "[] (Variable)",
-    Class = "   (Class)",
-    Interface = " ﰮ  (Interface)",
-    Module = "   (Module)",
-    Property = " 襁 (Property)",
-    Unit = "   (Unit)",
-    Value = "   (Value)",
-    Enum = " 練 (Enum)",
-    Keyword = "   (Keyword)",
-    Snippet = "   (Snippet)",
-    Color = "   (Color)",
-    File = "   (File)",
-    Reference = "   (Reference)",
-    Folder = "   (Folder)",
-    EnumMember = "   (EnumMember)",
-    Constant = " ﲀ  (Constant)",
-    Struct = " ﳤ  (Struct)",
-    Event = "   (Event)",
-    Operator = "   (Operator)",
-    TypeParameter = "   (TypeParameter)",
+  Text = "   (Text) ",
+  Method = "   (Method)",
+  Function = "   (Function)",
+  Constructor = "   (Constructor)",
+  Field = " ﴲ  (Field)",
+  Variable = "[] (Variable)",
+  Class = "   (Class)",
+  Interface = " ﰮ  (Interface)",
+  Module = "   (Module)",
+  Property = " 襁 (Property)",
+  Unit = "   (Unit)",
+  Value = "   (Value)",
+  Enum = " 練 (Enum)",
+  Keyword = "   (Keyword)",
+  Snippet = "   (Snippet)",
+  Color = "   (Color)",
+  File = "   (File)",
+  Reference = "   (Reference)",
+  Folder = "   (Folder)",
+  EnumMember = "   (EnumMember)",
+  Constant = " ﲀ  (Constant)",
+  Struct = " ﳤ  (Struct)",
+  Event = "   (Event)",
+  Operator = "   (Operator)",
+  TypeParameter = "   (TypeParameter)",
 }
 
 cmp.setup({
@@ -36,10 +36,10 @@ cmp.setup({
     format = function(entry, item)
       item.kind = lsp_symbols[item.kind]
       item.menu = ({
-          buffer = "[Buffer]",
-          nvim_lsp = "[LSP]",
-          luasnip = "[Snippet]",
-          neorg = "[Neorg]",
+        buffer = "[Buffer]",
+        nvim_lsp = "[LSP]",
+        luasnip = "[Snippet]",
+        neorg = "[Neorg]",
       })[entry.source.name]
 
       return item
@@ -58,7 +58,7 @@ cmp.setup({
       end
       fallback()
     end
-    , { 'i', 'c' }),
+      , { 'i', 'c' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
@@ -66,7 +66,7 @@ cmp.setup({
       end
       fallback()
     end
-    , { 'i', 'c' }),
+      , { 'i', 'c' }),
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
@@ -105,21 +105,19 @@ cmp.setup.cmdline(':', {
   }
 })
 
-vim.cmd [[
-  set completeopt=menuone,noinsert,noselect
-  highlight! default link CmpItemKind CmpItemMenuDefault
-]]
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+vim.cmd [[highlight! default link CmpItemKind CmpItemMenuDefault]]
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-vim.lsp.handlers["textDocument/codeAction"] = require"lsputil.codeAction".code_action_handler
-vim.lsp.handlers["textDocument/references"] = require"lsputil.locations".references_handler
-vim.lsp.handlers["textDocument/definition"] = require"lsputil.locations".definition_handler
-vim.lsp.handlers["textDocument/declaration"] = require"lsputil.locations".declaration_handler
-vim.lsp.handlers["textDocument/typeDefinition"] = require"lsputil.locations".typeDefinition_handler
-vim.lsp.handlers["textDocument/implementation"] = require"lsputil.locations".implementation_handler
-vim.lsp.handlers["textDocument/documentSymbol"] = require"lsputil.symbols".document_handler
-vim.lsp.handlers["workspace/symbol"] = require"lsputil.symbols".workspace_handler
+vim.lsp.handlers["textDocument/codeAction"] = require "lsputil.codeAction".code_action_handler
+vim.lsp.handlers["textDocument/references"] = require "lsputil.locations".references_handler
+vim.lsp.handlers["textDocument/definition"] = require "lsputil.locations".definition_handler
+vim.lsp.handlers["textDocument/declaration"] = require "lsputil.locations".declaration_handler
+vim.lsp.handlers["textDocument/typeDefinition"] = require "lsputil.locations".typeDefinition_handler
+vim.lsp.handlers["textDocument/implementation"] = require "lsputil.locations".implementation_handler
+vim.lsp.handlers["textDocument/documentSymbol"] = require "lsputil.symbols".document_handler
+vim.lsp.handlers["workspace/symbol"] = require "lsputil.symbols".workspace_handler
 
 local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
 -- local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
@@ -145,6 +143,7 @@ local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 local on_attach = function(client, bufnr)
   --Enable completion triggered by <c-x><c-o>
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
   -- vim.api.nvim_command('autocmd CursorHold <buffer> lua vim.diagnostic.open_float(0,{scope=\'line\'})')
@@ -152,7 +151,7 @@ local on_attach = function(client, bufnr)
   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
   -- Mappings.
-  local opts = { noremap=true, silent=true }
+  local opts = { noremap = true, silent = true }
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
@@ -206,7 +205,7 @@ lspconfig.ember.setup({
 })
 lspconfig.solargraph.setup({
   capabilities = capabilities,
-  on_attach = function(client, bufnr) 
+  on_attach = function(client, bufnr)
     on_attach(client, bufnr)
   end,
   flags = {
@@ -224,6 +223,7 @@ lspconfig.solargraph.setup({
 lspconfig.html.setup(default_config)
 lspconfig.cssls.setup(default_config)
 lspconfig.bashls.setup(default_config)
+lspconfig.sumneko_lua.setup(default_config)
 -- lspconfig.jsonls.setup(default_config))
 lspconfig.vimls.setup(default_config)
 require('typescript').setup({
@@ -233,7 +233,7 @@ require('typescript').setup({
   },
   server = {
     on_attach = function(client, bufnr)
-      local opts = { noremap=true, silent=true }
+      local opts = { noremap = true, silent = true }
       vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
       vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspRenameFile<CR>", opts)
       vim.api.nvim_buf_set_keymap(bufnr, "n", "go", ":TSLspImportAll<CR>", opts)

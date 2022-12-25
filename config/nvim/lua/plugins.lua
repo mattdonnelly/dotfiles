@@ -1,8 +1,8 @@
 local ensure_packer = function()
   local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
   if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
     vim.cmd [[packadd packer.nvim]]
     print('Installed packer. Close and reopen Neovim...')
     return true
@@ -144,7 +144,7 @@ return packer.startup(function(use)
     'jose-elias-alvarez/typescript.nvim'
   }
   use {
-    'lewis6991/gitsigns.nvim', 
+    'lewis6991/gitsigns.nvim',
     event = 'BufReadPre',
     config = function()
       require('gitsigns').setup()
@@ -180,7 +180,7 @@ return packer.startup(function(use)
       'nvim-lua/plenary.nvim',
       'BurntSushi/ripgrep',
       'sharkdp/fd',
-      {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'},
+      { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
     },
     config = function()
       require('plugins.telescope')
@@ -264,9 +264,9 @@ return packer.startup(function(use)
       vim.keymap.set('n', '<leader>tn', ':TestNearest<CR>')
       vim.keymap.set('n', '<leader>tl', ':TestLast<CR>')
       vim.g['test#strategy'] = {
-       nearest = 'floaterm',
-       file = 'floaterm',
-       suite = 'basic',
+        nearest = 'floaterm',
+        file = 'floaterm',
+        suite = 'basic',
       }
     end
   }
@@ -280,4 +280,3 @@ return packer.startup(function(use)
     require('packer').sync()
   end
 end)
-
