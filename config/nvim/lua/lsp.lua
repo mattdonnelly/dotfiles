@@ -231,24 +231,15 @@ lspconfig.html.setup(default_config)
 lspconfig.cssls.setup(default_config)
 lspconfig.bashls.setup(default_config)
 
-local lua_rtp = vim.split(package.path, ';')
-table.insert(lua_rtp, 'lua/?.lua')
-table.insert(lua_rtp, 'lua/?/init.lua')
+require("neodev").setup()
 
 lspconfig.sumneko_lua.setup({
   capabilities = capabilities,
   on_attach = on_attach,
   settings = {
     Lua = {
-      runtime = {
-        version = 'LuaJIT',
-        path = lua_rtp,
-      },
       diagnostics = {
         globals = { 'vim' },
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file('', true),
       },
       telemetry = {
         enable = false,

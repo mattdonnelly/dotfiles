@@ -15,7 +15,7 @@ function fzf_multi_select(prompt_bufnr)
   end
 end
 
-require('telescope').setup{
+require('telescope').setup {
   extensions = {
     fzf = {
       fuzzy = true,
@@ -58,7 +58,7 @@ require('telescope').setup{
       preview_cutoff = 120,
     },
     path_display = { "smart" },
-    file_ignore_patterns = {"node_modules","%.out"},
+    file_ignore_patterns = { "node_modules", "%.out" },
     prompt_prefix = " 🔭  ",
     selection_caret = "  ",
     entry_prefix = "  ",
@@ -70,24 +70,24 @@ require('telescope').setup{
 }
 
 require('telescope').load_extension('fzf')
- 
+
 vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>",
-  {silent = true, noremap = true}
+  { silent = true, noremap = true }
 )
 vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<CR>",
-  {silent = true, noremap = true}
+  { silent = true, noremap = true }
 )
 vim.api.nvim_set_keymap("n", "<leader>f/", "<cmd>Telescope live_grep<CR>",
-  {silent = true, noremap = true}
+  { silent = true, noremap = true }
 )
 vim.api.nvim_set_keymap("n", "<leader>fo", "<cmd>lua require('telescope.builtin').oldfiles({ only_cwd = true })<CR>",
-  {silent = true, noremap = true}
+  { silent = true, noremap = true }
 )
 vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>Telescope buffers<CR>",
-  {silent = true, noremap = true}
+  { silent = true, noremap = true }
 )
 vim.api.nvim_set_keymap("n", "<leader>c", "<cmd>Telescope lsp_code_actions<CR>",
-  {silent = true, noremap = true}
+  { silent = true, noremap = true }
 )
 
 local colors = require('tokyonight.colors').setup({})
