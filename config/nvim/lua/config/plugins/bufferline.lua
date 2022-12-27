@@ -6,7 +6,14 @@ return {
     { 'gn', '<cmd>:BufferLineCycleNext<CR>', desc = 'Next buffer' },
   },
   config = function()
-    local signs = { error = " ", warning = " ", hint = " ", info = " " }
+    local diagnostics = require('config.plugins.lsp.diagnostics')
+
+    local signs = {
+      error = diagnostics.signs.Error,
+      warning = diagnostics.signs.Warning,
+      hint = diagnostics.signs.Hint,
+      info = diagnostics.signs.Information,
+    }
 
     local severities = {
       'error',

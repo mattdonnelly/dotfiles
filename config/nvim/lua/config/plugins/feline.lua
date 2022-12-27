@@ -251,7 +251,8 @@ return {
           'packer',
           'startify',
           'fugitive',
-          'fugitiveblame'
+          'fugitiveblame',
+          'neo-tree',
         },
         buftypes = { 'terminal' },
         bufnames = {}
