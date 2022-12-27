@@ -1,21 +1,25 @@
 local M = {}
 
-function M.setup()
-  vim.lsp.handlers['textDocument/codeAction'] = require('lsputil.codeAction').code_action_handler
-  vim.lsp.handlers['textDocument/references'] = require('lsputil.locations').references_handler
-  vim.lsp.handlers['textDocument/definition'] = require('lsputil.locations').definition_handler
-  vim.lsp.handlers['textDocument/declaration'] = require('lsputil.locations').declaration_handler
-  vim.lsp.handlers['textDocument/typeDefinition'] = require('lsputil.locations').typeDefinition_handler
-  vim.lsp.handlers['textDocument/implementation'] = require('lsputil.locations').implementation_handler
-  vim.lsp.handlers['textDocument/documentSymbol'] = require('lsputil.symbols').document_handler
-  vim.lsp.handlers['workspace/symbol'] = require('lsputil.symbols').workspace_handler
+local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
 
-  return function(bufnr)
-    vim.lsp.buf.format({
-      filter = function(client)
-        return client.name ~= 'tsserver' and client.name ~= 'solargraph' and client.name ~= 'ember'
+function M.format(bufnr)
+  vim.lsp.buf.format({
+    filter = function(client)
+      return client.name ~= 'tsserver' and client.name ~= 'solargraph' and client.name ~= 'ember'
+    end,
+    bufnr = bufnr,
+  })
+end
+
+function M.setup(client, bufnr)
+  if client.supports_method('textDocument/formatting') then
+    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      group = augroup,
+      buffer = bufnr,
+      callback = function()
+        M.format(bufnr)
       end,
-      bufnr = bufnr,
     })
   end
 end
