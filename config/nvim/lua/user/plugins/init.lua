@@ -8,7 +8,8 @@ local plugins = {
   'nvim-lua/popup.nvim',
   'nvim-lua/plenary.nvim',
 
-  { 'christoomey/vim-tmux-navigator', event = 'VeryLazy' },
+  { 'folke/noice.nvim', event = 'VeryLazy', config = true },
+  { 'numToStr/Navigator.nvim', event = 'VeryLazy', config = true },
   {
     'tpope/vim-surround',
     event = 'VeryLazy',
@@ -72,8 +73,9 @@ local plugins = {
 
 local has_local_plugins, local_plugins = pcall(require, 'local.plugins')
 if has_local_plugins then
-  --- @diagnostic disable-next-line: deprecated
-  table.move(local_plugins, 1, #local_plugins, #plugins + 1, plugins)
+  for _, p in pairs(local_plugins) do
+    table.insert(plugins, p)
+  end
 end
 
 return plugins
