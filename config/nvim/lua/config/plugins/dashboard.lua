@@ -30,11 +30,11 @@ return {
     }
 
     db.custom_center = {
-      { icon = '  ', desc = 'Find file                ', shortcut = 'SPC f f', action = 'Telescope find_files' },
-      { icon = '  ', desc = 'Recent files             ', shortcut = 'SPC f o', action = 'Telescope oldfiles' },
-      { icon = '  ', desc = 'Find word                ', shortcut = 'SPC f /', action = 'Telescope live_grep' },
-      { icon = '  ', desc = 'New file                 ', shortcut = 'SPC f n', action = 'enew' },
-      { icon = '  ', desc = 'Settings                 ', shortcut = 'e $MYVIMRC', action = 'edit $MYVIMRC'}
+      { icon = '  ', desc = 'Find file                   ', shortcut = 'SPC f f', action = 'Telescope find_files' },
+      { icon = '  ', desc = 'Recent files                ', shortcut = 'SPC f o', action = 'Telescope oldfiles' },
+      { icon = '  ', desc = 'Find word                   ', shortcut = 'SPC f /', action = 'Telescope live_grep' },
+      { icon = '  ', desc = 'New file                    ', shortcut = 'SPC f n', action = 'enew' },
+      { icon = '  ', desc = 'Settings                 ', shortcut = 'e $MYVIMRC', action = 'edit $MYVIMRC' }
     }
   end
 }
