@@ -4,34 +4,6 @@ local null_ls = require("null-ls")
 local null_ls_helpers = require("null-ls.helpers")
 local luasnip = require('luasnip')
 
-local lsp_symbols = {
-  Text = "   (Text) ",
-  Method = "   (Method)",
-  Function = "   (Function)",
-  Constructor = "   (Constructor)",
-  Field = " ﴲ  (Field)",
-  Variable = "[] (Variable)",
-  Class = "   (Class)",
-  Interface = " ﰮ  (Interface)",
-  Module = "   (Module)",
-  Property = " 襁 (Property)",
-  Unit = "   (Unit)",
-  Value = "   (Value)",
-  Enum = " 練 (Enum)",
-  Keyword = "   (Keyword)",
-  Snippet = "   (Snippet)",
-  Color = "   (Color)",
-  File = "   (File)",
-  Reference = "   (Reference)",
-  Folder = "   (Folder)",
-  EnumMember = "   (EnumMember)",
-  Constant = " ﲀ  (Constant)",
-  Struct = " ﳤ  (Struct)",
-  Event = "   (Event)",
-  Operator = "   (Operator)",
-  TypeParameter = "   (TypeParameter)",
-}
-
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -115,7 +87,8 @@ cmp.setup.cmdline(':', {
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 vim.cmd [[highlight! default link CmpItemKind CmpItemMenuDefault]]
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 vim.lsp.handlers["textDocument/codeAction"] = require "lsputil.codeAction".code_action_handler
 vim.lsp.handlers["textDocument/references"] = require "lsputil.locations".references_handler
@@ -189,6 +162,14 @@ local on_attach = function(client, bufnr)
     })
   end
 end
+
+require('mason').setup()
+require('mason-lspconfig').setup {
+  ensure_installed = {
+    'sumneko_lua'
+  },
+}
+
 
 -- Use a loop to conveniently call "setup" on multiple servers and
 -- map buffer local keybindings when the language server attaches
