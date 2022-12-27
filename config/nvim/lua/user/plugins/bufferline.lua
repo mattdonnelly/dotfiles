@@ -2,7 +2,7 @@ return {
   'akinsho/nvim-bufferline.lua',
   event = 'BufAdd',
   config = function()
-    local diagnostics = require('config.plugins.lsp.diagnostics')
+    local diagnostics = require('user.plugins.lsp.diagnostics')
 
     local signs = {
       error = diagnostics.signs.Error,

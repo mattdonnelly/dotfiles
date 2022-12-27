@@ -1,14 +1,14 @@
 -- .vimrc of Matt Donnelly
 
-require('config.options')
+require('user.options')
 
-require('config.lazy')
+require('user.lazy')
 
 vim.api.nvim_create_autocmd('User', {
   pattern = 'VeryLazy',
   callback = function()
-    require('config.commands')
-    require('config.mappings')
+    require('user.commands')
+    require('user.mappings')
   end,
 })
 

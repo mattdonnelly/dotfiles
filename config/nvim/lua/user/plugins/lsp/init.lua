@@ -9,11 +9,11 @@ return {
   },
   config = function()
     require('mason')
-    require('config.plugins.lsp.diagnostics').setup()
+    require('user.plugins.lsp.diagnostics').setup()
 
     local on_attach = function(client, bufnr)
-      require('config.plugins.lsp.keymaps').setup(bufnr)
-      require('config.plugins.lsp.formatting').setup(client, bufnr)
+      require('user.plugins.lsp.keymaps').setup(bufnr)
+      require('user.plugins.lsp.formatting').setup(client, bufnr)
     end
 
     local lspconfig = require('lspconfig')
