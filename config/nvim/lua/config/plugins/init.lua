@@ -86,6 +86,7 @@ local plugins = {
 
 local has_local_plugins, local_plugins = pcall(require, 'local.plugins')
 if has_local_plugins then
+  --- @diagnostic disable-next-line: deprecated
   table.move(local_plugins, 1, #local_plugins, #plugins + 1, plugins)
 end
 

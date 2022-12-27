@@ -1,7 +1,3 @@
-vim.api.nvim_create_autocmd('BufReadPost *', {
-  command = 'nnoremap <buffer> q <cmd>quit<cr>'
-})
-
 vim.api.nvim_create_autocmd("BufReadPost", {
   command = [[
     if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |

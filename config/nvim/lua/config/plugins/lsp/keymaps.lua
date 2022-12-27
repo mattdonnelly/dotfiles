@@ -1,29 +1,40 @@
 local M = {}
 
 function M.setup(bufnr)
+  local wk = require('which-key')
+
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  local bufopts = { noremap = true, silent = true, buffer = bufnr }
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, bufopts)
-  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<space>=', function() vim.lsp.buf.format { async = true } end, bufopts)
-  vim.keymap.set('n', '<space>e', function()
-    vim.diagnostic.open_float(nil, { border = 'rounded', focusable = false, scope = 'cursor' })
-  end, bufopts)
-  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
-  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
+  local keymap = {
+    buffer = bufnr,
+    ['<leader>'] = {
+      wa = { vim.lsp.buf.add_workspace_folder, 'Add workspace folder' },
+      wr = { vim.lsp.buf.remove_workspace_folder, 'Remove workspace folder' },
+      wl = { function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, 'Inspect workspace folder' },
+      rn = { vim.lsp.buf.rename, 'Rename' },
+      ca = {
+        { vim.lsp.buf.code_action, 'Run code action' },
+        { '<cmd>lua vim.lsp.buf.code_action()<cr>', 'Code Action', mode = 'v' },
+      },
+      ['='] = { function() vim.lsp.buf.format({ async = true }) end, 'Format' },
+      e = { function() vim.diagnostic.open_float(nil, { border = 'rounded', focusable = false, scope = 'cursor' }) end, 'Show diagnostics' }
+    },
+    g = {
+      name = '+goto',
+      D = { vim.lsp.buf.declaration, 'Go to declaration' },
+      d = { vim.lsp.buf.definition, 'Go to definition' },
+      i = { vim.lsp.buf.implementation, 'Go to definition' },
+      r = { vim.lsp.buf.references, 'Show references' },
+      R = { '<cmd>Trouble lsp_references<cr>', 'Trouble references' },
+      t = { vim.lsp.buf.type_definition, 'Type defintion' },
+    },
+    K = { vim.lsp.buf.hover, 'Hover' },
+    ['<C-k>'] = { vim.lsp.buf.signature_help, 'Show signature', mode = { 'n', 'i' }  },
+    ['[d'] = { vim.diagnostic.goto_prev, 'Previous diagnostic' },
+    [']d'] = { vim.diagnostic.goto_next, 'Next diagnostic' },
+  }
+
+  wk.register(keymap)
 end
 
 return M

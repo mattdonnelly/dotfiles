@@ -1,4 +1,4 @@
-vim.o.timeoutlen = 300
+vim.o.timeoutlen = 500
 
 vim.keymap.set('n', ';', ':')
 
