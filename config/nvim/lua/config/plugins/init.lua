@@ -9,7 +9,13 @@ local plugins = {
   'nvim-lua/plenary.nvim',
 
   { 'christoomey/vim-tmux-navigator', event = 'VeryLazy' },
-  { 'tpope/vim-surround', event = 'VeryLazy' },
+  {
+    'tpope/vim-surround',
+    event = 'VeryLazy',
+    dependencies = {
+      'tpope/vim-repeat'
+    }
+  },
   {
     'folke/which-key.nvim',
     event = 'BufReadPost',
@@ -38,7 +44,7 @@ local plugins = {
     cmd = 'AnyJump',
     keys = { '<leader>j', '<cmd>AnyJump<CR>', desc = 'Open AnyJump' }
   },
-  { 'ntpeters/vim-better-whitespace', event = 'BufRead' },
+  { 'ntpeters/vim-better-whitespace', event = 'BufReadPost' },
   { 'psliwka/vim-smoothie', event = 'BufWinEnter' },
   {
     'petertriho/nvim-scrollbar',

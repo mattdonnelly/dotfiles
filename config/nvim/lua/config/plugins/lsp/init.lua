@@ -2,6 +2,7 @@ return {
   'neovim/nvim-lspconfig',
   event = 'BufReadPre',
   dependencies = {
+    'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'hrsh7th/cmp-nvim-lsp',
     'jose-elias-alvarez/null-ls.nvim',
@@ -9,6 +10,9 @@ return {
   },
   config = function()
     require('mason')
+    require('config.plugins.lsp.diagnostics').setup()
+    local lsp_formatting = require('config.plugins.lsp.formatting').setup()
+
     local lspconfig = require('lspconfig')
     local null_ls = require('null-ls')
     local null_ls_helpers = require('null-ls.helpers')
@@ -16,31 +20,7 @@ return {
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-    vim.lsp.handlers['textDocument/codeAction'] = require('lsputil.codeAction').code_action_handler
-    vim.lsp.handlers['textDocument/references'] = require('lsputil.locations').references_handler
-    vim.lsp.handlers['textDocument/definition'] = require('lsputil.locations').definition_handler
-    vim.lsp.handlers['textDocument/declaration'] = require('lsputil.locations').declaration_handler
-    vim.lsp.handlers['textDocument/typeDefinition'] = require('lsputil.locations').typeDefinition_handler
-    vim.lsp.handlers['textDocument/implementation'] = require('lsputil.locations').implementation_handler
-    vim.lsp.handlers['textDocument/documentSymbol'] = require('lsputil.symbols').document_handler
-    vim.lsp.handlers['workspace/symbol'] = require('lsputil.symbols').workspace_handler
 
-    local signs = { Error = ' ', Warning = ' ', Hint = ' ', Information = ' ' }
-    -- local signs = { Error = ' ', Warning = ' ', Hint = ' ', Information = ' ' }
-    for type, icon in pairs(signs) do
-      local hl_name = vim.fn.has('nvim-0.6') and 'DiagnosticSign' or 'LspDiagnosticsSign'
-      local hl = hl_name .. type
-      vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-    end
-
-    local lsp_formatting = function(bufnr)
-      vim.lsp.buf.format({
-        filter = function(client)
-          return client.name ~= 'tsserver' and client.name ~= 'solargraph' and client.name ~= 'ember'
-        end,
-        bufnr = bufnr,
-      })
-    end
 
     local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
 
@@ -97,6 +77,11 @@ return {
       }
     }
 
+    lspconfig.html.setup(default_config)
+    lspconfig.cssls.setup(default_config)
+    lspconfig.bashls.setup(default_config)
+    lspconfig.vimls.setup(default_config)
+
     lspconfig.ember.setup({
       capabilities = capabilities,
       on_attach = function(client, bufnr)
@@ -107,6 +92,7 @@ return {
       end,
       root_dir = lspconfig.util.root_pattern('ember-cli-build.js')
     })
+
     lspconfig.solargraph.setup({
       capabilities = capabilities,
       on_attach = function(client, bufnr)
@@ -124,12 +110,8 @@ return {
         }
       }
     })
-    lspconfig.html.setup(default_config)
-    lspconfig.cssls.setup(default_config)
-    lspconfig.bashls.setup(default_config)
 
     require('neodev').setup()
-
     lspconfig.sumneko_lua.setup({
       capabilities = capabilities,
       on_attach = on_attach,
@@ -145,8 +127,6 @@ return {
       },
     })
 
-    -- lspconfig.jsonls.setup(default_config))
-    lspconfig.vimls.setup(default_config)
     require('typescript').setup({
       capabilities = capabilities,
       go_to_source_definition = {
