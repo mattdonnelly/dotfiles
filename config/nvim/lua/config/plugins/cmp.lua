@@ -11,6 +11,8 @@ return {
   },
   config = function()
     local cmp = require('cmp')
+    local luasnip = require('luasnip')
+    local has_copilot, _ = pcall(require, 'copilot_cmp')
 
     local lsp_symbols = {
       Text = "   (Text) ",
@@ -43,6 +45,22 @@ return {
     vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
     vim.cmd([[highlight! default link CmpItemKind CmpItemMenuDefault]])
 
+    local sources = {
+      { name = 'path', group_index = 2 },
+      { name = 'nvim_lsp', group_index = 2 },
+      { name = 'buffer', group_index = 2 },
+      { name = 'luasnip', group_index = 2 },
+    }
+
+    if has_copilot then
+      table.insert(sources, 1, { name = 'copilot', group_index = 2, max_item_count = 3 })
+    end
+
+    local check_backspace = function()
+      local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+      return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
+    end
+
     cmp.setup({
       snippet = {
         expand = function(args)
@@ -52,37 +70,53 @@ return {
       mapping = cmp.mapping.preset.insert({
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-Space>'] = cmp.mapping.complete({}),
         ['<C-e>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        ["<CR>"] = cmp.mapping.confirm { select = false },
         ['<Tab>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
-            return
+          elseif luasnip.jumpable(1) then
+            luasnip.jump(1)
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          elseif luasnip.expandable() then
+            luasnip.expand()
+          elseif check_backspace() then
+            -- cmp.complete()
+            fallback()
+          else
+            fallback()
           end
-          fallback()
         end
           , { 'i', 'c' }),
         ['<S-Tab>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_prev_item()
-            return
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
           end
-          fallback()
         end
           , { 'i', 'c' }),
       }),
-      sources = cmp.config.sources({
-        { name = 'path' },
-        { name = 'nvim_lsp', keyword_length = 3 },
-        { name = 'buffer', keyword_length = 3 },
-        { name = 'luasnip', keyword_length = 2 },
-      }),
+      sources = cmp.config.sources(sources),
+      confirm_opts = {
+        behavior = cmp.ConfirmBehavior.Replace,
+        select = false,
+      },
       formatting = {
         format = function(entry, item)
-          item.kind = lsp_symbols[item.kind]
+
+          if entry.source.name == "copilot" then
+            item.kind = '  (Copilot)'
+          else
+            item.kind = lsp_symbols[item.kind]
+          end
           item.menu = ({
             buffer = "[Buffer]",
+            copilot = "[Copilot]",
             nvim_lsp = "[LSP]",
             luasnip = "[Snippet]",
             neorg = "[Neorg]",
@@ -90,6 +124,9 @@ return {
 
           return item
         end
+      },
+      experimental = {
+        ghost_text = true,
       },
     })
 
