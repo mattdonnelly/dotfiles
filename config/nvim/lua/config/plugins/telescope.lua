@@ -7,7 +7,6 @@ return {
     { '<leader>fb', '<cmd>Telescope buffers<CR>', desc = 'Buffers' },
     { '<leader>f/', '<cmd>Telescope live_grep<CR>', desc = 'Live search' },
     { '<leader>fo', [[<cmd>lua require('telescope.builtin').oldfiles({ only_cwd = true })<CR>]], desc = 'Recent files' },
-    { '<leader>fc', '<cmd>Telescope lsp_code_actions<CR>', desc = 'Code actions' },
   },
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
