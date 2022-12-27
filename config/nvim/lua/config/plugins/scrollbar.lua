@@ -13,6 +13,7 @@ return {
         'TelescopePrompt',
         'noice',
         'notify',
+        'neo-tree',
       },
       marks = {
         Search = { color = colors.orange },

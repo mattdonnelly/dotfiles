@@ -7,6 +7,7 @@ function M.setup(bufnr)
 
   local keymap = {
     buffer = bufnr,
+    name = '+lsp',
     ['<leader>'] = {
       wa = { vim.lsp.buf.add_workspace_folder, 'Add workspace folder' },
       wr = { vim.lsp.buf.remove_workspace_folder, 'Remove workspace folder' },
@@ -17,7 +18,8 @@ function M.setup(bufnr)
         { '<cmd>lua vim.lsp.buf.code_action()<cr>', 'Code Action', mode = 'v' },
       },
       ['='] = { function() vim.lsp.buf.format({ async = true }) end, 'Format' },
-      e = { function() vim.diagnostic.open_float(nil, { border = 'rounded', focusable = false, scope = 'cursor' }) end, 'Show diagnostics' }
+      e = { function() vim.diagnostic.open_float(nil, { border = 'rounded', focusable = false, scope = 'cursor' }) end,
+        'Show diagnostics' }
     },
     g = {
       name = '+goto',
@@ -29,7 +31,7 @@ function M.setup(bufnr)
       t = { vim.lsp.buf.type_definition, 'Type defintion' },
     },
     K = { vim.lsp.buf.hover, 'Hover' },
-    ['<C-k>'] = { vim.lsp.buf.signature_help, 'Show signature', mode = { 'n', 'i' }  },
+    ['<C-k>'] = { vim.lsp.buf.signature_help, 'Show signature', mode = { 'n', 'i' } },
     ['[d'] = { vim.diagnostic.goto_prev, 'Previous diagnostic' },
     [']d'] = { vim.diagnostic.goto_next, 'Next diagnostic' },
   }

@@ -1,9 +1,6 @@
 return {
   'glepnir/dashboard-nvim',
   event = 'BufWinEnter',
-  keys = {
-    { '<leader>fn', '<cmd>DashboardNewFile<CR>', desc = 'New file' }
-  },
   config = function()
     local db = require('dashboard')
 

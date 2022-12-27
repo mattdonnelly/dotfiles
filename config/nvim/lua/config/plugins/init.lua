@@ -18,25 +18,25 @@ local plugins = {
   },
   {
     'folke/which-key.nvim',
-    event = 'BufReadPost',
     config = {
       show_help = false,
       triggers = 'auto',
-      plugins = { spelling = true },
+      plugins = {
+        registers = false
+      },
       key_labels = { ['<leader>'] = 'SPC' },
     }
   },
   {
     'mbbill/undotree',
     cmd = { 'UndotreeToggle', 'UndotreeShow', 'UndotreeHide', 'UndotreeFocus' },
-    keys = {
-      { '<leader>u', ':UndotreeToggle<CR>' }
-    },
   },
   {
     'pechorin/any-jump.nvim',
-    cmd = 'AnyJump',
-    keys = { '<leader>j', '<cmd>AnyJump<CR>', desc = 'Open AnyJump' }
+    cmd = { 'AnyJump', 'AnyJumpVisual' },
+    config = function()
+      vim.g['any_jump_disable_default_keybindings'] = 1
+    end
   },
   { 'ntpeters/vim-better-whitespace', event = 'BufReadPost' },
   { 'psliwka/vim-smoothie', event = 'BufWinEnter' },
@@ -56,14 +56,11 @@ local plugins = {
   },
   {
     'vim-test/vim-test',
-    keys = { '<leader>t', '<leader>s', '<leader>l' },
+    cmd = { 'TestFile', 'TestNearest', 'TestLast' },
     dependencies = {
       'voldikss/vim-floaterm',
     },
     config = function()
-      vim.keymap.set('n', '<leader>tt', ':TestFile<CR>')
-      vim.keymap.set('n', '<leader>tn', ':TestNearest<CR>')
-      vim.keymap.set('n', '<leader>tl', ':TestLast<CR>')
       vim.g['test#strategy'] = {
         nearest = 'floaterm',
         file = 'floaterm',

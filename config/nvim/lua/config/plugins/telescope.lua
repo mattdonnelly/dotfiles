@@ -2,12 +2,6 @@ return {
   'nvim-telescope/telescope.nvim',
   version = '0.1.0',
   cmd = { 'Telescope' },
-  keys = {
-    { '<leader>ff', '<cmd>Telescope find_files<CR>', desc = 'Find files' },
-    { '<leader>fb', '<cmd>Telescope buffers<CR>', desc = 'Buffers' },
-    { '<leader>f/', '<cmd>Telescope live_grep<CR>', desc = 'Live search' },
-    { '<leader>fo', [[<cmd>lua require('telescope.builtin').oldfiles({ only_cwd = true })<CR>]], desc = 'Recent files' },
-  },
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
     'nvim-lua/plenary.nvim',

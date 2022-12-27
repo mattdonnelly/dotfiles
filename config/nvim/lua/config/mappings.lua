@@ -6,3 +6,40 @@ vim.keymap.set('n', '<Up>', '<nop>')
 vim.keymap.set('n', '<Down>', '<nop>')
 vim.keymap.set('n', '<Left>', '<nop>')
 vim.keymap.set('n', '<Right>', '<nop>')
+
+local wk = require('which-key')
+wk.register({
+  ['<leader>'] = {
+    f = {
+      name = '+files',
+      f = { '<cmd>Telescope find_files<CR>', 'Find files' },
+      b = { '<cmd>Telescope buffers<CR>', 'Buffers' },
+      ['/'] = { '<cmd>Telescope live_grep<CR>', 'Live search' },
+      o = { [[<cmd>lua require('telescope.builtin').oldfiles({ only_cwd = true })<CR>]], 'Recent files' },
+      n = { '<cmd>DashboardNewFile<CR>', 'New file' }
+    },
+    j = {
+      { '<cmd>AnyJump<CR>', 'AnyJump cursor' },
+      { '<cmd>AnyJumpVisual<CR>', 'AnyJump selected', mode = 'v' },
+    },
+    m = {
+      name = '+jumpwire',
+    },
+    n = { '<cmd>Neotree toggle<cr>', 'NeoTree' },
+    t = {
+      name = '+tests',
+      t = { ':TestFile<CR>', 'Run full tests' },
+      n = { ':TestNearest<CR>', 'Run nearest test' },
+      l = { ':TestLast<CR>', 'Run last test' },
+    },
+    u = { ':UndotreeToggle<CR>', 'Open Undotree' },
+    x = {
+      name = '+trouble',
+      x = { '<cmd>Trouble<cr>', 'Open trouble' },
+      w = { '<cmd>Trouble workspace_diagnostics<cr>', 'Trouble workspace' },
+      d = { '<cmd>Trouble document_diagnostics<cr>', 'Trouble document' },
+      l = { '<cmd>Trouble loclist<cr>', 'Trouble loclist' },
+      q = { '<cmd>Trouble quickfix<cr>', 'Trouble quickfix' },
+    }
+  }
+})

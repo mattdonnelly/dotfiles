@@ -7,6 +7,7 @@ return {
     'hrsh7th/cmp-emoji',
     'hrsh7th/cmp-path',
     'folke/neodev.nvim',
+    'L3MON4D3/LuaSnip',
     'saadparwaiz1/cmp_luasnip',
   },
   config = function()
@@ -81,9 +82,8 @@ return {
           elseif luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
           elseif luasnip.expandable() then
-            luasnip.expand()
+            luasnip.expand({ trigger = '<Tab>' })
           elseif check_backspace() then
-            -- cmp.complete()
             fallback()
           else
             fallback()
@@ -153,7 +153,7 @@ return {
         { name = 'cmdline' }
       }),
       completion = {
-        autocomplete = false,
+        autocomplete = {},
       }
     })
   end

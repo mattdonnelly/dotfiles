@@ -1,9 +1,6 @@
 return {
   'nvim-neo-tree/neo-tree.nvim',
   cmd = 'Neotree',
-  keys = {
-    { '<leader>n', '<cmd>Neotree toggle<cr>', desc = 'NeoTree' },
-  },
   version = 'v2.x',
   dependencies = {
     'MunifTanjim/nui.nvim'
