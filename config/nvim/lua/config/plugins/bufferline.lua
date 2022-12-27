@@ -1,6 +1,6 @@
 return {
   'akinsho/nvim-bufferline.lua',
-  event = 'BufReadPre',
+  event = 'BufAdd',
   keys = {
     { 'gp', '<cmd>:BufferLineCyclePrev<CR>', desc = 'Previous buffer' },
     { 'gn', '<cmd>:BufferLineCycleNext<CR>', desc = 'Next buffer' },
