@@ -7,11 +7,13 @@ function M.setup(bufnr)
 
   local keymap = {
     buffer = bufnr,
-    name = '+lsp',
     ['<leader>'] = {
-      wa = { vim.lsp.buf.add_workspace_folder, 'Add workspace folder' },
-      wr = { vim.lsp.buf.remove_workspace_folder, 'Remove workspace folder' },
-      wl = { function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, 'Inspect workspace folder' },
+      w = {
+        name = '+workspace',
+        a = { vim.lsp.buf.add_workspace_folder, 'Add workspace folder' },
+        r = { vim.lsp.buf.remove_workspace_folder, 'Remove workspace folder' },
+        l = { function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, 'Inspect workspace folder' },
+      },
       rn = { vim.lsp.buf.rename, 'Rename' },
       ca = {
         { vim.lsp.buf.code_action, 'Run code action' },
