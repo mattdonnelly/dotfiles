@@ -26,12 +26,6 @@ local plugins = {
       key_labels = { ['<leader>'] = 'SPC' },
     }
   },
-
-  {
-    'lewis6991/gitsigns.nvim',
-    event = 'BufReadPre',
-    config = true,
-  },
   {
     'mbbill/undotree',
     cmd = { 'UndotreeToggle', 'UndotreeShow', 'UndotreeHide', 'UndotreeFocus' },
@@ -46,11 +40,6 @@ local plugins = {
   },
   { 'ntpeters/vim-better-whitespace', event = 'BufReadPost' },
   { 'psliwka/vim-smoothie', event = 'BufWinEnter' },
-  {
-    'petertriho/nvim-scrollbar',
-    event = 'BufWinEnter',
-    config = true,
-  },
   {
     'numToStr/Comment.nvim',
     event = 'BufReadPost',
