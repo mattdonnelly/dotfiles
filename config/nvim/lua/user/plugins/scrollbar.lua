@@ -1,19 +1,19 @@
 return {
-  'petertriho/nvim-scrollbar',
-  event = 'BufReadPost',
+  "petertriho/nvim-scrollbar",
+  event = "BufReadPost",
   config = function()
-    local scrollbar = require('scrollbar')
-    local colors = require('tokyonight.colors').setup()
+    local scrollbar = require("scrollbar")
+    local colors = require("tokyonight.colors").setup()
     scrollbar.setup({
       handle = {
         color = colors.bg_highlight,
       },
       excluded_filetypes = {
-        'prompt',
-        'TelescopePrompt',
-        'noice',
-        'notify',
-        'neo-tree',
+        "prompt",
+        "TelescopePrompt",
+        "noice",
+        "notify",
+        "neo-tree",
       },
       marks = {
         Search = { color = colors.orange },
@@ -24,5 +24,5 @@ return {
         Misc = { color = colors.purple },
       },
     })
-  end
+  end,
 }

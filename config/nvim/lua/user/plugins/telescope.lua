@@ -1,17 +1,17 @@
 return {
-  'nvim-telescope/telescope.nvim',
-  version = '0.1.0',
-  cmd = { 'Telescope' },
+  "nvim-telescope/telescope.nvim",
+  version = "0.1.0",
+  cmd = { "Telescope" },
   dependencies = {
-    'nvim-treesitter/nvim-treesitter',
-    'nvim-lua/plenary.nvim',
-    'BurntSushi/ripgrep',
-    'sharkdp/fd',
-    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    "nvim-treesitter/nvim-treesitter",
+    "nvim-lua/plenary.nvim",
+    "BurntSushi/ripgrep",
+    "sharkdp/fd",
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   },
   config = function()
-    local actions = require('telescope.actions')
-    local action_state = require('telescope.actions.state')
+    local actions = require("telescope.actions")
+    local action_state = require("telescope.actions.state")
 
     local custom_actions = {}
 
@@ -29,38 +29,38 @@ return {
       end
     end
 
-    require('telescope').setup({
+    require("telescope").setup({
       extensions = {
         fzf = {
           fuzzy = true,
           override_generic_sorter = true,
           override_file_sorter = true,
-        }
+        },
       },
       defaults = {
         mappings = {
           i = {
-            ['<esc>'] = actions.close,
-            ['<tab>'] = actions.toggle_selection + actions.move_selection_next,
-            ['<s-tab>'] = actions.toggle_selection + actions.move_selection_previous,
-            ['<cr>'] = custom_actions.fzf_multi_select
+            ["<esc>"] = actions.close,
+            ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
+            ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
+            ["<cr>"] = custom_actions.fzf_multi_select,
           },
           n = {
-            ['<tab>'] = actions.toggle_selection + actions.move_selection_next,
-            ['<s-tab>'] = actions.toggle_selection + actions.move_selection_previous,
-            ['<cr>'] = custom_actions.fzf_multi_select
-          }
+            ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
+            ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
+            ["<cr>"] = custom_actions.fzf_multi_select,
+          },
         },
         pickers = {
           lsp_code_actions = {
-            theme = 'cursor'
+            theme = "cursor",
           },
         },
-        sorting_strategy = 'ascending',
-        layout_strategy = 'horizontal',
+        sorting_strategy = "ascending",
+        layout_strategy = "horizontal",
         layout_config = {
           horizontal = {
-            prompt_position = 'top',
+            prompt_position = "top",
             preview_width = 0.55,
             results_width = 0.8,
           },
@@ -71,18 +71,18 @@ return {
           height = 0.80,
           preview_cutoff = 120,
         },
-        path_display = { 'smart' },
-        file_ignore_patterns = { 'node_modules', '%.out' },
-        prompt_prefix = ' 🔭  ',
-        selection_caret = '  ',
-        entry_prefix = '  ',
+        path_display = { "smart" },
+        file_ignore_patterns = { "node_modules", "%.out" },
+        prompt_prefix = " 🔭  ",
+        selection_caret = "  ",
+        entry_prefix = "  ",
         winblend = 0,
         border = {},
-        borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+        borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
         color_devicons = true,
-      }
+      },
     })
 
-    require('telescope').load_extension('fzf')
-  end
+    require("telescope").load_extension("fzf")
+  end,
 }

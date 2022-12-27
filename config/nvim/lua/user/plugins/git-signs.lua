@@ -1,6 +1,6 @@
 return {
-  'lewis6991/gitsigns.nvim',
-  event = 'BufReadPre',
+  "lewis6991/gitsigns.nvim",
+  event = "BufReadPre",
   config = {
     signs = {
       add = { hl = "GitSignsAdd", text = "▍", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
@@ -79,6 +79,6 @@ return {
 
       -- Text object
       map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
-    end
-  }
+    end,
+  },
 }

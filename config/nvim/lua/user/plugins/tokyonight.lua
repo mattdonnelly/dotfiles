@@ -1,11 +1,11 @@
 return {
-  'folke/tokyonight.nvim',
+  "folke/tokyonight.nvim",
   lazy = false,
   config = function()
-    require('tokyonight').setup({
-      style = 'night',
+    require("tokyonight").setup({
+      style = "night",
       on_highlights = function(hl, c)
-        local prompt = '#2d3149'
+        local prompt = "#2d3149"
         hl.TelescopeNormal = {
           bg = c.bg_dark,
           fg = c.fg_dark,
@@ -35,6 +35,6 @@ return {
         }
       end,
     })
-    vim.cmd('colorscheme tokyonight-night')
-  end
+    vim.cmd("colorscheme tokyonight-night")
+  end,
 }
