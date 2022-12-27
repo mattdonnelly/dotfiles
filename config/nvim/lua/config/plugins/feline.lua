@@ -1,5 +1,5 @@
 return {
-  'famiu/feline.nvim',
+  'feline-nvim/feline.nvim',
   lazy = false,
   dependencies = {
     'folke/tokyonight.nvim',
