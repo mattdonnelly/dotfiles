@@ -18,6 +18,18 @@ wk.register({
     c = {
       name = "+code",
     },
+    d = {
+      name = "+debug",
+      C = { [[<cmd>lua require("telescope").extensions.dap.configurations{}<CR>]], "DAP configurations" },
+      l = {
+        name = "+list",
+        l = { [[<cmd>lua require("telescope").extensions.dap.list_breakpoints{}<CR>]], "List breakpoints" },
+        v = { [[<cmd>lua require("telescope").extensions.dap.variables{}<CR>]], "List variables" },
+        f = { [[<cmd>lua require("telescope").extensions.dap.frames{}<CR>]], "List frames" },
+      },
+      e = { [[<cmd>lua require("dapui").eval<CR>]], "DAP evaluate expression", mode = { "n", "x" } },
+      t = { [[<cmd>lua require("dapui").toggle<CR>]], "DAP toggle UI" },
+    },
     f = {
       name = "+find",
       f = { "<cmd>Telescope find_files<CR>", "Find files" },
@@ -50,9 +62,26 @@ wk.register({
     n = { "<cmd>Neotree toggle<cr>", "NeoTree" },
     t = {
       name = "+tests",
-      t = { ":TestFile<CR>", "Run full tests" },
-      n = { ":TestNearest<CR>", "Run nearest test" },
-      l = { ":TestLast<CR>", "Run last test" },
+      t = {
+        [[<cmd>lua require("neotest").run.run()<CR>]],
+        "Run nearest tests",
+      },
+      T = {
+        [[<cmd>lua require("neotest").run.run({ strategy = "dap" })<CR>]],
+        "Debug nearest tests",
+      },
+      f = {
+        [[<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>]],
+        "Run full test suite",
+      },
+      s = {
+        [[<cmd>lua require("neotest").run.stop()<CR>]],
+        "Stop nearest test",
+      },
+      a = {
+        [[<cmd>lua require("neotest").run.attach()<CR>]],
+        "Attach to nearest test",
+      },
     },
     u = { ":UndotreeToggle<CR>", "Open Undotree" },
     x = {

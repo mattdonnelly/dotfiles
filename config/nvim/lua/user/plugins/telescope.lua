@@ -7,6 +7,7 @@ return {
     "nvim-lua/plenary.nvim",
     "BurntSushi/ripgrep",
     "sharkdp/fd",
+    "nvim-telescope/telescope-dap.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   },
   config = function()
@@ -84,5 +85,6 @@ return {
     })
 
     require("telescope").load_extension("fzf")
+    require("telescope").load_extension("dap")
   end,
 }
