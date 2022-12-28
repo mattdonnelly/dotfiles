@@ -9,13 +9,6 @@ return {
     "jose-elias-alvarez/typescript.nvim",
   },
   config = function()
-    require("mason")
-    require("mason-null-ls").setup({
-      automatic_setup = true,
-      ensure_installed = {
-        "stylua",
-      },
-    })
     require("user.plugins.lsp.diagnostics").setup()
 
     local on_attach = function(client, bufnr)
@@ -141,6 +134,12 @@ return {
       debug = true,
       sources = sources,
       on_attach = on_attach,
+    })
+
+    require("mason-null-ls").setup({
+      ensure_installed = nil,
+      automatic_installation = true,
+      automatic_setup = false,
     })
   end,
 }
