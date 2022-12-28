@@ -1,3 +1,5 @@
+local copilot_enabled = os.getenv("COPILOT_ENABLED")
+
 return {
   "hrsh7th/nvim-cmp",
   event = "InsertEnter",
@@ -6,42 +8,18 @@ return {
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-emoji",
     "hrsh7th/cmp-path",
+    "onsails/lspkind.nvim",
     "folke/neodev.nvim",
     "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
   },
+  cond = function()
+    return copilot_enabled
+  end,
   config = function()
     local cmp = require("cmp")
+    local lspkind = require("lspkind")
     local luasnip = require("luasnip")
-    local has_copilot, _ = pcall(require, "copilot_cmp")
-
-    local lsp_symbols = {
-      Text = "   (Text) ",
-      Method = "   (Method)",
-      Function = "   (Function)",
-      Constructor = "   (Constructor)",
-      Field = " ﴲ  (Field)",
-      Variable = "[] (Variable)",
-      Class = "   (Class)",
-      Interface = " ﰮ  (Interface)",
-      Module = "   (Module)",
-      Property = " 襁 (Property)",
-      Unit = "   (Unit)",
-      Value = "   (Value)",
-      Enum = " 練 (Enum)",
-      Keyword = "   (Keyword)",
-      Snippet = "   (Snippet)",
-      Color = "   (Color)",
-      File = "   (File)",
-      Reference = "   (Reference)",
-      Folder = "   (Folder)",
-      EnumMember = "   (EnumMember)",
-      Constant = " ﲀ  (Constant)",
-      Struct = " ﳤ  (Struct)",
-      Event = "   (Event)",
-      Operator = "   (Operator)",
-      TypeParameter = "   (TypeParameter)",
-    }
 
     vim.opt.completeopt = { "menu", "menuone", "noselect" }
     vim.cmd([[highlight! default link CmpItemKind CmpItemMenuDefault]])
@@ -53,7 +31,7 @@ return {
       { name = "luasnip", group_index = 2 },
     }
 
-    if has_copilot then
+    if copilot_enabled then
       table.insert(sources, 1, { name = "copilot", group_index = 2, max_item_count = 3 })
     end
 
@@ -73,7 +51,10 @@ return {
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-Space>"] = cmp.mapping.complete({}),
         ["<C-e>"] = cmp.mapping.abort(),
-        ["<CR>"] = cmp.mapping.confirm({ select = false }),
+        ["<CR>"] = cmp.mapping.confirm({
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = false,
+        }),
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
@@ -105,22 +86,11 @@ return {
         select = false,
       },
       formatting = {
-        format = function(entry, item)
-          if entry.source.name == "copilot" then
-            item.kind = "  (Copilot)"
-          else
-            item.kind = lsp_symbols[item.kind]
-          end
-          item.menu = ({
-            buffer = "[Buffer]",
-            copilot = "[Copilot]",
-            nvim_lsp = "[LSP]",
-            luasnip = "[Snippet]",
-            neorg = "[Neorg]",
-          })[entry.source.name]
-
-          return item
-        end,
+        format = lspkind.cmp_format({
+          mode = "text_symbol",
+          preset = "default",
+          symbol_map = { Copilot = "" },
+        }),
       },
       experimental = {
         ghost_text = true,
