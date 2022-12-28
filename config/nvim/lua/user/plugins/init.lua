@@ -1,4 +1,4 @@
-local plugins = {
+return {
   "nathom/filetype.nvim",
 
   "RishabhRD/popfix",
@@ -55,27 +55,9 @@ local plugins = {
       })
     end,
   },
-  {
-    "vim-test/vim-test",
-    cmd = { "TestFile", "TestNearest", "TestLast" },
-    dependencies = {
-      "voldikss/vim-floaterm",
-    },
-    config = function()
-      vim.g["test#strategy"] = {
-        nearest = "floaterm",
-        file = "floaterm",
-        suite = "basic",
-      }
-    end,
-  },
+
+  { "othree/es.next.syntax.vim", ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" } },
+  { "othree/html5.vim", ft = { "html" } },
+  { "cakebaker/scss-syntax.vim", ft = { "scss", "sass" } },
+  { "joukevandermaas/vim-ember-hbs", ft = { "html.handlebars" } },
 }
-
-local has_local_plugins, local_plugins = pcall(require, "local.plugins")
-if has_local_plugins then
-  for _, p in pairs(local_plugins) do
-    table.insert(plugins, p)
-  end
-end
-
-return plugins
