@@ -1,4 +1,4 @@
-local copilot_enabled = os.getenv("COPILOT_ENABLED")
+local copilot_enabled = vim.g["copilot_enabled"]
 
 return {
   "hrsh7th/nvim-cmp",
@@ -13,9 +13,6 @@ return {
     "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
   },
-  cond = function()
-    return copilot_enabled
-  end,
   config = function()
     local cmp = require("cmp")
     local lspkind = require("lspkind")
