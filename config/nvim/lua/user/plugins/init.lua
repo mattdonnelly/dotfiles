@@ -8,7 +8,6 @@ return {
   "nvim-lua/popup.nvim",
   "nvim-lua/plenary.nvim",
 
-  { "folke/noice.nvim", event = "VeryLazy", config = true },
   { "numToStr/Navigator.nvim", event = "VeryLazy", config = true },
   {
     "tpope/vim-surround",
