@@ -14,6 +14,7 @@ return {
         enable = true,
         use_languagetree = true,
       },
+      auto_install = true,
       ensure_installed = {
         "bash",
         "c",
@@ -24,6 +25,7 @@ return {
         "gitignore",
         "go",
         "graphql",
+        "glimmer",
         "help",
         "html",
         "http",

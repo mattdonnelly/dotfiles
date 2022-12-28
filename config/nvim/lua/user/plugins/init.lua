@@ -54,9 +54,4 @@ return {
       })
     end,
   },
-
-  { "othree/es.next.syntax.vim", ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" } },
-  { "othree/html5.vim", ft = { "html" } },
-  { "cakebaker/scss-syntax.vim", ft = { "scss", "sass" } },
-  { "joukevandermaas/vim-ember-hbs", ft = { "html.handlebars" } },
 }
