@@ -8,8 +8,8 @@ alias zprezto-update="cd ~/.zprezto && git pull --rebase && git submodule update
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
 
-if (( $+commands[ag] )) ; then
-    alias grep="ag"
+if (( $+commands[rg] )) ; then
+    alias grep="rg"
 fi
 
 if (( $+commands[bat] )) ; then
