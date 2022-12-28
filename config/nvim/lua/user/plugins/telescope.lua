@@ -44,15 +44,25 @@ return {
             ["<esc>"] = actions.close,
             ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
             ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
-            ["<cr>"] = custom_actions.fzf_multi_select,
           },
           n = {
             ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
             ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
-            ["<cr>"] = custom_actions.fzf_multi_select,
           },
         },
         pickers = {
+          find_files = {
+            mappings = {
+              i = {
+                ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
+                ["<cr>"] = custom_actions.fzf_multi_select,
+              },
+              n = {
+                ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
+                ["<cr>"] = custom_actions.fzf_multi_select,
+              },
+            },
+          },
           lsp_code_actions = {
             theme = "cursor",
           },
