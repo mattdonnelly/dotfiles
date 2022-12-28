@@ -12,6 +12,9 @@ return {
     require("user.plugins.lsp.diagnostics").setup()
 
     local on_attach = function(client, bufnr)
+      if client.server_capabilities.documentSymbolProvider then
+        require("nvim-navic").attach(client, bufnr)
+      end
       require("user.plugins.lsp.keymaps").setup(bufnr)
       require("user.plugins.lsp.formatting").setup(client, bufnr)
     end

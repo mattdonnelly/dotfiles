@@ -1,7 +1,7 @@
 local M = {}
 
--- M.signs = { Error = ' ', Warning = ' ', Hint = ' ', Information = ' ' }
-M.signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
+M.signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
+-- M.signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
 
 function M.setup()
   vim.diagnostic.config({
