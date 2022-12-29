@@ -51,6 +51,12 @@ wk.register({
         f = { [[<cmd>lua require("telescope").extensions.dap.frames{}<CR>]], "List frames" },
       },
     },
+    e = {
+      function()
+        vim.diagnostic.open_float(nil, { border = "rounded", focusable = false, scope = "cursor" })
+      end,
+      "Show diagnostics",
+    },
     f = {
       name = "Find",
       f = { "<cmd>Telescope find_files<CR>", "Find files" },
@@ -117,8 +123,9 @@ wk.register({
     },
   },
   g = {
-    name = "+goto",
+    name = "Goto",
     p = { "<cmd>:BufferLineCyclePrev<CR>", "Previous buffer" },
     n = { "<cmd>:BufferLineCycleNext<CR>", "Next buffer" },
+    R = { "<cmd>Trouble lsp_references<cr>", "Trouble references" },
   },
 })
