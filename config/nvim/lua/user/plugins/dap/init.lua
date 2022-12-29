@@ -13,7 +13,7 @@ return {
       },
     },
   },
-  lazy = false,
+  lazy = "VeryLazy",
   init = function()
     vim.g.dap_virtual_text = true
   end,
