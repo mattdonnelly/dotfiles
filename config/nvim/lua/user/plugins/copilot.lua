@@ -3,7 +3,7 @@ return {
   dependencies = {
     "zbirenbaum/copilot.lua",
   },
-  cond = vim.g["copilot_enabled"],
+  cond = vim.g.copilot_enabled,
   event = "VeryLazy",
   config = function()
     vim.schedule(function()
