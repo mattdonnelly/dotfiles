@@ -106,12 +106,14 @@ wk.register({
     },
     u = { ":UndotreeToggle<CR>", "Open Undotree" },
     x = {
-      name = "Trouble",
+      name = "Errors",
       x = { "<cmd>Trouble<cr>", "Open trouble" },
       w = { "<cmd>Trouble workspace_diagnostics<cr>", "Trouble workspace" },
       d = { "<cmd>Trouble document_diagnostics<cr>", "Trouble document" },
       l = { "<cmd>Trouble loclist<cr>", "Trouble loclist" },
       q = { "<cmd>Trouble quickfix<cr>", "Trouble quickfix" },
+      t = { "<cmd>TodoTrouble<cr>", "Todo Trouble" },
+      T = { "<cmd>TodoTelescope<cr>", "Todo Telescope" },
     },
   },
   g = {
