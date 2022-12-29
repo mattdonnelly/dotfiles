@@ -6,17 +6,18 @@ function M.setup(lsp)
   local null_ls_helpers = require("null-ls.helpers")
   local command_resolver = require("null-ls.helpers.command_resolver")
 
-  mason.setup({
-    ensure_installed = {
-      "stylua",
-      "prettierd",
-      "eslint_d",
-    },
-    automatic_installation = true,
-    automatic_setup = true,
+  local null_opts = lsp.build_options("null-ls", {
+    on_attach = function(client)
+      if client.supports_method("textDocument/formatting") then
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          desc = "Auto format before save",
+          pattern = "<buffer>",
+          callback = vim.lsp.buf.formatting_sync,
+        })
+      end
+    end,
   })
 
-  local null_opts = lsp.build_options("null-ls", {})
   null_ls.setup({
     debug = true,
     on_attach = null_opts.on_attach,
@@ -32,12 +33,24 @@ function M.setup(lsp)
           args = { "--fix", "$FILENAME" },
           command = "ember-template-lint",
         }),
-      }
-    }
+      },
+    },
+  })
+
+  mason.setup({
+    ensure_installed = {
+      "stylua",
+      "prettierd",
+      "eslint_d",
+    },
+    automatic_installation = true,
+    automatic_setup = true,
   })
 
   mason.setup_handlers({
-    require("mason-null-ls.automatic_setup"),
+    function(source_name, methods)
+      require("mason-null-ls.automatic_setup")(source_name, methods)
+    end,
     prettierd = function()
       null_ls.register(null_ls.builtins.formatting.prettier.with({
         disabled_filetypes = { "html.handlebars", "json" },
@@ -50,7 +63,7 @@ function M.setup(lsp)
       }
       null_ls.register(null_ls.builtins.diagnostics.eslint_d.with(opts))
       null_ls.register(null_ls.builtins.code_actions.eslint_d.with(opts))
-    end
+    end,
   })
 end
 

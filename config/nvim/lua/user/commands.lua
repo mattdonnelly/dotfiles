@@ -10,3 +10,5 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "css", "scss", "sass" },
   command = "setlocal iskeyword+=-",
 })
+
+vim.api.nvim_create_autocmd("BufWritePre", { command = "LspZeroFormat" })

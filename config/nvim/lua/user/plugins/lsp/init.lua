@@ -3,20 +3,22 @@ local M = {
   event = "BufReadPre",
   dependencies = {
     "neovim/nvim-lspconfig",
+    "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
+
+    "hrsh7th/nvim-cmp",
+    "hrsh7th/cmp-buffer",
+    "hrsh7th/cmp-path",
+    "saadparwaiz1/cmp_luasnip",
     "hrsh7th/cmp-nvim-lsp",
+    "hrsh7th/cmp-nvim-lua",
+
+    "L3MON4D3/LuaSnip",
+    "saadparwaiz1/cmp_luasnip",
+
     "jose-elias-alvarez/null-ls.nvim",
     "jayp0521/mason-null-ls.nvim",
     "jose-elias-alvarez/typescript.nvim",
-
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-emoji",
-    "hrsh7th/cmp-path",
-    "onsails/lspkind.nvim",
-    "folke/neodev.nvim",
-    "L3MON4D3/LuaSnip",
-    "saadparwaiz1/cmp_luasnip",
   },
 }
 
@@ -33,12 +35,21 @@ function M.config()
     "bashls",
     "vimls",
     "sumneko_lua",
-    "solargraph",
     "ember",
     "tsserver",
   })
 
+  local disabled_formatting = {
+    sumneko_lua = true,
+    tsserver = true,
+    ember = true,
+  }
+
   lsp.on_attach(function(client, bufnr)
+    if disabled_formatting[client.name] then
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentFormattingRangeProvider = false
+    end
     if client.server_capabilities.documentSymbolProvider then
       require("nvim-navic").attach(client, bufnr)
     end
@@ -55,21 +66,10 @@ function M.config()
     "cssls",
     "bashls",
     "vimls",
+    "sumneko_lua",
   }, default_config)
 
-  require("neodev").setup({})
-  lsp.configure("sumneko_lua", {
-    settings = {
-      Lua = {
-        diagnostics = {
-          globals = { "vim" },
-        },
-        telemetry = {
-          enable = false,
-        },
-      },
-    },
-  })
+  lsp.nvim_workspace()
 
   lsp.configure("solargraph", {
     flags = {
@@ -93,11 +93,14 @@ function M.config()
   })
 
   local tsserver_opts = lsp.build_options("tsserver", {
-    on_attach = function(_, bufnr)
+    on_attach = function(client, bufnr)
       local opts = { noremap = true, silent = true }
       vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
       vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspRenameFile<CR>", opts)
       vim.api.nvim_buf_set_keymap(bufnr, "n", "go", ":TSLspImportAll<CR>", opts)
+
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentFormattingRangeProvider = false
     end,
   })
 
