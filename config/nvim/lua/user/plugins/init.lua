@@ -45,6 +45,11 @@ return {
     cmd = { "UndotreeToggle", "UndotreeShow", "UndotreeHide", "UndotreeFocus" },
   },
   {
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
+    config = true,
+  },
+  {
     "pechorin/any-jump.nvim",
     cmd = { "AnyJump", "AnyJumpVisual" },
     config = function()
