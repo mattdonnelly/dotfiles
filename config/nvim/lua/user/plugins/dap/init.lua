@@ -16,7 +16,6 @@ return {
   lazy = false,
   init = function()
     vim.g.dap_virtual_text = true
-    require("user.plugins.dap.keymaps").setup()
   end,
   config = function()
     vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "Error" })

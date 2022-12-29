@@ -16,22 +16,35 @@ local wk = require("which-key")
 wk.register({
   ["<leader>"] = {
     c = {
-      name = "+code",
+      name = "Code",
     },
     d = {
-      name = "+debug",
-      C = { [[<cmd>lua require("telescope").extensions.dap.configurations{}<CR>]], "DAP configurations" },
+      name = "Debug",
+      b = { [[<cmd>lua require("dap").toggle_breakpoint()<cr>]], "Toggle Breakpoint" },
+      B = { [[<cmd>lua require("dap").step_back()<cr>]], "Step Back" },
+      c = { [[<cmd>lua require("dap").continue()<cr>]], "Continue" },
+      C = { [[<cmd>lua require("dap").run_to_cursor()<cr>]], "Run To Cursor" },
+      d = { [[<cmd>lua require("dap").disconnect()<cr>]], "Disconnect" },
+      g = { [[<cmd>lua require("dap").session()<cr>]], "Get Session" },
+      i = { [[<cmd>lua require("dap").step_into()<cr>]], "Step Into" },
+      o = { [[<cmd>lua require("dap").step_over()<cr>]], "Step Over" },
+      O = { [[<cmd>lua require("dap").step_out()<cr>]], "Step Out" },
+      p = { [[<cmd>lua require("dap").pause()<cr>]], "Pause" },
+      r = { [[<cmd>lua require("dap").repl.toggle()<cr>]], "Toggle Repl" },
+      s = { [[<cmd>lua require("dap").continue()<cr>]], "Start" },
+      q = { [[<cmd>lua require("dap").close()<cr>]], "Quit" },
+      u = { [[<cmd>lua require("dapui").toggle({reset = true})<cr>]], "Toggle UI" },
+      e = { [[<cmd>lua require("dapui").eval<CR>]], "DAP evaluate expression", mode = { "n", "x" } },
+      t = { [[<cmd>lua require("dapui").toggle<CR>]], "DAP toggle UI" },
       l = {
-        name = "+list",
-        l = { [[<cmd>lua require("telescope").extensions.dap.list_breakpoints{}<CR>]], "List breakpoints" },
+        name = "List",
+        b = { [[<cmd>lua require("telescope").extensions.dap.list_breakpoints{}<CR>]], "List breakpoints" },
         v = { [[<cmd>lua require("telescope").extensions.dap.variables{}<CR>]], "List variables" },
         f = { [[<cmd>lua require("telescope").extensions.dap.frames{}<CR>]], "List frames" },
       },
-      e = { [[<cmd>lua require("dapui").eval<CR>]], "DAP evaluate expression", mode = { "n", "x" } },
-      t = { [[<cmd>lua require("dapui").toggle<CR>]], "DAP toggle UI" },
     },
     f = {
-      name = "+find",
+      name = "Find",
       f = { "<cmd>Telescope find_files<CR>", "Find files" },
       b = { "<cmd>Telescope buffers<CR>", "Buffers" },
       ["/"] = { "<cmd>Telescope live_grep<CR>", "Live search" },
@@ -39,7 +52,7 @@ wk.register({
       n = { "<cmd>DashboardNewFile<CR>", "New file" },
     },
     g = {
-      name = "+git",
+      name = "Git",
       l = {
         function()
           require("util").float_terminal({ "lazygit" })
@@ -50,18 +63,18 @@ wk.register({
       b = { "<Cmd>Telescope git_branches<CR>", "branches" },
       s = { "<Cmd>Telescope git_status<CR>", "status" },
       d = { "<cmd>DiffviewOpen<cr>", "DiffView" },
-      h = { name = "+hunk" },
+      h = { name = "Hunk" },
     },
     j = {
       { "<cmd>AnyJump<CR>", "AnyJump cursor" },
       { "<cmd>AnyJumpVisual<CR>", "AnyJump selected", mode = "v" },
     },
     m = {
-      name = "+jumpwire",
+      name = "Jumpwire",
     },
     n = { "<cmd>Neotree toggle<cr>", "NeoTree" },
     t = {
-      name = "+tests",
+      name = "Tests",
       t = {
         [[<cmd>lua require("neotest").run.run()<CR>]],
         "Run nearest tests",
@@ -85,7 +98,7 @@ wk.register({
     },
     u = { ":UndotreeToggle<CR>", "Open Undotree" },
     x = {
-      name = "+trouble",
+      name = "Trouble",
       x = { "<cmd>Trouble<cr>", "Open trouble" },
       w = { "<cmd>Trouble workspace_diagnostics<cr>", "Trouble workspace" },
       d = { "<cmd>Trouble document_diagnostics<cr>", "Trouble document" },

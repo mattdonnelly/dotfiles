@@ -9,7 +9,7 @@ function M.setup(bufnr)
     buffer = bufnr,
     ["<leader>"] = {
       w = {
-        name = "+workspace",
+        name = "Workspace",
         a = { vim.lsp.buf.add_workspace_folder, "Add workspace folder" },
         r = { vim.lsp.buf.remove_workspace_folder, "Remove workspace folder" },
         l = {
@@ -38,7 +38,7 @@ function M.setup(bufnr)
       },
     },
     g = {
-      name = "+goto",
+      name = "Goto",
       D = { vim.lsp.buf.declaration, "Go to declaration" },
       d = { vim.lsp.buf.definition, "Go to definition" },
       i = { vim.lsp.buf.implementation, "Go to definition" },
