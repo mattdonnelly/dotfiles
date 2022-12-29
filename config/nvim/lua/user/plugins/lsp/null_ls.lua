@@ -10,6 +10,7 @@ function M.setup(lsp)
     ensure_installed = {
       "stylua",
       "prettierd",
+      "eslint_d",
     },
     automatic_installation = true,
     automatic_setup = true,
@@ -22,12 +23,6 @@ function M.setup(lsp)
     sources = {
       null_ls.builtins.formatting.rubocop,
       null_ls.builtins.diagnostics.rubocop,
-      null_ls.builtins.diagnostics.eslint.with({
-        dynamic_command = command_resolver.from_node_modules(),
-      }),
-      null_ls.builtins.code_actions.eslint.with({
-        dynamic_command = command_resolver.from_node_modules(),
-      }),
       require("typescript.extensions.null-ls.code-actions"),
       {
         name = "ember-template-lint",
@@ -49,6 +44,13 @@ function M.setup(lsp)
         dynamic_command = command_resolver.from_node_modules(),
       }))
     end,
+    eslint_d = function()
+      local opts = {
+        dynamic_command = command_resolver.from_node_modules(),
+      }
+      null_ls.register(null_ls.builtins.diagnostics.eslint_d.with(opts))
+      null_ls.register(null_ls.builtins.code_actions.eslint_d.with(opts))
+    end
   })
 end
 
