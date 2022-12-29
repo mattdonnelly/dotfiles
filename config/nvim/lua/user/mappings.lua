@@ -12,6 +12,14 @@ vim.keymap.set({ "n", "t" }, "<C-l>", "<CMD>NavigatorRight<CR>")
 vim.keymap.set({ "n", "t" }, "<C-k>", "<CMD>NavigatorUp<CR>")
 vim.keymap.set({ "n", "t" }, "<C-j>", "<CMD>NavigatorDown<CR>")
 
+require("legendary").setup({
+  include_builtin = true,
+  which_key = {
+    auto_register = true,
+  },
+})
+vim.keymap.set("n", "<C-p>", "<cmd>lua require('legendary').find()<CR>", { desc = "Open Legendary" })
+
 local wk = require("which-key")
 wk.register({
   ["<leader>"] = {

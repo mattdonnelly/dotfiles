@@ -1,4 +1,5 @@
 local signs = require("user.plugins.lsp.diagnostics").signs
+local lsp_fg = "#ff9e64"
 
 return {
   "nvim-lualine/lualine.nvim",
@@ -7,6 +8,7 @@ return {
     "folke/tokyonight.nvim",
     "SmiteshP/nvim-navic",
     "nvim-tree/nvim-web-devicons",
+    "arkav/lualine-lsp-progress",
   },
   config = {
     options = {
@@ -45,6 +47,16 @@ return {
         { "filetype", icon_only = true, padding = { left = 1, right = 0 } },
         { "filename", path = 1, symbols = { modified = "", unnamed = "", readonly = "" } },
         {
+          "lsp_progress",
+          display_components = { "lsp_client_name", "spinner" },
+          spinner_symbols = { "⠋", "⠙", "⠸", "⠴", "⠦", "⠇" },
+          colors = {
+            lsp_client_name = lsp_fg,
+            spinner = lsp_fg,
+            use = true,
+          },
+        },
+        {
           function()
             local navic = require("nvim-navic")
             local ret = navic.get_location()
@@ -56,7 +68,7 @@ return {
               return navic.is_available()
             end
           end,
-          color = { fg = "#ff9e64" },
+          color = { fg = lsp_fg },
         },
       },
       lualine_x = {

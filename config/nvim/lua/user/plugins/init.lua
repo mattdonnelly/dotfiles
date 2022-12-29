@@ -17,6 +17,12 @@ return {
     },
   },
   {
+    "mrjones2014/legendary.nvim",
+    dependencies = {
+      { "stevearc/dressing.nvim", config = true },
+    },
+  },
+  {
     "folke/which-key.nvim",
     config = {
       show_help = false,
