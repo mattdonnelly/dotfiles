@@ -82,5 +82,11 @@ return {
       lualine_y = {},
       lualine_z = {},
     },
+    extensions = {
+      "neo-tree",
+      "nvim-dap-ui",
+      "quickfix",
+      "toggleterm",
+    },
   },
 }
