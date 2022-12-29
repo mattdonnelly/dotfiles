@@ -5,7 +5,6 @@ function M.setup()
     adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
     debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
     log_file_level = vim.log.levels.TRACE,
-    log_console_level = vim.log.levels.TRACE,
   })
 
   for _, language in ipairs({ "typescript", "javascript" }) do
