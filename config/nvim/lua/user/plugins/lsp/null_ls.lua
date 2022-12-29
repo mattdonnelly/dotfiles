@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup(lsp)
-  local mason = require("mason-null-ls")
+  local mason_null_ls = require("mason-null-ls")
   local null_ls = require("null-ls")
   local null_ls_helpers = require("null-ls.helpers")
   local command_resolver = require("null-ls.helpers.command_resolver")
@@ -37,7 +37,7 @@ function M.setup(lsp)
     },
   })
 
-  mason.setup({
+  mason_null_ls.setup({
     ensure_installed = {
       "stylua",
       "prettierd",
@@ -47,7 +47,7 @@ function M.setup(lsp)
     automatic_setup = true,
   })
 
-  mason.setup_handlers({
+  mason_null_ls.setup_handlers({
     function(source_name, methods)
       require("mason-null-ls.automatic_setup")(source_name, methods)
     end,
