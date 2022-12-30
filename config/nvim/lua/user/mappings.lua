@@ -43,7 +43,6 @@ wk.register({
       q = { [[<cmd>lua require("dap").close()<cr>]], "Quit" },
       u = { [[<cmd>lua require("dapui").toggle({reset = true})<cr>]], "Toggle UI" },
       e = { [[<cmd>lua require("dapui").eval<CR>]], "DAP evaluate expression", mode = { "n", "x" } },
-      t = { [[<cmd>lua require("dapui").toggle<CR>]], "DAP toggle UI" },
       l = {
         name = "List",
         b = { [[<cmd>lua require("telescope").extensions.dap.list_breakpoints{}<CR>]], "List breakpoints" },
