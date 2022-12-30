@@ -8,6 +8,7 @@ return {
   "nvim-lua/popup.nvim",
   "nvim-lua/plenary.nvim",
 
+  { "j-hui/fidget.nvim", event = "VeryLazy", config = true },
   { "numToStr/Navigator.nvim", event = "VeryLazy", config = true },
   {
     "tpope/vim-surround",

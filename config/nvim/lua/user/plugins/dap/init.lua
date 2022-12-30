@@ -29,27 +29,7 @@ return {
     local dap = require("dap")
     local dapui = require("dapui")
 
-    dapui.setup({
-      layouts = {
-        {
-          elements = {
-            { id = "scopes", size = 0.33 },
-            { id = "breakpoints", size = 0.17 },
-            { id = "stacks", size = 0.25 },
-          },
-          size = 0.20,
-          position = "left",
-        },
-        {
-          elements = {
-            { id = "repl", size = 0.45 },
-            { id = "console", size = 0.55 },
-          },
-          size = 0.25,
-          position = "bottom",
-        },
-      },
-    })
+    dapui.setup()
 
     require("user.plugins.dap.javascript").setup()
 
