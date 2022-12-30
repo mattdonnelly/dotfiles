@@ -8,8 +8,11 @@ return {
   "nvim-lua/popup.nvim",
   "nvim-lua/plenary.nvim",
 
+  { "psliwka/vim-smoothie", event = "BufWinEnter" },
+  { "ntpeters/vim-better-whitespace", event = "BufReadPost" },
   { "j-hui/fidget.nvim", event = "VeryLazy", config = true },
   { "numToStr/Navigator.nvim", event = "VeryLazy", config = true },
+
   {
     "tpope/vim-surround",
     event = "VeryLazy",
@@ -57,8 +60,6 @@ return {
       vim.g["any_jump_disable_default_keybindings"] = 1
     end,
   },
-  { "ntpeters/vim-better-whitespace", event = "BufReadPost" },
-  { "psliwka/vim-smoothie", event = "BufWinEnter" },
   {
     "Wansmer/treesj",
     keys = {
@@ -68,7 +69,6 @@ return {
   },
   {
     "numToStr/Comment.nvim",
-    event = "BufReadPost",
     keys = { "gc", "gb" },
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
