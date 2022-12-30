@@ -57,26 +57,23 @@ wk.register({
       ["/"] = { "<cmd>Telescope live_grep<CR>", "Live search" },
       o = { [[<cmd>lua require('telescope.builtin').oldfiles({ only_cwd = true })<CR>]], "Recent files" },
       n = { "<cmd>DashboardNewFile<CR>", "New file" },
+      j = {
+        { "<cmd>AnyJump<CR>", "AnyJump cursor" },
+        { "<cmd>AnyJumpVisual<CR>", "AnyJump selected", mode = "v" },
+      },
     },
     g = {
       name = "Git",
-      l = {
-        function()
-          require("util").float_terminal({ "lazygit" })
-        end,
-        "LazyGit",
-      },
-      c = { "<Cmd>Telescope git_commits<CR>", "commits" },
-      b = { "<Cmd>Telescope git_branches<CR>", "branches" },
-      s = { "<Cmd>Telescope git_status<CR>", "status" },
+      c = { "<cmd>Telescope git_commits<CR>", "commits" },
+      b = { "<cmd>Telescope git_branches<CR>", "branches" },
+      s = { "<cmd>Telescope git_status<CR>", "status" },
       d = { "<cmd>DiffviewOpen<cr>", "DiffView" },
       h = { name = "Hunk" },
     },
     j = {
-      { "<cmd>AnyJump<CR>", "AnyJump cursor" },
-      { "<cmd>AnyJumpVisual<CR>", "AnyJump selected", mode = "v" },
+      "<cmd>TSJToggle<CR>",
+      "Toggle split/join",
     },
-    J = { "<cmd>TSJToggle<CR>", desc = "Toggle split/join" },
     m = {
       name = "Jumpwire",
     },

@@ -16,9 +16,7 @@ return {
   {
     "tpope/vim-surround",
     event = "VeryLazy",
-    dependencies = {
-      "tpope/vim-repeat",
-    },
+    dependencies = { "tpope/vim-repeat" },
   },
   {
     "mrjones2014/legendary.nvim",
@@ -57,20 +55,19 @@ return {
     "pechorin/any-jump.nvim",
     cmd = { "AnyJump", "AnyJumpVisual" },
     config = function()
-      vim.g["any_jump_disable_default_keybindings"] = 1
+      vim.g.any_jump_disable_default_keybindings = 1
     end,
   },
   {
     "Wansmer/treesj",
-    cmd = { "TSJToggle" },
+    cmd = { "TSJToggle", "TSJSplit", "TSJJoin" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = { use_default_keymaps = false },
   },
   {
     "numToStr/Comment.nvim",
     keys = { "gc", "gb" },
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-    },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       local ts_comment_integration = require("ts_context_commentstring.integrations.comment_nvim")
       require("Comment").setup({
