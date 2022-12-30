@@ -27,15 +27,15 @@ function M.setup()
         type = "pwa-node",
         request = "launch",
         name = "Debug Jest Tests",
+        cwd = vim.fn.getcwd(),
+        runtimeArgs = { "${workspaceFolder}/node_modules/.bin/jest" },
         runtimeExecutable = "node",
-        runtimeArgs = {
-          "./node_modules/jest/bin/jest.js",
-          "--runInBand",
-        },
+        args = { "${file}", "--coverage", "false" },
         rootPath = "${workspaceFolder}",
-        cwd = "${workspaceFolder}",
+        sourceMaps = true,
         console = "integratedTerminal",
         internalConsoleOptions = "neverOpen",
+        skipFiles = { "<node_internals>/**", "node_modules/**" },
       },
     }
   end

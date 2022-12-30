@@ -7,7 +7,11 @@ return {
   event = "VeryLazy",
   config = function()
     vim.schedule(function()
-      require("copilot").setup()
+      require("copilot").setup({
+        filetypes = {
+          ["dap-repl"] = false,
+        },
+      })
       require("copilot_cmp").setup({
         method = "getCompletionsCycling",
         formatters = {

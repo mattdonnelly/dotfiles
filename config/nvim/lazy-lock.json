@@ -70,6 +70,6 @@
   "vim-repeat": { "branch": "master", "commit": "24afe922e6a05891756ecf331f39a1f6743d3d5a" },
   "vim-smoothie": { "branch": "master", "commit": "df1e324e9f3395c630c1c523d0555a01d2eb1b7e" },
   "vim-surround": { "branch": "master", "commit": "3d188ed2113431cf8dac77be61b842acb64433d9" },
-  "vscode-js-debug": { "branch": "main", "commit": "e9e2600b9b1e47fee14c84255e8a012b5dd4241f" },
+  "vscode-js-debug": { "branch": "main", "commit": "59abbf94a713ad8db1dd441b3287d0e7f97c3fca" },
   "which-key.nvim": { "branch": "main", "commit": "8682d3003595017cd8ffb4c860a07576647cc6f8" }
 }
