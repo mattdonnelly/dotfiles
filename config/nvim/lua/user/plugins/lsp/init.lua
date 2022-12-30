@@ -4,8 +4,9 @@ return {
   dependencies = {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
-    "hrsh7th/cmp-nvim-lsp",
 
+    "hrsh7th/cmp-nvim-lsp",
+    "b0o/SchemaStore.nvim",
     "jose-elias-alvarez/null-ls.nvim",
     "jayp0521/mason-null-ls.nvim",
     "jose-elias-alvarez/typescript.nvim",
@@ -14,6 +15,19 @@ return {
   },
   config = function()
     local lspconfig = require("lspconfig")
+
+    require("mason").setup()
+    require("mason-lspconfig").setup({
+      ensure_installed = {
+        "html",
+        "cssls",
+        "bashls",
+        "sumneko_lua",
+        "ember",
+        "tsserver",
+        "solargraph",
+      },
+    })
 
     require("user.plugins.lsp.diagnostics").setup()
 
@@ -43,7 +57,15 @@ return {
     lspconfig.html.setup(default_config)
     lspconfig.cssls.setup(default_config)
     lspconfig.bashls.setup(default_config)
-    lspconfig.vimls.setup(default_config)
+
+    lspconfig.jsonls.setup({
+      settings = {
+        json = {
+          schemas = require("schemastore").json.schemas(),
+          validate = { enable = true },
+        },
+      },
+    })
 
     lspconfig.ember.setup({
       capabilities = capabilities,
