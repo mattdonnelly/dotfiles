@@ -62,9 +62,7 @@ return {
   },
   {
     "Wansmer/treesj",
-    keys = {
-      { "J", "<cmd>TSJToggle<cr>" },
-    },
+    cmd = { "TSJToggle" },
     config = { use_default_keymaps = false },
   },
   {

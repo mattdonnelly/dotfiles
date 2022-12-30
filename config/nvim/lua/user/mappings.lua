@@ -76,6 +76,7 @@ wk.register({
       { "<cmd>AnyJump<CR>", "AnyJump cursor" },
       { "<cmd>AnyJumpVisual<CR>", "AnyJump selected", mode = "v" },
     },
+    J = { "<cmd>TSJToggle<CR>", desc = "Toggle split/join" },
     m = {
       name = "Jumpwire",
     },
