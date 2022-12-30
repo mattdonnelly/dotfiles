@@ -117,7 +117,7 @@ wk.register({
     },
   },
   g = {
-    name = "+goto",
+    name = "Goto",
     p = { "<cmd>:BufferLineCyclePrev<CR>", "Previous buffer" },
     n = { "<cmd>:BufferLineCycleNext<CR>", "Next buffer" },
   },
