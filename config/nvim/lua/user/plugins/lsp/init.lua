@@ -1,122 +1,148 @@
-local M = {
-  "VonHeikemen/lsp-zero.nvim",
+return {
+  "neovim/nvim-lspconfig",
   event = "BufReadPre",
   dependencies = {
-    "neovim/nvim-lspconfig",
-    "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
-
-    "hrsh7th/nvim-cmp",
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-path",
-    "saadparwaiz1/cmp_luasnip",
     "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-nvim-lua",
-
-    "L3MON4D3/LuaSnip",
-    "saadparwaiz1/cmp_luasnip",
-
     "jose-elias-alvarez/null-ls.nvim",
     "jayp0521/mason-null-ls.nvim",
     "jose-elias-alvarez/typescript.nvim",
   },
-}
+  config = function()
+    require("user.plugins.lsp.diagnostics").setup()
 
-function M.config()
-  local lsp = require("lsp-zero")
-  lsp.preset("recommended")
-
-  require("user.plugins.lsp.diagnostics").setup(lsp)
-  require("user.plugins.lsp.cmp").setup(lsp)
-
-  lsp.ensure_installed({
-    "html",
-    "cssls",
-    "bashls",
-    "vimls",
-    "sumneko_lua",
-    "ember",
-    "tsserver",
-  })
-
-  local disabled_formatting = {
-    sumneko_lua = true,
-    tsserver = true,
-    ember = true,
-  }
-
-  lsp.on_attach(function(client, bufnr)
-    if disabled_formatting[client.name] then
-      client.server_capabilities.documentFormattingProvider = false
-      client.server_capabilities.documentFormattingRangeProvider = false
+    local on_attach = function(client, bufnr)
+      if client.server_capabilities.documentSymbolProvider then
+        require("nvim-navic").attach(client, bufnr)
+      end
+      require("user.plugins.lsp.keymaps").setup(bufnr)
+      require("user.plugins.lsp.formatting").setup(client, bufnr)
     end
-    if client.server_capabilities.documentSymbolProvider then
-      require("nvim-navic").attach(client, bufnr)
-    end
-  end)
 
-  local default_config = {
-    flags = {
-      debounce_text_changes = 150,
-    },
-  }
+    local lspconfig = require("lspconfig")
+    local null_ls = require("null-ls")
+    local null_ls_helpers = require("null-ls.helpers")
 
-  lsp.setup_servers({
-    "html",
-    "cssls",
-    "bashls",
-    "vimls",
-    "sumneko_lua",
-  }, default_config)
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-  lsp.nvim_workspace()
-
-  lsp.configure("solargraph", {
-    flags = {
-      debounce_text_changes = 150,
-    },
-    init_options = {
-      formatting = true,
-    },
-    settings = {
-      solargraph = {
-        formatting = false,
+    local default_config = {
+      capabilities = capabilities,
+      on_attach = on_attach,
+      flags = {
+        debounce_text_changes = 150,
       },
-    },
-  })
+    }
 
-  lsp.configure("ember", {
-    on_init = function(client)
-      client.server_capabilities.documentFormattingProvider = false
-      client.server_capabilities.documentRangeFormattingProvider = false
-    end,
-  })
+    lspconfig.html.setup(default_config)
+    lspconfig.cssls.setup(default_config)
+    lspconfig.bashls.setup(default_config)
+    lspconfig.vimls.setup(default_config)
 
-  local tsserver_opts = lsp.build_options("tsserver", {
-    on_attach = function(client, bufnr)
-      local opts = { noremap = true, silent = true }
-      vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
-      vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspRenameFile<CR>", opts)
-      vim.api.nvim_buf_set_keymap(bufnr, "n", "go", ":TSLspImportAll<CR>", opts)
+    lspconfig.ember.setup({
+      capabilities = capabilities,
+      on_attach = function(client, bufnr)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
 
-      client.server_capabilities.documentFormattingProvider = false
-      client.server_capabilities.documentFormattingRangeProvider = false
-    end,
-  })
+        on_attach(client, bufnr)
+      end,
+      root_dir = lspconfig.util.root_pattern("ember-cli-build.js"),
+    })
 
-  lsp.setup()
+    lspconfig.solargraph.setup({
+      capabilities = capabilities,
+      on_attach = function(client, bufnr)
+        on_attach(client, bufnr)
+      end,
+      flags = {
+        debounce_text_changes = 150,
+      },
+      init_options = {
+        formatting = true,
+      },
+      settings = {
+        solargraph = {
+          formatting = false,
+        },
+      },
+    })
 
-  require("typescript").setup({
-    go_to_source_definition = {
-      fallback = true,
-    },
-    flags = {
-      debounce_text_changes = 150,
-    },
-    server = tsserver_opts,
-  })
+    require("neodev").setup()
+    lspconfig.sumneko_lua.setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
+        Lua = {
+          diagnostics = {
+            globals = { "vim" },
+          },
+          telemetry = {
+            enable = false,
+          },
+        },
+      },
+    })
 
-  require("user.plugins.lsp.null_ls").setup(lsp)
-end
+    require("typescript").setup({
+      capabilities = capabilities,
+      go_to_source_definition = {
+        fallback = true, -- fall back to standard LSP definition on failure
+      },
+      server = {
+        on_attach = function(client, bufnr)
+          local opts = { noremap = true, silent = true }
+          vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
+          vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspRenameFile<CR>", opts)
+          vim.api.nvim_buf_set_keymap(bufnr, "n", "go", ":TSLspImportAll<CR>", opts)
 
-return M
+          on_attach(client, bufnr)
+        end,
+        flags = {
+          debounce_text_changes = 150,
+        },
+      },
+    })
+
+    local ember_template_lint = {
+      name = "ember-template-lint",
+      method = null_ls.methods.FORMATTING,
+      filetypes = { "html.handlebars" },
+      generator = null_ls_helpers.formatter_factory({
+        args = { "--fix", "$FILENAME" },
+        command = "ember-template-lint",
+      }),
+    }
+
+    local command_resolver = require("null-ls.helpers.command_resolver")
+    local sources = {
+      ember_template_lint,
+      null_ls.builtins.formatting.prettier.with({
+        disabled_filetypes = { "html.handlebars", "json" },
+        dynamic_command = command_resolver.from_node_modules(),
+      }),
+      null_ls.builtins.diagnostics.eslint.with({
+        dynamic_command = command_resolver.from_node_modules(),
+      }),
+      null_ls.builtins.code_actions.eslint.with({
+        dynamic_command = command_resolver.from_node_modules(),
+      }),
+      null_ls.builtins.formatting.rubocop,
+      null_ls.builtins.diagnostics.rubocop,
+      null_ls.builtins.formatting.stylua,
+      require("typescript.extensions.null-ls.code-actions"),
+    }
+
+    null_ls.setup({
+      debug = true,
+      sources = sources,
+      on_attach = on_attach,
+    })
+
+    require("mason-null-ls").setup({
+      ensure_installed = nil,
+      automatic_installation = true,
+      automatic_setup = false,
+    })
+  end,
+}
