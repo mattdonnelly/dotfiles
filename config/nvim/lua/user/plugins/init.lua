@@ -60,6 +60,13 @@ return {
   { "ntpeters/vim-better-whitespace", event = "BufReadPost" },
   { "psliwka/vim-smoothie", event = "BufWinEnter" },
   {
+    "Wansmer/treesj",
+    keys = {
+      { "J", "<cmd>TSJToggle<cr>" },
+    },
+    config = { use_default_keymaps = false },
+  },
+  {
     "numToStr/Comment.nvim",
     event = "BufReadPost",
     keys = { "gc", "gb" },
