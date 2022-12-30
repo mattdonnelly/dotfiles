@@ -31,7 +31,7 @@ function M.setup(on_attach)
       "prettierd",
       "eslint_d",
     },
-    automatic_installation = true,
+    automatic_installation = false,
     automatic_setup = true,
   })
 
