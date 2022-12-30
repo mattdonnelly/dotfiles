@@ -1,3 +1,10 @@
+local M = {
+  "williamboman/mason.nvim",
+  dependencies = {
+    "williamboman/mason-lspconfig.nvim",
+  },
+}
+
 local servers = {
   "ember-language-server",
   "html-lsp",
@@ -8,16 +15,22 @@ local servers = {
   "typescript-language-server",
 }
 
-return {
-  "williamboman/mason.nvim",
-  dependencies = {
-    "williamboman/mason-lspconfig.nvim",
-  },
-  config = function()
-    require("mason").setup()
-    require("mason-lspconfig").setup({
-      ensure_installed = servers,
-      automatic_installation = true,
-    })
-  end,
-}
+local check = function()
+  local mr = require("mason-registry")
+  for _, server in ipairs(servers) do
+    local p = mr.get_package(server)
+    if not p:is_installed() then
+      p:install()
+    end
+  end
+end
+
+M.config = function()
+  require("mason").setup()
+  check()
+  require("mason-lspconfig").setup({
+    automatic_installation = true,
+  })
+end
+
+return M
