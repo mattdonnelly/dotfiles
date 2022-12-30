@@ -1,122 +1,119 @@
-local M = {
-  "VonHeikemen/lsp-zero.nvim",
+return {
+  "neovim/nvim-lspconfig",
   event = "BufReadPre",
   dependencies = {
-    "neovim/nvim-lspconfig",
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
-
-    "hrsh7th/nvim-cmp",
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-path",
-    "saadparwaiz1/cmp_luasnip",
     "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-nvim-lua",
-
-    "L3MON4D3/LuaSnip",
-    "saadparwaiz1/cmp_luasnip",
 
     "jose-elias-alvarez/null-ls.nvim",
     "jayp0521/mason-null-ls.nvim",
     "jose-elias-alvarez/typescript.nvim",
   },
-}
+  config = function()
+    local lspconfig = require("lspconfig")
 
-function M.config()
-  local lsp = require("lsp-zero")
-  lsp.preset("recommended")
+    require("user.plugins.lsp.diagnostics").setup()
 
-  require("user.plugins.lsp.diagnostics").setup(lsp)
-  require("user.plugins.lsp.cmp").setup(lsp)
+    local on_attach = function(client, bufnr)
+      require("user.plugins.lsp.keymaps").setup(bufnr)
 
-  lsp.ensure_installed({
-    "html",
-    "cssls",
-    "bashls",
-    "vimls",
-    "sumneko_lua",
-    "ember",
-    "tsserver",
-  })
+      if client.server_capabilities.documentFormattingProvider then
+        require("user.plugins.lsp.formatting").setup(client, bufnr)
+      end
 
-  local disabled_formatting = {
-    sumneko_lua = true,
-    tsserver = true,
-    ember = true,
-  }
-
-  lsp.on_attach(function(client, bufnr)
-    if disabled_formatting[client.name] then
-      client.server_capabilities.documentFormattingProvider = false
-      client.server_capabilities.documentFormattingRangeProvider = false
+      if client.server_capabilities.documentSymbolProvider then
+        require("nvim-navic").attach(client, bufnr)
+      end
     end
-    if client.server_capabilities.documentSymbolProvider then
-      require("nvim-navic").attach(client, bufnr)
-    end
-  end)
 
-  local default_config = {
-    flags = {
-      debounce_text_changes = 150,
-    },
-  }
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-  lsp.setup_servers({
-    "html",
-    "cssls",
-    "bashls",
-    "vimls",
-    "sumneko_lua",
-  }, default_config)
-
-  lsp.nvim_workspace()
-
-  lsp.configure("solargraph", {
-    flags = {
-      debounce_text_changes = 150,
-    },
-    init_options = {
-      formatting = true,
-    },
-    settings = {
-      solargraph = {
-        formatting = false,
+    local default_config = {
+      capabilities = capabilities,
+      on_attach = on_attach,
+      flags = {
+        debounce_text_changes = 150,
       },
-    },
-  })
+    }
 
-  lsp.configure("ember", {
-    on_init = function(client)
-      client.server_capabilities.documentFormattingProvider = false
-      client.server_capabilities.documentRangeFormattingProvider = false
-    end,
-  })
+    lspconfig.html.setup(default_config)
+    lspconfig.cssls.setup(default_config)
+    lspconfig.bashls.setup(default_config)
+    lspconfig.vimls.setup(default_config)
 
-  local tsserver_opts = lsp.build_options("tsserver", {
-    on_attach = function(client, bufnr)
-      local opts = { noremap = true, silent = true }
-      vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
-      vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspRenameFile<CR>", opts)
-      vim.api.nvim_buf_set_keymap(bufnr, "n", "go", ":TSLspImportAll<CR>", opts)
+    lspconfig.ember.setup({
+      capabilities = capabilities,
+      on_attach = function(client, bufnr)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
 
-      client.server_capabilities.documentFormattingProvider = false
-      client.server_capabilities.documentFormattingRangeProvider = false
-    end,
-  })
+        on_attach(client, bufnr)
+      end,
+      root_dir = lspconfig.util.root_pattern("ember-cli-build.js"),
+    })
 
-  lsp.setup()
+    lspconfig.solargraph.setup({
+      capabilities = capabilities,
+      on_attach = function(client, bufnr)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
 
-  require("typescript").setup({
-    go_to_source_definition = {
-      fallback = true,
-    },
-    flags = {
-      debounce_text_changes = 150,
-    },
-    server = tsserver_opts,
-  })
+        on_attach(client, bufnr)
+      end,
+      flags = {
+        debounce_text_changes = 150,
+      },
+      init_options = {
+        formatting = true,
+      },
+      settings = {
+        solargraph = {
+          diagnostics = false,
+        },
+      },
+    })
 
-  require("user.plugins.lsp.null_ls").setup(lsp)
-end
+    require("neodev").setup()
+    lspconfig.sumneko_lua.setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
+        Lua = {
+          diagnostics = {
+            globals = { "vim" },
+          },
+          telemetry = {
+            enable = false,
+          },
+        },
+      },
+    })
 
-return M
+    require("typescript").setup({
+      capabilities = capabilities,
+      go_to_source_definition = {
+        fallback = true, -- fall back to standard LSP definition on failure
+      },
+      server = {
+        on_attach = function(client, bufnr)
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+
+          local opts = { noremap = true, silent = true }
+          vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
+          vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspRenameFile<CR>", opts)
+          vim.api.nvim_buf_set_keymap(bufnr, "n", "go", ":TSLspImportAll<CR>", opts)
+
+          on_attach(client, bufnr)
+        end,
+        flags = {
+          debounce_text_changes = 150,
+        },
+      },
+    })
+
+    require("user.plugins.lsp.null_ls").setup(on_attach)
+  end,
+}

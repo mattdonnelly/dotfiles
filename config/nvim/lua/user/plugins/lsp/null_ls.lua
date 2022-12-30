@@ -1,26 +1,14 @@
 local M = {}
 
-function M.setup(lsp)
+function M.setup(on_attach)
   local mason_null_ls = require("mason-null-ls")
   local null_ls = require("null-ls")
   local null_ls_helpers = require("null-ls.helpers")
   local command_resolver = require("null-ls.helpers.command_resolver")
 
-  local null_opts = lsp.build_options("null-ls", {
-    on_attach = function(client)
-      if client.supports_method("textDocument/formatting") then
-        vim.api.nvim_create_autocmd("BufWritePre", {
-          desc = "Auto format before save",
-          pattern = "<buffer>",
-          callback = vim.lsp.buf.formatting_sync,
-        })
-      end
-    end,
-  })
-
   null_ls.setup({
     debug = true,
-    on_attach = null_opts.on_attach,
+    on_attach = on_attach,
     sources = {
       null_ls.builtins.formatting.rubocop,
       null_ls.builtins.diagnostics.rubocop,
