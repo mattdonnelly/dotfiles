@@ -2,26 +2,30 @@ return {
   "neovim/nvim-lspconfig",
   event = "BufReadPre",
   dependencies = {
+    "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "hrsh7th/cmp-nvim-lsp",
+
     "jose-elias-alvarez/null-ls.nvim",
     "jayp0521/mason-null-ls.nvim",
     "jose-elias-alvarez/typescript.nvim",
   },
   config = function()
+    local lspconfig = require("lspconfig")
+
     require("user.plugins.lsp.diagnostics").setup()
 
     local on_attach = function(client, bufnr)
+      require("user.plugins.lsp.keymaps").setup(bufnr)
+
+      if client.server_capabilities.documentFormattingProvider then
+        require("user.plugins.lsp.formatting").setup(client, bufnr)
+      end
+
       if client.server_capabilities.documentSymbolProvider then
         require("nvim-navic").attach(client, bufnr)
       end
-      require("user.plugins.lsp.keymaps").setup(bufnr)
-      require("user.plugins.lsp.formatting").setup(client, bufnr)
     end
-
-    local lspconfig = require("lspconfig")
-    local null_ls = require("null-ls")
-    local null_ls_helpers = require("null-ls.helpers")
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
@@ -53,6 +57,9 @@ return {
     lspconfig.solargraph.setup({
       capabilities = capabilities,
       on_attach = function(client, bufnr)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+
         on_attach(client, bufnr)
       end,
       flags = {
@@ -63,7 +70,7 @@ return {
       },
       settings = {
         solargraph = {
-          formatting = false,
+          diagnostics = false,
         },
       },
     })
@@ -91,6 +98,9 @@ return {
       },
       server = {
         on_attach = function(client, bufnr)
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+
           local opts = { noremap = true, silent = true }
           vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
           vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspRenameFile<CR>", opts)
@@ -104,45 +114,6 @@ return {
       },
     })
 
-    local ember_template_lint = {
-      name = "ember-template-lint",
-      method = null_ls.methods.FORMATTING,
-      filetypes = { "html.handlebars" },
-      generator = null_ls_helpers.formatter_factory({
-        args = { "--fix", "$FILENAME" },
-        command = "ember-template-lint",
-      }),
-    }
-
-    local command_resolver = require("null-ls.helpers.command_resolver")
-    local sources = {
-      ember_template_lint,
-      null_ls.builtins.formatting.prettier.with({
-        disabled_filetypes = { "html.handlebars", "json" },
-        dynamic_command = command_resolver.from_node_modules(),
-      }),
-      null_ls.builtins.diagnostics.eslint.with({
-        dynamic_command = command_resolver.from_node_modules(),
-      }),
-      null_ls.builtins.code_actions.eslint.with({
-        dynamic_command = command_resolver.from_node_modules(),
-      }),
-      null_ls.builtins.formatting.rubocop,
-      null_ls.builtins.diagnostics.rubocop,
-      null_ls.builtins.formatting.stylua,
-      require("typescript.extensions.null-ls.code-actions"),
-    }
-
-    null_ls.setup({
-      debug = true,
-      sources = sources,
-      on_attach = on_attach,
-    })
-
-    require("mason-null-ls").setup({
-      ensure_installed = nil,
-      automatic_installation = true,
-      automatic_setup = false,
-    })
+    require("user.plugins.lsp.null_ls").setup(on_attach)
   end,
 }

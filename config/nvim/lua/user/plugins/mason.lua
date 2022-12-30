@@ -7,7 +7,6 @@ local M = {
 
 local servers = {
   "ember-language-server",
-  "solargraph",
   "html-lsp",
   "css-lsp",
   "bash-language-server",
