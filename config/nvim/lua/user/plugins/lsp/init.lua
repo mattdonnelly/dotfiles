@@ -9,6 +9,8 @@ return {
     "jose-elias-alvarez/null-ls.nvim",
     "jayp0521/mason-null-ls.nvim",
     "jose-elias-alvarez/typescript.nvim",
+
+    { "lukas-reineke/lsp-format.nvim", config = true },
   },
   config = function()
     local lspconfig = require("lspconfig")
@@ -19,7 +21,7 @@ return {
       require("user.plugins.lsp.keymaps").setup(bufnr)
 
       if client.server_capabilities.documentFormattingProvider then
-        require("user.plugins.lsp.formatting").setup(client, bufnr)
+        require("lsp-format").on_attach(client)
       end
 
       if client.server_capabilities.documentSymbolProvider then
