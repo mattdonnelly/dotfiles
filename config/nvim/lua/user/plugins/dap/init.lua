@@ -20,9 +20,14 @@ return {
   config = function()
     vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "Error" })
     vim.fn.sign_define("DapBreakpointCondition", { text = "לּ", texthl = "Error" })
-    vim.fn.sign_define("DapLogPoint", { text = "", texthl = "Directory" })
-    vim.fn.sign_define("DapStopped", { text = "ﰲ", texthl = "TSConstant" })
     vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "Error" })
+    vim.fn.sign_define("DapLogPoint", { text = "", texthl = "Directory" })
+    vim.fn.sign_define("DapStopped", {
+      text = "ﰲ",
+      texthl = "TSConstant",
+      linehl = "CursorLine",
+      numhl = "LspDiagnosticsSignInformation",
+    })
 
     require("nvim-dap-virtual-text").setup()
 
