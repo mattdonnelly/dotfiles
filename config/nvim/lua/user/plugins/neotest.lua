@@ -10,16 +10,11 @@ return {
     require("neotest").setup({
       adapters = {
         require("neotest-jest")({
-          jestCommand = "yarn run test:unit",
-          jestConfigFile = "jest.config.js",
-          cwd = function(_)
-            return vim.fn.getcwd()
-          end,
+          jestCommand = vim.g.jest_command or "npm test --",
         }),
       },
-      output = {
-        enable = true,
-        open_on_run = true,
+      discovery = {
+        enabled = false,
       },
     })
   end,
