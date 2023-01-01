@@ -41,4 +41,7 @@ require("lazy").setup("user.plugins", {
       },
     },
   },
+  dev = {
+    path = "~/src",
+  },
 })
