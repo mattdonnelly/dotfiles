@@ -11,6 +11,7 @@ return {
     "jayp0521/mason-null-ls.nvim",
     "jose-elias-alvarez/typescript.nvim",
 
+    "ray-x/lsp_signature.nvim",
     { "lukas-reineke/lsp-format.nvim", config = true },
   },
   config = function()
@@ -139,5 +140,7 @@ return {
     })
 
     require("user.plugins.lsp.null_ls").setup(on_attach)
+
+    require("lsp_signature").setup({ hint_enable = false, doc_lines = 0, transparency = 15 })
   end,
 }
