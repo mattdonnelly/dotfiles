@@ -93,6 +93,10 @@ wk.register({
         [[<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>]],
         "Run full test suite",
       },
+      l = {
+        [[<cmd>lua require("neotest").run.run_last()<CR>]],
+        "Debug nearest tests",
+      },
       s = {
         [[<cmd>lua require("neotest").run.stop()<CR>]],
         "Stop nearest test",
@@ -100,6 +104,14 @@ wk.register({
       a = {
         [[<cmd>lua require("neotest").run.attach()<CR>]],
         "Attach to nearest test",
+      },
+      o = {
+        [[<cmd>lua require("neotest").output.open()<CR>]],
+        "Toggle test panel",
+      },
+      p = {
+        [[<cmd>lua require("neotest").output_panel.toggle()<CR>]],
+        "Toggle test panel",
       },
     },
     u = { ":UndotreeToggle<CR>", "Open Undotree" },
