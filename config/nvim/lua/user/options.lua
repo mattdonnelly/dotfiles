@@ -4,10 +4,16 @@ vim.opt.compatible = false
 vim.opt.showmode = false
 vim.opt.clipboard = "unnamed"
 
+vim.opt.swapfile = false
 vim.opt.undodir = vim.fn.stdpath("cache") .. "/undo"
 vim.opt.undofile = true
 
-vim.g["&t_ZM"] = "\\e[4m" -- Italics in tmux
+-- Undercurl support
+vim.g["&t_Cs"] = "\\e[4:3m"
+vim.g["&t_Ce"] = "\\e[4:0m"
+--
+-- Italics support
+vim.g["&t_ZM"] = "\\e[4m"
 
 vim.opt.termguicolors = true
 
@@ -37,6 +43,7 @@ vim.opt.swapfile = true
 vim.opt.autoread = true
 vim.opt.number = true
 vim.opt.numberwidth = 4
+vim.opt.grepprg = "rg --vimgrep"
 
 vim.opt.whichwrap:append("<,>,[,],h,l")
 vim.opt.hlsearch = false
