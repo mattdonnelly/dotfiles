@@ -67,7 +67,10 @@ return {
   },
   {
     "numToStr/Comment.nvim",
-    keys = { "gc", "gb" },
+    keys = {
+      { "gc", mode = { "n", "v" } },
+      { "gb", mode = { "n", "v" } },
+    },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       local ts_comment_integration = require("ts_context_commentstring.integrations.comment_nvim")
