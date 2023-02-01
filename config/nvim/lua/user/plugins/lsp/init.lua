@@ -26,7 +26,6 @@ return {
         "sumneko_lua",
         "ember",
         "tsserver",
-        "solargraph",
       },
     })
 
