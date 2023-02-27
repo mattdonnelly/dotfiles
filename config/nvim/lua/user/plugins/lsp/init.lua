@@ -23,7 +23,7 @@ return {
         "html",
         "cssls",
         "bashls",
-        "sumneko_lua",
+        "lua_ls",
         "ember",
         "tsserver",
       },
@@ -100,7 +100,7 @@ return {
     })
 
     require("neodev").setup()
-    lspconfig.sumneko_lua.setup({
+    lspconfig.lua_ls.setup({
       capabilities = capabilities,
       on_attach = on_attach,
       settings = {
