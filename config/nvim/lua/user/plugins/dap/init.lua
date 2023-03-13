@@ -8,7 +8,8 @@ return {
       "mxsdev/nvim-dap-vscode-js",
       dependencies = {
         "microsoft/vscode-js-debug",
-        build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+        version = "1.68.0",
+        build = "npm i --legacy-peer-deps && npm run compile",
       },
     },
   },
