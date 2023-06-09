@@ -1,12 +1,10 @@
 local signs = require("user.plugins.lsp.diagnostics").signs
-local lsp_fg = "#ff9e64"
 
 return {
   "nvim-lualine/lualine.nvim",
   event = "VimEnter",
   dependencies = {
     "folke/tokyonight.nvim",
-    "SmiteshP/nvim-navic",
     "nvim-tree/nvim-web-devicons",
   },
   config = {
@@ -45,20 +43,6 @@ return {
         },
         { "filetype", icon_only = true, padding = { left = 1, right = 0 } },
         { "filename", path = 1, symbols = { modified = "", unnamed = "", readonly = "" } },
-        {
-          function()
-            local navic = require("nvim-navic")
-            local ret = navic.get_location()
-            return ret:len() > 2000 and "navic error" or ret
-          end,
-          cond = function()
-            if package.loaded["nvim-navic"] then
-              local navic = require("nvim-navic")
-              return navic.is_available()
-            end
-          end,
-          color = { fg = lsp_fg },
-        },
       },
       lualine_x = {
         {

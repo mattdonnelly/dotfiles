@@ -35,23 +35,25 @@ function M.setup(on_attach)
     automatic_setup = true,
   })
 
-  mason_null_ls.setup_handlers({
-    function(source_name, methods)
-      require("mason-null-ls.automatic_setup")(source_name, methods)
-    end,
-    prettierd = function()
-      null_ls.register(null_ls.builtins.formatting.prettier.with({
-        disabled_filetypes = { "html.handlebars", "json" },
-        dynamic_command = command_resolver.from_node_modules(),
-      }))
-    end,
-    eslint_d = function()
-      local opts = {
-        dynamic_command = command_resolver.from_node_modules(),
-      }
-      null_ls.register(null_ls.builtins.diagnostics.eslint_d.with(opts))
-      null_ls.register(null_ls.builtins.code_actions.eslint_d.with(opts))
-    end,
+  mason_null_ls.setup({
+    handlers = {
+      function(source_name, methods)
+        require("mason-null-ls.automatic_setup")(source_name, methods)
+      end,
+      prettierd = function()
+        null_ls.register(null_ls.builtins.formatting.prettier.with({
+          disabled_filetypes = { "html.handlebars", "json" },
+          dynamic_command = command_resolver.from_node_modules(),
+        }))
+      end,
+      eslint_d = function()
+        local opts = {
+          dynamic_command = command_resolver.from_node_modules(),
+        }
+        null_ls.register(null_ls.builtins.diagnostics.eslint_d.with(opts))
+        null_ls.register(null_ls.builtins.code_actions.eslint_d.with(opts))
+      end,
+    }
   })
 end
 

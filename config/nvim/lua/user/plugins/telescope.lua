@@ -13,19 +13,21 @@ return {
   config = function()
     local actions = require("telescope.actions")
     local action_state = require("telescope.actions.state")
+    local action_utils = require("telescope.actions.utils")
 
-    local custom_actions = {}
+    local function single_or_multi_select(prompt_bufnr)
+      local current_picker = action_state.get_current_picker(prompt_bufnr)
+      local has_multi_selection = (next(current_picker:get_multi_selection()) ~= nil)
 
-    function custom_actions.fzf_multi_select(prompt_bufnr)
-      local picker = action_state.get_current_picker(prompt_bufnr)
-      local num_selections = #(picker:get_multi_selection())
-
-      if num_selections > 1 then
-        actions.send_selected_to_qflist(prompt_bufnr)
-        actions.open_qflist(prompt_bufnr)
-      elseif picker.cwd ~= nil then
-        actions.select_default(prompt_bufnr)
+      if has_multi_selection then
+        -- apply function to each selection
+        action_utils.map_selections(prompt_bufnr, function(selection)
+          local filename = selection.filename
+          local lnum = vim.F.if_nil(selection.lnum, 1)
+          vim.cmd(":edit! " .. filename .. "|" .. lnum)
+        end)
       else
+        -- if does not have multi selection, open single file
         actions.file_edit(prompt_bufnr)
       end
     end
@@ -42,27 +44,19 @@ return {
         mappings = {
           i = {
             ["<esc>"] = actions.close,
-            ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
+            ["<tab>"] = actions.toggle_selection,
+            ["<C-j>"] = actions.move_selection_next,
+            ["<C-k>"] = actions.move_selection_previous,
             ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
+            ["<cr>"] = single_or_multi_select,
           },
           n = {
-            ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
-            ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
+            ["<tab>"] = actions.toggle_selection,
+            ["<s-tab>"] = actions.toggle_selection,
+            ["<cr>"] = single_or_multi_select,
           },
         },
         pickers = {
-          find_files = {
-            mappings = {
-              i = {
-                ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
-                ["<cr>"] = custom_actions.fzf_multi_select,
-              },
-              n = {
-                ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
-                ["<cr>"] = custom_actions.fzf_multi_select,
-              },
-            },
-          },
           lsp_code_actions = {
             theme = "cursor",
           },

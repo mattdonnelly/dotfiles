@@ -108,6 +108,9 @@ return {
           diagnostics = {
             globals = { "vim" },
           },
+          workspace = {
+            checkThirdParty = false,
+          },
           telemetry = {
             enable = false,
           },
