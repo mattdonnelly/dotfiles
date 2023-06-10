@@ -11,7 +11,7 @@ return {
   { "kdheepak/lazygit.nvim", cmd = { "LazyGit" } },
   { "psliwka/vim-smoothie", event = "BufWinEnter" },
   { "ntpeters/vim-better-whitespace", event = "BufReadPost" },
-  { "j-hui/fidget.nvim", event = "VeryLazy", config = true },
+  { "j-hui/fidget.nvim", tag = "legacy", event = "VeryLazy", config = true },
   { "numToStr/Navigator.nvim", event = "VeryLazy", config = true },
 
   {
