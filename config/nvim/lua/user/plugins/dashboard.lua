@@ -7,15 +7,15 @@ return {
       theme = "hyper",
       config = {
         shortcut = {
-          { desc = " Update", group = "@property", action = "Lazy update", key = "u" },
+          { desc = "󰚰 Update", group = "@property", action = "Lazy update", key = "u" },
           {
-            desc = " File",
+            desc = "󰱼 File",
             group = "Label",
             action = "Telescope find_files",
             key = "f",
           },
           {
-            desc = " Search",
+            desc = "󱎸 Search",
             group = "DiagnosticHint",
             action = "Telescope live_grep",
             key = "/",
@@ -27,7 +27,7 @@ return {
             key = "n",
           },
           {
-            desc = " Settings",
+            desc = " Settings",
             group = "Number",
             action = "edit $MYVIMRC",
             key = "e",
