@@ -10,6 +10,7 @@ return {
     "jose-elias-alvarez/null-ls.nvim",
     "jayp0521/mason-null-ls.nvim",
     "jose-elias-alvarez/typescript.nvim",
+    "KostkaBrukowa/definition-or-references.nvim",
 
     "ray-x/lsp_signature.nvim",
     { "lukas-reineke/lsp-format.nvim", config = true },
