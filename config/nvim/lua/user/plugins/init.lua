@@ -8,11 +8,11 @@ return {
   "nvim-lua/popup.nvim",
   "nvim-lua/plenary.nvim",
 
-  { "kdheepak/lazygit.nvim", cmd = { "LazyGit" } },
-  { "psliwka/vim-smoothie", event = "BufWinEnter" },
+  { "kdheepak/lazygit.nvim",          cmd = { "LazyGit" } },
+  { "psliwka/vim-smoothie",           event = "BufWinEnter" },
   { "ntpeters/vim-better-whitespace", event = "BufReadPost" },
-  { "j-hui/fidget.nvim", tag = "legacy", event = "VeryLazy", config = true },
-  { "numToStr/Navigator.nvim", event = "VeryLazy", config = true },
+  { "j-hui/fidget.nvim",              tag = "legacy",       event = "VeryLazy", config = true },
+  { "numToStr/Navigator.nvim",        event = "VeryLazy",   config = true },
 
   {
     "tpope/vim-surround",
@@ -70,6 +70,14 @@ return {
       require("Comment").setup({
         pre_hook = ts_comment_integration.create_pre_hook(),
       })
+    end,
+  },
+  {
+    "tzachar/highlight-undo.nvim",
+    lazy = true,
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("highlight-undo").setup({})
     end,
   },
 }
