@@ -74,10 +74,10 @@ return {
   },
   {
     "tzachar/highlight-undo.nvim",
-    lazy = true,
-    event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      require("highlight-undo").setup({})
-    end,
+    config = true,
+    keys = {
+      { "u" },
+      { "<C-r>" },
+    },
   },
 }
