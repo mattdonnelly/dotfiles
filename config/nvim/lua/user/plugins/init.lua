@@ -41,6 +41,14 @@ return {
     cmd = { "UndotreeToggle", "UndotreeShow", "UndotreeHide", "UndotreeFocus" },
   },
   {
+    "tzachar/highlight-undo.nvim",
+    config = true,
+    keys = {
+      { "u" },
+      { "<C-r>" },
+    },
+  },
+  {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
     config = true,
@@ -71,13 +79,5 @@ return {
         pre_hook = ts_comment_integration.create_pre_hook(),
       })
     end,
-  },
-  {
-    "tzachar/highlight-undo.nvim",
-    config = true,
-    keys = {
-      { "u" },
-      { "<C-r>" },
-    },
   },
 }
