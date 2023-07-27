@@ -38,10 +38,6 @@ return {
       if client.server_capabilities.documentFormattingProvider then
         require("lsp-format").on_attach(client)
       end
-
-      if client.server_capabilities.documentSymbolProvider then
-        require("nvim-navic").attach(client, bufnr)
-      end
     end
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
