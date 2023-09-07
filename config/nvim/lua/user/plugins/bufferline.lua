@@ -1,6 +1,6 @@
 return {
   "akinsho/nvim-bufferline.lua",
-  event = "BufAdd",
+  event = { "BufReadPre", "BufAdd", "BufNew", "BufReadPost" },
   config = function()
     local diagnostics = require("user.plugins.lsp.diagnostics")
 
