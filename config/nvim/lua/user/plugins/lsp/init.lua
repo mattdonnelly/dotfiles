@@ -9,7 +9,7 @@ return {
     "b0o/SchemaStore.nvim",
     "jose-elias-alvarez/null-ls.nvim",
     "jayp0521/mason-null-ls.nvim",
-    "jose-elias-alvarez/typescript.nvim",
+    "pmizio/typescript-tools.nvim",
     "KostkaBrukowa/definition-or-references.nvim",
 
     "ray-x/lsp_signature.nvim",
@@ -115,28 +115,14 @@ return {
       },
     })
 
-    require("typescript").setup({
-      capabilities = capabilities,
-      go_to_source_definition = {
-        fallback = true, -- fall back to standard LSP definition on failure
-      },
-      server = {
-        on_attach = function(client, bufnr)
-          client.server_capabilities.documentFormattingProvider = false
-          client.server_capabilities.documentRangeFormattingProvider = false
-
-          local opts = { noremap = true, silent = true }
-          vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
-          vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspRenameFile<CR>", opts)
-          vim.api.nvim_buf_set_keymap(bufnr, "n", "go", ":TSLspImportAll<CR>", opts)
-
-          on_attach(client, bufnr)
-        end,
-        flags = {
-          debounce_text_changes = 150,
-        },
-      },
+    require("lspconfig").tsserver.setup({
+      filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+      on_attach = on_attach,
+      root_dir = function()
+        return vim.loop.cwd()
+      end,
     })
+    require("typescript-tools").setup({})
 
     require("lsp_signature").setup({ hint_enable = false, doc_lines = 0, transparency = 15 })
   end,
