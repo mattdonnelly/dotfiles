@@ -138,8 +138,6 @@ return {
       },
     })
 
-    require("user.plugins.lsp.null_ls").setup(on_attach)
-
     require("lsp_signature").setup({ hint_enable = false, doc_lines = 0, transparency = 15 })
   end,
 }
