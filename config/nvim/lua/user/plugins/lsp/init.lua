@@ -7,13 +7,10 @@ return {
 
     "hrsh7th/cmp-nvim-lsp",
     "b0o/SchemaStore.nvim",
-    "jose-elias-alvarez/null-ls.nvim",
-    "jayp0521/mason-null-ls.nvim",
     "pmizio/typescript-tools.nvim",
     "KostkaBrukowa/definition-or-references.nvim",
 
     "ray-x/lsp_signature.nvim",
-    { "lukas-reineke/lsp-format.nvim", config = true },
   },
   config = function()
     local lspconfig = require("lspconfig")
@@ -115,14 +112,17 @@ return {
       },
     })
 
-    require("lspconfig").tsserver.setup({
-      filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    local mason_registry = require("mason-registry")
+    local tsserver_path = mason_registry.get_package("typescript-language-server"):get_install_path()
+    require("typescript-tools").setup({
+      capabilities = capabilities,
       on_attach = on_attach,
-      root_dir = function()
-        return vim.loop.cwd()
-      end,
+      settings = {
+        tsserver_path = tsserver_path .. "/node_modules/typescript/lib/tsserver.js",
+        expose_as_code_action = "all",
+        separate_diagnostic_server = false,
+      },
     })
-    require("typescript-tools").setup({})
 
     require("lsp_signature").setup({ hint_enable = false, doc_lines = 0, transparency = 15 })
   end,

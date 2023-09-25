@@ -11,12 +11,6 @@ vim.api.nvim_create_autocmd("FileType", {
   command = "setlocal iskeyword+=-",
 })
 
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-  callback = function()
-    vim.cmd("FormatWrite")
-  end,
-})
-
 vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave", "BufEnter" }, {
   callback = function()
     require("lint").try_lint()
