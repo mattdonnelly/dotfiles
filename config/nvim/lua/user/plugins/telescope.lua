@@ -24,11 +24,13 @@ return {
         action_utils.map_selections(prompt_bufnr, function(selection)
           local filename = selection.filename
           local lnum = vim.F.if_nil(selection.lnum, 1)
-          vim.cmd(":edit! " .. filename .. "|" .. lnum)
+          if filename ~= nil then
+            vim.cmd(":edit! " .. filename .. "|" .. lnum)
+          end
         end)
       else
         -- if does not have multi selection, open single file
-        actions.file_edit(prompt_bufnr)
+        actions.select_default(prompt_bufnr)
       end
     end
 

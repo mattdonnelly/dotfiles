@@ -8,11 +8,12 @@ return {
   "nvim-lua/popup.nvim",
   "nvim-lua/plenary.nvim",
 
-  { "kdheepak/lazygit.nvim",          cmd = { "LazyGit" } },
-  { "psliwka/vim-smoothie",           event = "BufWinEnter" },
+  { "kdheepak/lazygit.nvim", cmd = { "LazyGit" } },
+  { "psliwka/vim-smoothie", event = "BufWinEnter" },
   { "ntpeters/vim-better-whitespace", event = "BufReadPost" },
-  { "j-hui/fidget.nvim",              tag = "legacy",       event = "VeryLazy", config = true },
-  { "numToStr/Navigator.nvim",        event = "VeryLazy",   config = true },
+  { "j-hui/fidget.nvim", tag = "legacy", event = "VeryLazy", config = true },
+  { "numToStr/Navigator.nvim", event = "VeryLazy", config = true },
+  { "stevearc/dressing.nvim", event = "VeryLazy", opts = {} },
 
   {
     "tpope/vim-surround",
@@ -21,9 +22,6 @@ return {
   },
   {
     "mrjones2014/legendary.nvim",
-    dependencies = {
-      { "stevearc/dressing.nvim", config = true },
-    },
   },
   {
     "folke/which-key.nvim",

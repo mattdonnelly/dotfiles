@@ -112,13 +112,10 @@ return {
       },
     })
 
-    local mason_registry = require("mason-registry")
-    local tsserver_path = mason_registry.get_package("typescript-language-server"):get_install_path()
     require("typescript-tools").setup({
       capabilities = capabilities,
       on_attach = on_attach,
       settings = {
-        tsserver_path = tsserver_path .. "/node_modules/typescript/lib/tsserver.js",
         expose_as_code_action = "all",
         separate_diagnostic_server = false,
       },

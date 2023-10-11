@@ -4,6 +4,7 @@ return {
   version = "v2.x",
   dependencies = {
     "MunifTanjim/nui.nvim",
+    "antosha417/nvim-lsp-file-operations",
   },
   config = function()
     vim.g["neo_tree_remove_legacy_commands"] = 1
