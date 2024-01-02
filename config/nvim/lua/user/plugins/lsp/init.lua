@@ -24,17 +24,14 @@ return {
         "lua_ls",
         "ember",
         "tsserver",
+        "stylelint_lsp",
       },
     })
 
     require("user.plugins.lsp.diagnostics").setup()
 
-    local on_attach = function(client, bufnr)
+    local on_attach = function(_, bufnr)
       require("user.plugins.lsp.keymaps").setup(bufnr)
-
-      if client.server_capabilities.documentFormattingProvider then
-        require("lsp-format").on_attach(client)
-      end
     end
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -51,6 +48,18 @@ return {
     lspconfig.html.setup(default_config)
     lspconfig.cssls.setup(default_config)
     lspconfig.bashls.setup(default_config)
+    lspconfig.gopls.setup(default_config)
+    lspconfig.eslint.setup(default_config)
+    lspconfig.rubocop.setup(default_config)
+    lspconfig.ruby_ls.setup(default_config)
+
+    lspconfig.stylelint_lsp.setup({
+      settings = {
+        stylelintplus = {
+          cssInJs = true,
+        },
+      },
+    })
 
     lspconfig.jsonls.setup({
       settings = {
@@ -72,26 +81,26 @@ return {
       root_dir = lspconfig.util.root_pattern("ember-cli-build.js"),
     })
 
-    lspconfig.solargraph.setup({
-      capabilities = capabilities,
-      on_attach = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.documentRangeFormattingProvider = false
-
-        on_attach(client, bufnr)
-      end,
-      flags = {
-        debounce_text_changes = 150,
-      },
-      init_options = {
-        formatting = true,
-      },
-      settings = {
-        solargraph = {
-          diagnostics = false,
-        },
-      },
-    })
+    -- lspconfig.solargraph.setup({
+    --   capabilities = capabilities,
+    --   on_attach = function(client, bufnr)
+    --     client.server_capabilities.documentFormattingProvider = false
+    --     client.server_capabilities.documentRangeFormattingProvider = false
+    --
+    --     on_attach(client, bufnr)
+    --   end,
+    --   flags = {
+    --     debounce_text_changes = 150,
+    --   },
+    --   init_options = {
+    --     formatting = true,
+    --   },
+    --   settings = {
+    --     solargraph = {
+    --       diagnostics = false,
+    --     },
+    --   },
+    -- })
 
     require("neodev").setup()
     lspconfig.lua_ls.setup({

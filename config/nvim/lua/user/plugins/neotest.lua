@@ -6,6 +6,7 @@ return {
     "antoinemadec/FixCursorHold.nvim",
     "olimorris/neotest-rspec",
     "haydenmeade/neotest-jest",
+    "nvim-neotest/neotest-go",
   },
   config = function()
     require("neotest").setup({
@@ -16,6 +17,7 @@ return {
         require("neotest-rspec")({
           rspecCommand = vim.g.rspec_command or "bundle exec rspec",
         }),
+        require("neotest-go"),
       },
       discovery = {
         enabled = false,

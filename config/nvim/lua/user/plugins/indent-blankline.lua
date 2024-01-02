@@ -2,7 +2,7 @@ return {
   "lukas-reineke/indent-blankline.nvim",
   main = "ibl",
   event = "BufReadPre",
-  config = {
+  opt = {
     filetype_exclude = {
       "startify",
       "dashboard",
