@@ -16,3 +16,11 @@ vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave", "BufEnter" }, {
     require("lint").try_lint()
   end,
 })
+
+local autocmd = vim.api.nvim_create_autocmd
+autocmd("BufWritePre", {
+  pattern = "*.ts,*.tsx,*.jsx,*.js",
+  callback = function()
+    vim.cmd("TSToolsAddMissingImports sync")
+  end,
+})

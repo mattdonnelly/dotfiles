@@ -8,7 +8,7 @@ return {
     "BurntSushi/ripgrep",
     "sharkdp/fd",
     "nvim-telescope/telescope-dap.nvim",
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    "natecraddock/telescope-zf-native.nvim",
   },
   config = function()
     local actions = require("telescope.actions")
@@ -35,11 +35,24 @@ return {
     end
 
     require("telescope").setup({
-      extensions = {
-        fzf = {
-          fuzzy = true,
-          override_generic_sorter = true,
-          override_file_sorter = true,
+      ["zf-native"] = {
+        file = {
+          enable = true,
+          highlight_results = true,
+          match_filename = true,
+        },
+        generic = {
+          enable = true,
+          highlight_results = true,
+          match_filename = false,
+        },
+      },
+      pickers = {
+        find_files = {
+          hidden = true,
+        },
+        lsp_code_actions = {
+          theme = "cursor",
         },
       },
       defaults = {
@@ -58,11 +71,6 @@ return {
             ["<cr>"] = single_or_multi_select,
           },
         },
-        pickers = {
-          lsp_code_actions = {
-            theme = "cursor",
-          },
-        },
         sorting_strategy = "ascending",
         layout_strategy = "horizontal",
         layout_config = {
@@ -79,7 +87,7 @@ return {
           preview_cutoff = 120,
         },
         path_display = { "smart" },
-        file_ignore_patterns = { "node_modules", "%.out" },
+        file_ignore_patterns = { ".git/", "node_modules", "%.out" },
         prompt_prefix = " 🔭  ",
         selection_caret = "  ",
         entry_prefix = "  ",
@@ -90,7 +98,7 @@ return {
       },
     })
 
-    require("telescope").load_extension("fzf")
+    require("telescope").load_extension("zf-native")
     require("telescope").load_extension("dap")
   end,
 }

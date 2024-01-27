@@ -40,7 +40,7 @@ function M.setup(bufnr)
     g = {
       name = "Goto",
       D = { vim.lsp.buf.declaration, "Go to declaration" },
-      d = { require("definition-or-references").definition_or_references, "Go to definition" },
+      d = { vim.lsp.buf.definition, "Go to definition" },
       i = { vim.lsp.buf.implementation, "Go to definition" },
       r = { vim.lsp.buf.references, "Show references" },
       R = { "<cmd>Trouble lsp_references<cr>", "Trouble references" },

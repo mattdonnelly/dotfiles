@@ -1,14 +1,12 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
   cmd = "Neotree",
-  version = "v2.x",
+  version = "v3.x",
   dependencies = {
     "MunifTanjim/nui.nvim",
     "antosha417/nvim-lsp-file-operations",
   },
   config = function()
-    vim.g["neo_tree_remove_legacy_commands"] = 1
-
     local signs = require("user.plugins.lsp.diagnostics").signs
     vim.fn.sign_define("DiagnosticSignError", { text = signs.Error, texthl = "DiagnosticSignError" })
     vim.fn.sign_define("DiagnosticSignWarn", { text = signs.Warning, texthl = "DiagnosticSignWarn" })
@@ -19,6 +17,9 @@ return {
       filesystem = {
         follow_current_file = true,
         hijack_netrw_behavior = "open_current",
+        filtered_items = {
+          hide_dotfiles = false,
+        },
       },
       event_handlers = {
         {
