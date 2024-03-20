@@ -5,6 +5,11 @@ return {
   "stevearc/conform.nvim",
   event = { "BufReadPre", "BufNewFile", "InsertEnter" },
   opts = {
+    format = {
+      timeout_ms = 3000,
+      async = false,
+      quiet = false,
+    },
     formatters_by_ft = {
       lua = { "stylua" },
       ruby = { "bundle" },

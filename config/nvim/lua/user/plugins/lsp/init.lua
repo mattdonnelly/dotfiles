@@ -8,6 +8,7 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     "b0o/SchemaStore.nvim",
     "pmizio/typescript-tools.nvim",
+    "luckasRanarison/tailwind-tools.nvim",
 
     "ray-x/lsp_signature.nvim",
   },
@@ -43,6 +44,7 @@ return {
         "ember",
         "tsserver",
         "stylelint_lsp",
+        "tailwindcss",
       },
       handlers = {
         function(server_name)
@@ -92,6 +94,13 @@ return {
             },
           })
         end,
+      },
+    })
+
+    require("tailwind-tools").setup({
+      document_color = {
+        enabled = true,
+        kind = "background",
       },
     })
 
