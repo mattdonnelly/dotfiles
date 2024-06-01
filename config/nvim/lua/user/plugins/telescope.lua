@@ -1,6 +1,6 @@
 return {
   "nvim-telescope/telescope.nvim",
-  version = "0.1.4",
+  version = false,
   cmd = { "Telescope" },
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
@@ -35,6 +35,18 @@ return {
     end
 
     require("telescope").setup({
+      ["zf-native"] = {
+        file = {
+          enable = true,
+          highlight_results = true,
+          match_filename = true,
+        },
+        generic = {
+          enable = true,
+          highlight_results = true,
+          match_filename = false,
+        },
+      },
       pickers = {
         find_files = {
           hidden = true,
@@ -84,6 +96,7 @@ return {
       },
     })
 
+    require("telescope").load_extension("zf-native")
     require("telescope").load_extension("dap")
   end,
 }
