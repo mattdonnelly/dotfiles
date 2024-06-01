@@ -38,7 +38,7 @@ return {
         "gopls",
         "eslint",
         "rubocop",
-        "ruby_ls",
+        "ruby_lsp",
         "lua_ls",
         "jsonls",
         "ember",

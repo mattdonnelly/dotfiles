@@ -4,9 +4,9 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     require("dashboard").setup({
-      theme = "hyper",
+      theme = "doom",
       config = {
-        shortcut = {
+        center = {
           { desc = "󰚰 Update", group = "@property", action = "Lazy update", key = "u" },
           {
             desc = "󰱼 File",
