@@ -5,7 +5,6 @@ return {
   dependencies = {
     "windwp/nvim-ts-autotag",
     "RRethy/nvim-treesitter-endwise",
-    "JoosepAlviste/nvim-ts-context-commentstring",
     "nvim-treesitter/nvim-treesitter-textobjects",
   },
   config = function()
