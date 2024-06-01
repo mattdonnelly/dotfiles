@@ -20,7 +20,6 @@ return {
       local has_multi_selection = (next(current_picker:get_multi_selection()) ~= nil)
 
       if has_multi_selection then
-        -- apply function to each selection
         action_utils.map_selections(prompt_bufnr, function(selection)
           local filename = selection.filename
           local lnum = vim.F.if_nil(selection.lnum, 1)
@@ -29,7 +28,6 @@ return {
           end
         end)
       else
-        -- if does not have multi selection, open single file
         actions.select_default(prompt_bufnr)
       end
     end
