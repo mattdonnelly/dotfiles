@@ -3,7 +3,7 @@ local M = {}
 function M.setup(bufnr)
   local wk = require("which-key")
 
-  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
 
   local keymap = {
     buffer = bufnr,
