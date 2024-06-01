@@ -1,12 +1,12 @@
 return {
-  "glepnir/dashboard-nvim",
+  "nvimdev/dashboard-nvim",
   event = "VimEnter",
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     require("dashboard").setup({
-      theme = "doom",
+      theme = "hyper",
       config = {
-        center = {
+        shortcut = {
           { desc = "󰚰 Update", group = "@property", action = "Lazy update", key = "u" },
           {
             desc = "󰱼 File",
