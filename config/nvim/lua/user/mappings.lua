@@ -70,10 +70,7 @@ wk.register({
       s = { "<cmd>Telescope git_status<CR>", "status" },
       d = { "<cmd>DiffviewOpen<cr>", "DiffView" },
       h = { name = "Hunk" },
-    },
-    j = {
-      "<cmd>TSJToggle<CR>",
-      "Toggle split/join",
+      j = { name = "Split/join toggle" },
     },
     m = {
       name = "Jumpwire",

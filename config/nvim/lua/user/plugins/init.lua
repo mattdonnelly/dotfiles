@@ -10,16 +10,15 @@ return {
 
   { "kdheepak/lazygit.nvim", cmd = { "LazyGit" } },
   { "psliwka/vim-smoothie", event = "BufWinEnter" },
-  { "ntpeters/vim-better-whitespace", event = "BufReadPost" },
   { "j-hui/fidget.nvim", tag = "legacy", event = "VeryLazy", config = true },
   { "numToStr/Navigator.nvim", event = "VeryLazy", config = true },
   { "stevearc/dressing.nvim", event = "VeryLazy", opts = {} },
 
-  {
-    "tpope/vim-surround",
-    event = "VeryLazy",
-    dependencies = { "tpope/vim-repeat" },
-  },
+  -- {
+  --   "tpope/vim-surround",
+  --   event = "VeryLazy",
+  --   dependencies = { "tpope/vim-repeat" },
+  -- },
   {
     "mrjones2014/legendary.nvim",
   },
@@ -57,11 +56,5 @@ return {
     config = function()
       vim.g.any_jump_disable_default_keybindings = 1
     end,
-  },
-  {
-    "Wansmer/treesj",
-    cmd = { "TSJToggle", "TSJSplit", "TSJJoin" },
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = { use_default_keymaps = false },
   },
 }
