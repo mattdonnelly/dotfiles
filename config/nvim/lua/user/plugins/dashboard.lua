@@ -5,7 +5,7 @@ return {
   config = function()
     require("dashboard").setup({
       theme = "hyper",
-      config = {
+      opts = {
         shortcut = {
           { desc = "󰚰 Update", group = "@property", action = "Lazy update", key = "u" },
           {

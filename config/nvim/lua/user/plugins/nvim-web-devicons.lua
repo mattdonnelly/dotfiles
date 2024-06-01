@@ -1,6 +1,6 @@
 return {
   "nvim-tree/nvim-web-devicons",
-  config = {
+  opts = {
     override = {
       html = {
         icon = "",

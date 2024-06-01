@@ -24,7 +24,7 @@ return {
   },
   {
     "folke/which-key.nvim",
-    config = {
+    opts = {
       show_help = false,
       triggers = "auto",
       plugins = {

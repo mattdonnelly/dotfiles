@@ -7,7 +7,7 @@ return {
     "folke/tokyonight.nvim",
     "nvim-tree/nvim-web-devicons",
   },
-  config = {
+  opts = {
     options = {
       theme = "auto",
       section_separators = {},
