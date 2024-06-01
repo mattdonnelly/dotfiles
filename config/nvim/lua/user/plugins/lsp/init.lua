@@ -11,6 +11,13 @@ return {
     "luckasRanarison/tailwind-tools.nvim",
 
     "ray-x/lsp_signature.nvim",
+
+    {
+      "folke/lazydev.nvim",
+      ft = "lua", -- only load on lua files
+      opts = {},
+    },
+    { "Bilal2453/luvit-meta", lazy = true },
   },
   config = function()
     local on_attach = function(_, bufnr)
@@ -74,7 +81,6 @@ return {
           })
         end,
         ["lua_ls"] = function()
-          require("neodev").setup()
           require("lspconfig")["lua_ls"].setup({
             capabilities = capabilities,
             on_attach = function(client, bufnr)
@@ -82,6 +88,22 @@ return {
               client.server_capabilities.document_range_formatting = false
               on_attach(client, bufnr)
             end,
+            settings = {
+              Lua = {
+                workspace = {
+                  checkThirdParty = false,
+                },
+                diagnostics = {
+                  enable = true,
+                },
+                format = {
+                  enable = false,
+                },
+                hint = {
+                  enable = true,
+                },
+              },
+            },
           })
         end,
         ["tsserver"] = function()
