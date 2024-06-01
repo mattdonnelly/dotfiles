@@ -12,11 +12,7 @@ return {
 
     "ray-x/lsp_signature.nvim",
 
-    {
-      "folke/lazydev.nvim",
-      ft = "lua", -- only load on lua files
-      opts = {},
-    },
+    { "folke/lazydev.nvim", ft = "lua", opts = {} },
     { "Bilal2453/luvit-meta", lazy = true },
   },
   config = function()
