@@ -83,6 +83,25 @@ wk.register({
       name = "Quickfix",
       c = { "<cmd>cclose<CR>", "Close" },
     },
+    S = {
+      name = "Spectre",
+      S = {
+        [[<cmd>lua require("spectre").toggle()<CR>]],
+        "Toggle Spectre",
+      },
+      w = {
+        [[<cmd>lua require("spectre").open_visual({ select_word = true })<CR>]],
+        "Search the current word",
+      },
+      v = {
+        [[<cmd>lua require("spectre").open_visual()<CR>]],
+        "Search the visual selection",
+      },
+      f = {
+        [[<cmd>lua require("spectre").open_file_search()<CR>]],
+        "Search in file",
+      },
+    },
     t = {
       name = "Tests",
       t = {
