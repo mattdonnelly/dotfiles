@@ -70,7 +70,7 @@ wk.register({
       s = { "<cmd>Telescope git_status<CR>", "status" },
       d = { "<cmd>DiffviewOpen<cr>", "DiffView" },
       h = { name = "Hunk" },
-      j = { name = "Split/join toggle" },
+      J = { name = "Split/join toggle" },
     },
     m = {
       name = "Jumpwire",
@@ -141,7 +141,7 @@ wk.register({
       X = { "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", "Trouble current buffer" },
       l = { "<cmd>Trouble loclist toggle<cr>", "Trouble loclist" },
       q = { "<cmd>Trouble quickfix toggle<cr>", "Trouble quickfix" },
-      p = { "<cmd>Trouble lsp toggle<cr>", "Trouble lsp references" },
+      p = { "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", "Trouble lsp references" },
     },
   },
   g = {
