@@ -10,7 +10,7 @@ return {
 
   { "kdheepak/lazygit.nvim", cmd = { "LazyGit" } },
   { "psliwka/vim-smoothie", event = "BufWinEnter" },
-  { "j-hui/fidget.nvim", tag = "legacy", event = "VeryLazy", config = true },
+  { "j-hui/fidget.nvim", version = "*", event = "VeryLazy", config = true },
   { "numToStr/Navigator.nvim", event = "VeryLazy", config = true },
   { "stevearc/dressing.nvim", event = "VeryLazy", opts = {} },
 
