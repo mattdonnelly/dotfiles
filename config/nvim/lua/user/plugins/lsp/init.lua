@@ -75,32 +75,6 @@ return {
             },
           })
         end,
-        ["lua_ls"] = function()
-          require("lspconfig")["lua_ls"].setup({
-            capabilities = capabilities,
-            on_attach = function(client, bufnr)
-              client.server_capabilities.document_formatting = false
-              client.server_capabilities.document_range_formatting = false
-              on_attach(client, bufnr)
-            end,
-            settings = {
-              Lua = {
-                workspace = {
-                  checkThirdParty = false,
-                },
-                diagnostics = {
-                  enable = true,
-                },
-                format = {
-                  enable = false,
-                },
-                hint = {
-                  enable = true,
-                },
-              },
-            },
-          })
-        end,
         ["tsserver"] = function()
           require("typescript-tools").setup({
             capabilities = capabilities,

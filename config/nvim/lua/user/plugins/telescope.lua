@@ -35,18 +35,6 @@ return {
     end
 
     require("telescope").setup({
-      ["zf-native"] = {
-        file = {
-          enable = true,
-          highlight_results = true,
-          match_filename = true,
-        },
-        generic = {
-          enable = true,
-          highlight_results = true,
-          match_filename = false,
-        },
-      },
       pickers = {
         find_files = {
           hidden = true,
@@ -92,13 +80,10 @@ return {
         selection_caret = "  ",
         entry_prefix = "  ",
         winblend = 0,
-        border = {},
-        borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
         color_devicons = true,
       },
     })
 
-    require("telescope").load_extension("zf-native")
     require("telescope").load_extension("dap")
   end,
 }
