@@ -1,5 +1,5 @@
 return {
   "folke/trouble.nvim",
-  config = true,
+  opts = {},
   cmd = { "Trouble", "TroubleClose", "TroubleRefresh", "TroubleToggle" },
 }

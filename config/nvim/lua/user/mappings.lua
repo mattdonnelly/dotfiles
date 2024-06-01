@@ -79,6 +79,10 @@ wk.register({
       name = "Jumpwire",
     },
     n = { "<cmd>Neotree toggle<cr>", "NeoTree" },
+    q = {
+      name = "Quickfix",
+      c = { "<cmd>cclose<CR>", "Close" },
+    },
     t = {
       name = "Tests",
       t = {
@@ -117,13 +121,11 @@ wk.register({
     u = { ":UndotreeToggle<CR>", "Open Undotree" },
     x = {
       name = "Errors",
-      x = { "<cmd>Trouble<cr>", "Open trouble" },
-      w = { "<cmd>Trouble workspace_diagnostics<cr>", "Trouble workspace" },
-      d = { "<cmd>Trouble document_diagnostics<cr>", "Trouble document" },
-      l = { "<cmd>Trouble loclist<cr>", "Trouble loclist" },
-      q = { "<cmd>Trouble quickfix<cr>", "Trouble quickfix" },
-      t = { "<cmd>TodoTrouble<cr>", "Todo Trouble" },
-      T = { "<cmd>TodoTelescope<cr>", "Todo Telescope" },
+      x = { "<cmd>Trouble diagnostics toggle<cr>", "Trouble diagnostics" },
+      X = { "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", "Trouble current buffer" },
+      l = { "<cmd>Trouble loclist toggle<cr>", "Trouble loclist" },
+      q = { "<cmd>Trouble quickfix toggle<cr>", "Trouble quickfix" },
+      p = { "<cmd>Trouble lsp toggle<cr>", "Trouble lsp references" },
     },
   },
   g = {
