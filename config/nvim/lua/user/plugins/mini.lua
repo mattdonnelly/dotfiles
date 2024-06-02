@@ -12,20 +12,19 @@ return {
     },
   },
   {
-    -- :Git commands.
     "echasnovski/mini-git",
     version = false,
     main = "mini.git",
     cmd = "Git",
-    init = function()
-      vim.keymap.set("n", "<leader>ga", "<CMD>Git add %<CR>", { desc = "Git add buffer" })
-      vim.keymap.set("n", "<leader>gA", "<CMD>Git add -A<CR>", { desc = "Git Add all files" })
-      vim.keymap.set("n", "<leader>gc", "<CMD>Git commit<CR>", { desc = "Git commit" })
-      vim.keymap.set("n", "<leader>gd", "<CMD>Git diff %<CR>", { desc = "Git diff buffer" })
-      vim.keymap.set("n", "<leader>gD", "<CMD>Git diff<CR>", { desc = "Git Diff all files" })
-      vim.keymap.set("n", "<leader>gr", "<CMD>Git reset %<CR>", { desc = "Git reset buffer" })
-      vim.keymap.set("n", "<leader>gs", "<CMD>Git status<CR>", { desc = "Git status" })
-    end,
+    keys = {
+      { "<leader>ga", "<CMD>Git add %<CR>", desc = "Git add buffer" },
+      { "<leader>gA", "<CMD>Git add -A<CR>", desc = "Git add all files" },
+      { "<leader>gc", "<CMD>Git commit<CR>", desc = "Git commit" },
+      { "<leader>gd", "<CMD>Git diff %<CR>", desc = "Git diff buffer" },
+      { "<leader>gD", "<CMD>Git diff<CR>", desc = "Git diff all files" },
+      { "<leader>gr", "<CMD>Git reset %<CR>", desc = "Git reset buffer" },
+      { "<leader>gs", "<CMD>Git status<CR>", desc = "Git status" },
+    },
     config = true,
   },
   {
