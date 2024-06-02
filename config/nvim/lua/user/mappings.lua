@@ -7,10 +7,15 @@ vim.keymap.set("n", "<Down>", "<nop>")
 vim.keymap.set("n", "<Left>", "<nop>")
 vim.keymap.set("n", "<Right>", "<nop>")
 
+vim.keymap.set({ "n", "t" }, "<C-n>", "<CMD>BufferLineCyclePrev<CR>")
+vim.keymap.set({ "n", "t" }, "<C-m>", "<CMD>BufferLineCycleNext<CR>")
+
 vim.keymap.set({ "n", "t" }, "<C-h>", "<CMD>NavigatorLeft<CR>")
 vim.keymap.set({ "n", "t" }, "<C-l>", "<CMD>NavigatorRight<CR>")
 vim.keymap.set({ "n", "t" }, "<C-k>", "<CMD>NavigatorUp<CR>")
 vim.keymap.set({ "n", "t" }, "<C-j>", "<CMD>NavigatorDown<CR>")
+
+vim.keymap.set("x", "<leader>p", '"_dP')
 
 require("legendary").setup({
   include_builtin = true,
@@ -143,10 +148,5 @@ wk.register({
       q = { "<cmd>Trouble quickfix toggle<cr>", "Trouble quickfix" },
       p = { "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", "Trouble lsp references" },
     },
-  },
-  g = {
-    name = "Goto",
-    p = { "<cmd>:BufferLineCyclePrev<CR>", "Previous buffer" },
-    n = { "<cmd>:BufferLineCycleNext<CR>", "Next buffer" },
   },
 })
