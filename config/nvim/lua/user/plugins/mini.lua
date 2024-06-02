@@ -12,6 +12,23 @@ return {
     },
   },
   {
+    -- :Git commands.
+    "echasnovski/mini-git",
+    version = false,
+    main = "mini.git",
+    cmd = "Git",
+    init = function()
+      vim.keymap.set("n", "<leader>ga", "<CMD>Git add %<CR>", { desc = "Git add buffer" })
+      vim.keymap.set("n", "<leader>gA", "<CMD>Git add -A<CR>", { desc = "Git Add all files" })
+      vim.keymap.set("n", "<leader>gc", "<CMD>Git commit<CR>", { desc = "Git commit" })
+      vim.keymap.set("n", "<leader>gd", "<CMD>Git diff %<CR>", { desc = "Git diff buffer" })
+      vim.keymap.set("n", "<leader>gD", "<CMD>Git diff<CR>", { desc = "Git Diff all files" })
+      vim.keymap.set("n", "<leader>gr", "<CMD>Git reset %<CR>", { desc = "Git reset buffer" })
+      vim.keymap.set("n", "<leader>gs", "<CMD>Git status<CR>", { desc = "Git status" })
+    end,
+    config = true,
+  },
+  {
     "echasnovski/mini.indentscope",
     event = { "BufReadPre", "BufNewFile" },
     opts = function(_, opts)
