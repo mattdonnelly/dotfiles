@@ -2,6 +2,7 @@ local copilot_enabled = vim.g["copilot_enabled"]
 
 return {
   "hrsh7th/nvim-cmp",
+  version = false, -- Last version is very old
   event = "InsertEnter",
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
