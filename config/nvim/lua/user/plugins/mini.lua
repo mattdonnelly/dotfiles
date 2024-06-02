@@ -1,13 +1,11 @@
 return {
   {
     "echasnovski/mini.ai",
-    version = false,
     event = "VeryLazy",
-    opts = {},
+    config = true,
   },
   {
     "echasnovski/mini.cursorword",
-    version = false,
     event = "VeryLazy",
     opts = {
       delay = 500,
@@ -15,7 +13,6 @@ return {
   },
   {
     "echasnovski/mini.indentscope",
-    version = false,
     event = { "BufReadPre", "BufNewFile" },
     opts = function(_, opts)
       opts.draw = {
@@ -45,13 +42,11 @@ return {
   },
   {
     "echasnovski/mini.pairs",
-    version = false,
     event = "VeryLazy",
-    opts = {},
+    config = true,
   },
   {
     "echasnovski/mini.splitjoin",
-    version = false,
     event = "VeryLazy",
     opts = {
       mappings = {
@@ -61,14 +56,12 @@ return {
   },
   {
     "echasnovski/mini.surround",
-    version = false,
     event = "VeryLazy",
-    opts = {},
+    config = true,
   },
   {
     "echasnovski/mini.trailspace",
-    version = false,
     event = "BufReadPost",
-    opts = {},
+    config = true,
   },
 }

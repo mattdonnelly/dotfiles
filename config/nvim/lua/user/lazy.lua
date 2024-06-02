@@ -12,9 +12,11 @@ end
 vim.opt.runtimepath:prepend(lazypath)
 
 require("lazy").setup("user.plugins", {
-  defaults = { lazy = true },
+  defaults = {
+    lazy = true,
+    version = "*",
+  },
   install = {
-    missing = true,
     colorscheme = { "tokyonight-night" },
   },
   performance = {
@@ -40,8 +42,5 @@ require("lazy").setup("user.plugins", {
         "matchit",
       },
     },
-  },
-  dev = {
-    path = "~/src",
   },
 })
