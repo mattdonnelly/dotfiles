@@ -8,7 +8,6 @@ return {
   "nvim-lua/popup.nvim",
   "nvim-lua/plenary.nvim",
 
-  { "kdheepak/lazygit.nvim", cmd = { "LazyGit" } },
   { "psliwka/vim-smoothie", event = "BufWinEnter" },
   { "j-hui/fidget.nvim", event = "VeryLazy", config = true },
   { "numToStr/Navigator.nvim", event = "VeryLazy", config = true },
@@ -44,11 +43,6 @@ return {
       { "u" },
       { "<C-r>" },
     },
-  },
-  {
-    "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
-    config = true,
   },
   {
     "pechorin/any-jump.nvim",
