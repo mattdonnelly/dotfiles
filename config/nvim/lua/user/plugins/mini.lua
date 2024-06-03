@@ -57,11 +57,6 @@ return {
     },
   },
   {
-    "echasnovski/mini.pairs",
-    event = "VeryLazy",
-    config = true,
-  },
-  {
     "echasnovski/mini.splitjoin",
     event = "VeryLazy",
     opts = {
