@@ -62,4 +62,7 @@ wk.register({
       name = "Errors",
     },
   },
+  g = {
+    name = "Go to",
+  },
 })

@@ -16,10 +16,6 @@ return {
     { "Bilal2453/luvit-meta", lazy = true },
   },
   config = function()
-    local on_attach = function(_, bufnr)
-      require("user.plugins.lsp.keymaps").setup(bufnr)
-    end
-
     local capabilities = vim.tbl_deep_extend(
       "force",
       {},
@@ -49,16 +45,19 @@ return {
         function(server_name)
           require("lspconfig")[server_name].setup({
             capabilities = capabilities,
-            on_attach = on_attach,
           })
         end,
-        ["stylelint_lsp"] = function()
-          require("lspconfig")["stylelint_lsp"].setup({
+        ["lua_ls"] = function()
+          require("lspconfig")["lua_ls"].setup({
             capabilities = capabilities,
-            on_attach = on_attach,
             settings = {
-              stylelintplus = {
-                cssInJs = true,
+              Lua = {
+                workspace = {
+                  checkThirdParty = false,
+                },
+                completion = {
+                  callSnippet = "Replace",
+                },
               },
             },
           })
@@ -66,7 +65,6 @@ return {
         ["jsonls"] = function()
           require("lspconfig")["jsonls"].setup({
             capabilities = capabilities,
-            on_attach = on_attach,
             settings = {
               json = {
                 schemas = require("schemastore").json.schemas(),
@@ -75,10 +73,19 @@ return {
             },
           })
         end,
+        ["stylelint_lsp"] = function()
+          require("lspconfig")["stylelint_lsp"].setup({
+            capabilities = capabilities,
+            settings = {
+              stylelintplus = {
+                cssInJs = true,
+              },
+            },
+          })
+        end,
         ["tsserver"] = function()
           require("typescript-tools").setup({
             capabilities = capabilities,
-            on_attach = on_attach,
             settings = {
               expose_as_code_action = "all",
               separate_diagnostic_server = false,
@@ -98,5 +105,12 @@ return {
     require("user.plugins.lsp.diagnostics").setup()
 
     require("lsp_signature").setup({ hint_enable = false, doc_lines = 0, transparency = 15 })
+
+    vim.api.nvim_create_autocmd("LspAttach", {
+      group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+      callback = function(event)
+        require("user.plugins.lsp.keymaps").setup(event.bufnr)
+      end,
+    })
   end,
 }
