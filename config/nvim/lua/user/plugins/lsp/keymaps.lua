@@ -1,38 +1,53 @@
 local M = {}
 
-function M.setup(bufnr)
-  vim.keymap.set("n", "gd", function()
-    require("telescope.builtin").lsp_definitions({ reuse_win = true })
-  end, { bufnr = bufnr, desc = "Go to definition" })
-  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { bufnr = bufnr, desc = "Go to declaration" })
-  vim.keymap.set("n", "gi", function()
-    require("telescope.builtin").lsp_implementations({ reuse_win = true })
-  end, { bufnr = bufnr, desc = "Go to implementation" })
-  vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", { bufnr = bufnr, desc = "Go to references" })
-  vim.keymap.set("n", "gt", function()
-    require("telescope.builtin").lsp_type_definitions({ reuse_win = true })
-  end, { bufnr = bufnr, desc = "Go to type definition" })
+function M.setup()
+  vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+  vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Hover" })
+  vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+    callback = function(event)
+      local function map(mode, l, r, opts)
+        opts = opts or {}
+        opts.buffer = event.buf
+        vim.keymap.set(mode, l, r, opts)
+      end
 
-  vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { bufnr = bufnr, desc = "Previous diagnostic" })
-  vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { bufnr = bufnr, desc = "Next diagnostic" })
+      map("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration" })
+      map("n", "gd", function()
+        require("telescope.builtin").lsp_definitions({ reuse_win = true })
+      end, { desc = "Go to definition" })
+      map("n", "gi", function()
+        require("telescope.builtin").lsp_implementations({ reuse_win = true })
+      end, { desc = "Go to implementation" })
 
-  vim.keymap.set("n", "<leader>K", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "Signature help" })
+      map("n", "gr", "<cmd>Telescope lsp_references<CR>", { desc = "Go to references" })
+      map("n", "gt", function()
+        require("telescope.builtin").lsp_type_definitions({ reuse_win = true })
+      end, { desc = "Go to type definition" })
 
-  vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { bufnr = bufnr, desc = "Rename" })
+      map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 
-  vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { bufnr = bufnr, desc = "Code action" })
-  vim.keymap.set({ "n", "v" }, "<leader>cc", vim.lsp.codelens.run, { bufnr = bufnr, desc = "Run code lens" })
-  vim.keymap.set("n", "<leader>cC", vim.lsp.codelens.refresh, { bufnr = bufnr, desc = "Refresh & display code lens" })
+      map("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+      map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 
-  vim.keymap.set({ "n", "v" }, "=", function()
-    vim.lsp.buf.format({ async = true })
-  end, { bufnr = bufnr, desc = "Format" })
+      map("n", "<leader>K", vim.lsp.buf.signature_help, { desc = "Signature help" })
 
-  vim.keymap.set("n", "<leader>e", function()
-    vim.diagnostic.open_float(nil, { border = "rounded", focusable = false, scope = "cursor" })
-  end, { bufnr = bufnr, desc = "Show diagnostics" })
+      map("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename" })
+
+      map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
+      map({ "n", "v" }, "<leader>cc", vim.lsp.codelens.run, { desc = "Run code lens" })
+      map("n", "<leader>cC", vim.lsp.codelens.refresh, { desc = "Refresh & display code lens" })
+
+      map({ "n", "v" }, "=", function()
+        vim.lsp.buf.format({ async = true })
+      end, { desc = "Format" })
+
+      map("n", "<leader>e", function()
+        vim.diagnostic.open_float(nil, { border = "rounded", focusable = false, scope = "cursor" })
+      end, { desc = "Show diagnostics" })
+    end,
+  })
 end
 
 return M

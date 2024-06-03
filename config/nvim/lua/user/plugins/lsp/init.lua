@@ -112,11 +112,6 @@ return {
 
     require("lsp_signature").setup({ hint_enable = false, doc_lines = 0, transparency = 15 })
 
-    vim.api.nvim_create_autocmd("LspAttach", {
-      group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-      callback = function(event)
-        require("user.plugins.lsp.keymaps").setup(event.bufnr)
-      end,
-    })
+    require("user.plugins.lsp.keymaps").setup()
   end,
 }
