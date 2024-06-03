@@ -10,43 +10,22 @@ return {
   },
   cmd = { "Telescope" },
   keys = function()
+    -- stylua: ignore
     return {
       { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Find files" },
       { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "Buffers" },
       { "<leader>f/", "<cmd>Telescope live_grep<CR>", desc = "Live search" },
-      {
-        "<leader>fo",
-        function()
-          require("telescope.builtin").oldfiles({ only_cwd = true })
-        end,
-        desc = "Recent files",
-      },
+      { "<leader>fo", function() require("telescope.builtin").oldfiles({ only_cwd = true }) end, desc = "Recent files" },
 
       { "<leader>gC", "<cmd>Telescope git_commits<CR>", desc = "Git commits" },
       { "<leader>gb", "<cmd>Telescope git_branches<CR>", desc = "Git branches" },
       { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "Git status" },
 
-      {
-        "<leader>dlb",
-        function()
-          require("telescope").extensions.dap.list_breakpoints({})
-        end,
-        desc = "List breakpoints",
-      },
-      {
-        "<leader>dlv",
-        function()
-          require("telescope").extensions.dap.variables({})
-        end,
-        desc = "List variables",
-      },
-      {
-        "<leader>dlf",
-        function()
-          require("telescope").extensions.dap.frames({})
-        end,
-        desc = "List frames",
-      },
+      { "<leader>p", function() require("telescope").extensions.yank_history.yank_history({}) end, desc = "Open Yank History" },
+
+      { "<leader>dlb", function() require("telescope").extensions.dap.list_breakpoints({}) end, desc = "List breakpoints" },
+      { "<leader>dlv", function() require("telescope").extensions.dap.variables({}) end, desc = "List variables" },
+      { "<leader>dlf", function() require("telescope").extensions.dap.frames({}) end, desc = "List frames" },
     }
   end,
   config = function()
