@@ -17,7 +17,7 @@ return {
       { "<leader>f/", "<cmd>Telescope live_grep<CR>", desc = "Live search" },
       { "<leader>fo", function() require("telescope.builtin").oldfiles({ only_cwd = true }) end, desc = "Recent files" },
 
-      { "<leader>gC", "<cmd>Telescope git_commits<CR>", desc = "Git commits" },
+      { "<leader>gl", "<cmd>Telescope git_commits<CR>", desc = "Git commit log" },
       { "<leader>gb", "<cmd>Telescope git_branches<CR>", desc = "Git branches" },
       { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "Git status" },
 

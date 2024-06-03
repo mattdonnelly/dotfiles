@@ -19,11 +19,10 @@ return {
     keys = {
       { "<leader>ga", "<CMD>Git add %<CR>", desc = "Git add buffer" },
       { "<leader>gA", "<CMD>Git add -A<CR>", desc = "Git add all files" },
-      { "<leader>gc", "<CMD>Git commit<CR>", desc = "Git commit" },
+      { "<leader>gC", "<CMD>Git commit<CR>", desc = "Git commit" },
       { "<leader>gd", "<CMD>Git diff %<CR>", desc = "Git diff buffer" },
       { "<leader>gD", "<CMD>Git diff<CR>", desc = "Git diff all files" },
       { "<leader>gr", "<CMD>Git reset %<CR>", desc = "Git reset buffer" },
-      { "<leader>gs", "<CMD>Git status<CR>", desc = "Git status" },
     },
     config = true,
   },
