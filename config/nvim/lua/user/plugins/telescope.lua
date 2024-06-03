@@ -1,6 +1,5 @@
 return {
   "nvim-telescope/telescope.nvim",
-  cmd = { "Telescope" },
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
     "nvim-lua/plenary.nvim",
@@ -9,6 +8,47 @@ return {
     "nvim-telescope/telescope-dap.nvim",
     "natecraddock/telescope-zf-native.nvim",
   },
+  cmd = { "Telescope" },
+  keys = function()
+    return {
+      { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Find files" },
+      { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "Buffers" },
+      { "<leader>f/", "<cmd>Telescope live_grep<CR>", desc = "Live search" },
+      {
+        "<leader>fo",
+        function()
+          require("telescope.builtin").oldfiles({ only_cwd = true })
+        end,
+        desc = "Recent files",
+      },
+
+      { "<leader>gC", "<cmd>Telescope git_commits<CR>", desc = "Git commits" },
+      { "<leader>gb", "<cmd>Telescope git_branches<CR>", desc = "Git branches" },
+      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "Git status" },
+
+      {
+        "<leader>dlb",
+        function()
+          require("telescope").extensions.dap.list_breakpoints({})
+        end,
+        desc = "List breakpoints",
+      },
+      {
+        "<leader>dlv",
+        function()
+          require("telescope").extensions.dap.variables({})
+        end,
+        desc = "List variables",
+      },
+      {
+        "<leader>dlf",
+        function()
+          require("telescope").extensions.dap.frames({})
+        end,
+        desc = "List frames",
+      },
+    }
+  end,
   config = function()
     local actions = require("telescope.actions")
     local action_state = require("telescope.actions.state")

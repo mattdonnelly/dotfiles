@@ -50,17 +50,10 @@ wk.register({
       e = { [[<cmd>lua require("dapui").eval<CR>]], "DAP evaluate expression", mode = { "n", "x" } },
       l = {
         name = "List",
-        b = { [[<cmd>lua require("telescope").extensions.dap.list_breakpoints{}<CR>]], "List breakpoints" },
-        v = { [[<cmd>lua require("telescope").extensions.dap.variables{}<CR>]], "List variables" },
-        f = { [[<cmd>lua require("telescope").extensions.dap.frames{}<CR>]], "List frames" },
       },
     },
     f = {
       name = "Find",
-      f = { "<cmd>Telescope find_files<CR>", "Find files" },
-      b = { "<cmd>Telescope buffers<CR>", "Buffers" },
-      ["/"] = { "<cmd>Telescope live_grep<CR>", "Live search" },
-      o = { [[<cmd>lua require('telescope.builtin').oldfiles({ only_cwd = true })<CR>]], "Recent files" },
       n = { "<cmd>DashboardNewFile<CR>", "New file" },
       j = {
         { "<cmd>AnyJump<CR>", "AnyJump cursor" },
@@ -69,9 +62,6 @@ wk.register({
     },
     g = {
       name = "Git",
-      C = { "<cmd>Telescope git_commits<CR>", "commits" },
-      b = { "<cmd>Telescope git_branches<CR>", "branches" },
-      s = { "<cmd>Telescope git_status<CR>", "status" },
       h = { name = "Hunk" },
       J = { name = "Split/join toggle" },
     },
