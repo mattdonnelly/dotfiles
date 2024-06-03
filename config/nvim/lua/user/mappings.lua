@@ -67,11 +67,6 @@ wk.register({
     u = { ":UndotreeToggle<CR>", "Open Undotree" },
     x = {
       name = "Errors",
-      x = { "<cmd>Trouble diagnostics toggle<cr>", "Trouble diagnostics" },
-      X = { "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", "Trouble current buffer" },
-      l = { "<cmd>Trouble loclist toggle<cr>", "Trouble loclist" },
-      q = { "<cmd>Trouble quickfix toggle<cr>", "Trouble quickfix" },
-      p = { "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", "Trouble lsp references" },
     },
   },
 })
