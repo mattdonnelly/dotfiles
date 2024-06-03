@@ -5,6 +5,9 @@ return {
   config = function()
     require("dashboard").setup({
       theme = "hyper",
+      keys = {
+        { "<leader>fn", "<cmd>DashboardNewFile<CR>", desc = "New file" },
+      },
       opts = {
         shortcut = {
           { desc = "󰚰 Update", group = "@property", action = "Lazy update", key = "u" },

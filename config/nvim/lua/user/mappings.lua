@@ -38,17 +38,11 @@ wk.register({
       },
     },
     f = {
-      name = "Find",
-      n = { "<cmd>DashboardNewFile<CR>", "New file" },
-      j = {
-        { "<cmd>AnyJump<CR>", "AnyJump cursor" },
-        { "<cmd>AnyJumpVisual<CR>", "AnyJump selected", mode = "v" },
-      },
+      name = "Files/Find",
     },
     g = {
       name = "Git",
       h = { name = "Hunk" },
-      J = { name = "Split/join toggle" },
     },
     m = {
       name = "Jumpwire",
@@ -64,7 +58,6 @@ wk.register({
     t = {
       name = "Tests",
     },
-    u = { ":UndotreeToggle<CR>", "Open Undotree" },
     x = {
       name = "Errors",
     },

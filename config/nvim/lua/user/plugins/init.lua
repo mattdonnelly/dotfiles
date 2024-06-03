@@ -35,6 +35,9 @@ return {
   {
     "mbbill/undotree",
     cmd = { "UndotreeToggle", "UndotreeShow", "UndotreeHide", "UndotreeFocus" },
+    keys = {
+      { "<leader>u", ":UndotreeToggle<CR>", "Open Undotree" },
+    },
   },
   {
     "tzachar/highlight-undo.nvim",
@@ -47,6 +50,10 @@ return {
   {
     "pechorin/any-jump.nvim",
     cmd = { "AnyJump", "AnyJumpVisual" },
+    keys = {
+      { "<leader>fj", "<cmd>AnyJump<CR>", mode = "n", desc = "AnyJump cursor" },
+      { "<leader>fj", "<cmd>AnyJumpVisual<CR>", mode = "v", desc = "AnyJump selected" },
+    },
     config = function()
       vim.g.any_jump_disable_default_keybindings = 1
     end,
