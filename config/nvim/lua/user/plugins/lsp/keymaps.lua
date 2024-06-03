@@ -1,8 +1,6 @@
 local M = {}
 
 function M.setup(bufnr)
-  vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
-
   vim.keymap.set("n", "gd", function()
     require("telescope.builtin").lsp_definitions({ reuse_win = true })
   end, { bufnr = bufnr, desc = "Go to definition" })
