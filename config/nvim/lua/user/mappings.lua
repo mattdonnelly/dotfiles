@@ -15,7 +15,9 @@ vim.keymap.set({ "n", "t" }, "<C-l>", "<CMD>NavigatorRight<CR>")
 vim.keymap.set({ "n", "t" }, "<C-k>", "<CMD>NavigatorUp<CR>")
 vim.keymap.set({ "n", "t" }, "<C-j>", "<CMD>NavigatorDown<CR>")
 
-vim.keymap.set("x", "<leader>p", '"_dP')
+vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste (no register write)" })
+
+vim.keymap.set("n", "<leader>qc", "<cmd>cclose<CR>", { desc = "Quickfix close" })
 
 require("legendary").setup({
   include_builtin = true,
@@ -47,10 +49,8 @@ wk.register({
     m = {
       name = "Jumpwire",
     },
-    n = { "<cmd>Neotree toggle<cr>", "NeoTree" },
     q = {
       name = "Quickfix",
-      c = { "<cmd>cclose<CR>", "Close" },
     },
     S = {
       name = "Spectre",

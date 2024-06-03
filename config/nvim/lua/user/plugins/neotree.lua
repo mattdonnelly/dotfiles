@@ -6,6 +6,9 @@ return {
     "MunifTanjim/nui.nvim",
     "antosha417/nvim-lsp-file-operations",
   },
+  keys = {
+    { "<leader>n", "<cmd>Neotree toggle<cr>", "NeoTree" },
+  },
   config = function()
     local signs = require("user.plugins.lsp.diagnostics").signs
     vim.fn.sign_define("DiagnosticSignError", { text = signs.Error, texthl = "DiagnosticSignError" })

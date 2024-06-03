@@ -13,11 +13,6 @@ return {
   { "numToStr/Navigator.nvim", event = "VeryLazy", config = true },
   { "stevearc/dressing.nvim", event = "VeryLazy", opts = {} },
 
-  -- {
-  --   "tpope/vim-surround",
-  --   event = "VeryLazy",
-  --   dependencies = { "tpope/vim-repeat" },
-  -- },
   {
     "mrjones2014/legendary.nvim",
   },
@@ -36,7 +31,7 @@ return {
     "mbbill/undotree",
     cmd = { "UndotreeToggle", "UndotreeShow", "UndotreeHide", "UndotreeFocus" },
     keys = {
-      { "<leader>u", ":UndotreeToggle<CR>", "Open Undotree" },
+      { "<leader>u", ":UndotreeToggle<CR>", desc = "Open Undotree" },
     },
   },
   {
