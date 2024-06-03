@@ -21,7 +21,7 @@ return {
       { "<leader>gb", "<cmd>Telescope git_branches<CR>", desc = "Git branches" },
       { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "Git status" },
 
-      { "<leader>p", function() require("telescope").extensions.yank_history.yank_history({}) end, desc = "Open Yank History" },
+      { "<leader>P", function() require("telescope").extensions.yank_history.yank_history({}) end, desc = "Open Yank History" },
 
       { "<leader>dlb", function() require("telescope").extensions.dap.list_breakpoints({}) end, desc = "List breakpoints" },
       { "<leader>dlv", function() require("telescope").extensions.dap.variables({}) end, desc = "List variables" },
