@@ -104,7 +104,7 @@ return {
         },
         path_display = { "smart" },
         file_ignore_patterns = { ".git/", "node_modules", "%.out" },
-        prompt_prefix = " 🔎  ",
+        prompt_prefix = " > ",
         selection_caret = "  ",
       },
     })

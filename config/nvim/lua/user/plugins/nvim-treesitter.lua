@@ -1,5 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  version = false,
   build = ":TSUpdate",
   event = "BufReadPost",
   dependencies = {
@@ -13,6 +14,9 @@ return {
         use_languagetree = true,
       },
       auto_install = true,
+      sync_install = false,
+      modules = {},
+      ignore_install = {},
       ensure_installed = {
         "bash",
         "c",
@@ -24,7 +28,6 @@ return {
         "go",
         "graphql",
         "glimmer",
-        "help",
         "html",
         "http",
         "java",
@@ -54,6 +57,7 @@ return {
         "typescript",
         "vhs",
         "vim",
+        "vimdoc",
         "vue",
         "wgsl",
         "yaml",
