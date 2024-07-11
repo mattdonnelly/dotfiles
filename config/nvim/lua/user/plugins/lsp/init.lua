@@ -31,7 +31,6 @@ return {
         "cssls",
         "bashls",
         "gopls",
-        "eslint",
         "rubocop",
         "ruby_lsp",
         "lua_ls",
