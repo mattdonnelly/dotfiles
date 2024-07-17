@@ -13,7 +13,7 @@ return {
     },
     formatters_by_ft = {
       lua = { "stylua" },
-      ruby = { "bundle" },
+      ruby = { "rubocop" },
 
       javascript = { prettier, eslint },
       typescript = { prettier, eslint },
@@ -25,13 +25,14 @@ return {
       html = { prettier },
     },
     formatters = {
-      bundle = {
-        command = "bundle exec rubocop",
+      rubocop = {
+        command = "bundle",
+        prepend_args = { "exec", "rubocop" },
       },
     },
     format_on_save = {
       lsp_fallback = true,
-      timeout_ms = 500,
+      timeout_ms = 3000,
     },
   },
 }

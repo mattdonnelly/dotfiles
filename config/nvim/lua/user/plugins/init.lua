@@ -18,13 +18,15 @@ return {
   },
   {
     "folke/which-key.nvim",
+    dependencies = {
+      "echasnovski/mini.icons",
+    },
     opts = {
       show_help = false,
       triggers = "auto",
       plugins = {
         registers = false,
       },
-      key_labels = { ["<leader>"] = "SPC" },
     },
   },
   {

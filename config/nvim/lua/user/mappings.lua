@@ -28,41 +28,17 @@ require("legendary").setup({
 vim.keymap.set("n", "<C-p>", "<cmd>lua require('legendary').find()<CR>", { desc = "Open Legendary" })
 
 local wk = require("which-key")
-wk.register({
-  ["<leader>"] = {
-    c = {
-      name = "Code",
-    },
-    d = {
-      name = "Debug",
-      l = {
-        name = "List",
-      },
-    },
-    f = {
-      name = "Files/Find",
-    },
-    g = {
-      name = "Git",
-      h = { name = "Hunk" },
-    },
-    m = {
-      name = "Jumpwire",
-    },
-    q = {
-      name = "Quickfix",
-    },
-    S = {
-      name = "Spectre",
-    },
-    t = {
-      name = "Tests",
-    },
-    x = {
-      name = "Errors",
-    },
-  },
-  g = {
-    name = "Go to",
-  },
+wk.add({
+  { "<leader>S", group = "Spectre" },
+  { "<leader>c", group = "Code" },
+  { "<leader>d", group = "Debug" },
+  { "<leader>dl", group = "List" },
+  { "<leader>f", group = "Files/Find" },
+  { "<leader>g", group = "Git" },
+  { "<leader>gh", group = "Hunk" },
+  { "<leader>m", group = "Jumpwire" },
+  { "<leader>q", group = "Quickfix" },
+  { "<leader>t", group = "Tests" },
+  { "<leader>x", group = "Errors" },
+  { "g", group = "Go to" },
 })

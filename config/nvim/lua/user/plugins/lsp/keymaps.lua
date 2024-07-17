@@ -40,7 +40,7 @@ function M.setup()
       map("n", "<leader>cC", vim.lsp.codelens.refresh, { desc = "Refresh & display code lens" })
 
       map({ "n", "v" }, "=", function()
-        vim.lsp.buf.format({ async = true })
+        require("conform").format()
       end, { desc = "Format" })
 
       map("n", "<leader>e", function()
