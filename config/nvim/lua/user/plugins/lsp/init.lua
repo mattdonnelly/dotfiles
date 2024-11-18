@@ -31,12 +31,14 @@ return {
         "cssls",
         "bashls",
         "gopls",
+        "eslint",
+        "glint",
         "rubocop",
         "ruby_lsp",
         "lua_ls",
         "jsonls",
         "ember",
-        "tsserver",
+        "ts_ls",
         "stylelint_lsp",
         "tailwindcss",
       },
@@ -44,6 +46,17 @@ return {
         function(server_name)
           require("lspconfig")[server_name].setup({
             capabilities = capabilities,
+          })
+        end,
+        ["eslint"] = function()
+          require("lspconfig")["eslint"].setup({
+            capabilities = capabilities,
+            settings = {
+              workingDirectories = { "./" },
+              experimental = {
+                useFlatConfig = false,
+              },
+            },
           })
         end,
         ["lua_ls"] = function()
@@ -88,7 +101,7 @@ return {
             },
           })
         end,
-        ["tsserver"] = function()
+        ["ts_ls"] = function()
           require("typescript-tools").setup({
             capabilities = capabilities,
             settings = {

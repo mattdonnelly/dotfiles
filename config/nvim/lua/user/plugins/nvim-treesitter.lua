@@ -28,6 +28,8 @@ return {
         "go",
         "graphql",
         "glimmer",
+        "glimmer_javascript",
+        "glimmer_typescript",
         "html",
         "http",
         "java",

@@ -6,6 +6,7 @@ return {
     "antoinemadec/FixCursorHold.nvim",
     "olimorris/neotest-rspec",
     "haydenmeade/neotest-jest",
+    "marilari88/neotest-vitest",
     "nvim-neotest/neotest-go",
   },
   keys = function()
@@ -22,8 +23,10 @@ return {
     }
   end,
   config = function()
+    ---@diagnostic disable-next-line: missing-fields
     require("neotest").setup({
       adapters = {
+        require("neotest-vitest"),
         require("neotest-jest")({
           jestCommand = vim.g.jest_command or "npm test",
         }),

@@ -23,7 +23,7 @@ return {
     },
     opts = {
       show_help = false,
-      triggers = "auto",
+      triggers = { "auto" },
       plugins = {
         registers = false,
       },

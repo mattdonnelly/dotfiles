@@ -1,5 +1,4 @@
 local prettier = { "prettierd", "prettier" }
-local eslint = { "eslint_d", "eslint" }
 
 return {
   "stevearc/conform.nvim",
@@ -15,10 +14,10 @@ return {
       lua = { "stylua" },
       ruby = { "rubocop" },
 
-      javascript = { prettier, eslint },
-      typescript = { prettier, eslint },
-      javascriptreact = { prettier, eslint },
-      typescriptreact = { prettier, eslint },
+      javascript = { prettier },
+      typescript = { prettier },
+      javascriptreact = { prettier },
+      typescriptreact = { prettier },
 
       css = { prettier },
       scss = { prettier },
