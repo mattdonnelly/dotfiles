@@ -1,4 +1,4 @@
-local prettier = { "prettierd", "prettier" }
+local prettier = { "prettierd", "prettier", stop_after_first = true }
 
 return {
   "stevearc/conform.nvim",
@@ -14,14 +14,14 @@ return {
       lua = { "stylua" },
       ruby = { "rubocop" },
 
-      javascript = { prettier },
-      typescript = { prettier },
-      javascriptreact = { prettier },
-      typescriptreact = { prettier },
+      javascript = prettier,
+      typescript = prettier,
+      javascriptreact = prettier,
+      typescriptreact = prettier,
 
-      css = { prettier },
-      scss = { prettier },
-      html = { prettier },
+      css = prettier,
+      scss = prettier,
+      html = prettier,
     },
     formatters = {
       rubocop = {
