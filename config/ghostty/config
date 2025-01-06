@@ -1,0 +1,12 @@
+# ghostty +show-config --default --docs
+
+adjust-cell-height = 15
+
+# ghostty +list-fonts
+font-family = CaskaydiaCove Nerd Font Mono
+font-size = 14
+
+macos-titlebar-style = tabs
+
+# ghostty +list-themes
+theme = tokyonight
