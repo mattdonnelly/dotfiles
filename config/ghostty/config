@@ -1,9 +1,10 @@
 # ghostty +show-config --default --docs
 
-adjust-cell-height = 15
+adjust-cell-height = 15%
 
 # ghostty +list-fonts
 font-family = CaskaydiaCove Nerd Font Mono
+font-feature = -liga
 font-size = 14
 
 macos-titlebar-style = tabs
