@@ -8,7 +8,7 @@ return {
   config = function()
     local npairs = require("nvim-autopairs")
     npairs.setup({
-      check_ts = true,
+      check_ts = require("user.features").treesitter,
     })
     local cmp_autopairs = require("nvim-autopairs.completion.cmp")
     local cmp = require("cmp")

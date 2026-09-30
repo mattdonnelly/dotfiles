@@ -1,5 +1,6 @@
 return {
   "mfussenegger/nvim-dap",
+  enabled = require("user.features").debugging,
   dependencies = {
     "nvim-neotest/nvim-nio",
     "williamboman/mason.nvim",

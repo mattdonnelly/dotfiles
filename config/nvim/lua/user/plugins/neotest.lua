@@ -1,5 +1,6 @@
 return {
   "nvim-neotest/neotest",
+  enabled = require("user.features").testing,
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",

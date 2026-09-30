@@ -28,7 +28,9 @@ return {
       { name = "luasnip",  group_index = 2 },
     }
 
-    table.insert(sources, 1, { name = "copilot", group_index = 2, max_item_count = 3 })
+    if require("user.features").copilot then
+      table.insert(sources, 1, { name = "copilot", group_index = 2, max_item_count = 3 })
+    end
 
     local check_backspace = function()
       local line, col = unpack(vim.api.nvim_win_get_cursor(0))

@@ -39,9 +39,11 @@ function M.setup()
       map({ "n", "v" }, "<leader>cc", vim.lsp.codelens.run, { desc = "Run code lens" })
       map("n", "<leader>cC", vim.lsp.codelens.refresh, { desc = "Refresh & display code lens" })
 
-      map({ "n", "v" }, "=", function()
-        require("conform").format()
-      end, { desc = "Format" })
+      if require("user.features").formatting then
+        map({ "n", "v" }, "=", function()
+          require("conform").format()
+        end, { desc = "Format" })
+      end
 
       map("n", "<leader>e", function()
         vim.diagnostic.open_float(nil, { border = "rounded", focusable = false, scope = "cursor" })

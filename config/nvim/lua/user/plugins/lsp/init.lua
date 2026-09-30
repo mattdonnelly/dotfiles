@@ -1,5 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
+  enabled = require("user.features").lsp,
   event = "BufReadPre",
   dependencies = {
     "williamboman/mason.nvim",

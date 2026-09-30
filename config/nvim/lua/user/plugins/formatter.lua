@@ -2,6 +2,7 @@ local prettier = { "prettierd", "prettier", stop_after_first = true }
 
 return {
   "stevearc/conform.nvim",
+  enabled = require("user.features").formatting,
   event = { "BufReadPre", "BufNewFile", "InsertEnter" },
   opts = {
     format = {

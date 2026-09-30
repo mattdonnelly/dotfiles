@@ -1,9 +1,11 @@
+local features = require("user.features")
+
 return {
   "nathom/filetype.nvim",
 
-  "RishabhRD/popfix",
-  "RishabhRD/nvim-lsputils",
-  "williamboman/mason-lspconfig.nvim",
+  { "RishabhRD/popfix",                  enabled = features.lsp },
+  { "RishabhRD/nvim-lsputils",           enabled = features.lsp },
+  { "williamboman/mason-lspconfig.nvim", enabled = features.lsp },
 
   "nvim-lua/popup.nvim",
   "nvim-lua/plenary.nvim",

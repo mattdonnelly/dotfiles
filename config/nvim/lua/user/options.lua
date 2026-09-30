@@ -68,9 +68,11 @@ vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 
-local brew_prefix = vim.fn.system("echo -n $(brew --prefix)")
-vim.g.python_host_prog = brew_prefix .. "/bin/python"
-vim.g.python3_host_prog = brew_prefix .. "/bin/python3"
+if vim.fn.executable("brew") == 1 then
+  local brew_prefix = vim.fn.system("echo -n $(brew --prefix)")
+  vim.g.python_host_prog = brew_prefix .. "/bin/python"
+  vim.g.python3_host_prog = brew_prefix .. "/bin/python3"
+end
 
 vim.g.any_jump_search_prefered_engine = "rg"
 vim.g.any_jump_references_enabled = 0

@@ -1,3 +1,5 @@
+local features = require("user.features")
+
 return {
   "nvim-telescope/telescope.nvim",
   dependencies = {
@@ -5,13 +7,13 @@ return {
     "nvim-lua/plenary.nvim",
     "BurntSushi/ripgrep",
     "sharkdp/fd",
-    "nvim-telescope/telescope-dap.nvim",
+    { "nvim-telescope/telescope-dap.nvim", enabled = features.debugging },
     "natecraddock/telescope-zf-native.nvim",
   },
   cmd = { "Telescope" },
   keys = function()
     -- stylua: ignore
-    return {
+    local keys = {
       { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Find files" },
       { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "Buffers" },
       { "<leader>f/", "<cmd>Telescope live_grep<CR>", desc = "Live search" },
@@ -22,11 +24,18 @@ return {
       { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "Git status" },
 
       { "<leader>P", function() require("telescope").extensions.yank_history.yank_history({}) end, desc = "Open Yank History" },
-
-      { "<leader>dlb", function() require("telescope").extensions.dap.list_breakpoints({}) end, desc = "List breakpoints" },
-      { "<leader>dlv", function() require("telescope").extensions.dap.variables({}) end, desc = "List variables" },
-      { "<leader>dlf", function() require("telescope").extensions.dap.frames({}) end, desc = "List frames" },
     }
+
+    if features.debugging then
+      -- stylua: ignore
+      vim.list_extend(keys, {
+        { "<leader>dlb", function() require("telescope").extensions.dap.list_breakpoints({}) end, desc = "List breakpoints" },
+        { "<leader>dlv", function() require("telescope").extensions.dap.variables({}) end, desc = "List variables" },
+        { "<leader>dlf", function() require("telescope").extensions.dap.frames({}) end, desc = "List frames" },
+      })
+    end
+
+    return keys
   end,
   config = function()
     local actions = require("telescope.actions")
@@ -110,6 +119,8 @@ return {
     })
 
     require("telescope").load_extension("zf-native")
-    require("telescope").load_extension("dap")
+    if features.debugging then
+      require("telescope").load_extension("dap")
+    end
   end,
 }

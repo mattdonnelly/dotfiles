@@ -15,6 +15,8 @@ local autocmd = vim.api.nvim_create_autocmd
 autocmd("BufWritePre", {
   pattern = "*.ts,*.tsx,*.jsx,*.js",
   callback = function()
-    vim.cmd("TSToolsAddMissingImports sync")
+    if vim.fn.exists(":TSToolsAddMissingImports") == 2 then
+      vim.cmd("TSToolsAddMissingImports sync")
+    end
   end,
 })

@@ -1,5 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  enabled = require("user.features").treesitter,
   version = false,
   build = ":TSUpdate",
   event = "BufReadPost",
