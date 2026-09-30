@@ -9,6 +9,7 @@ return {
     "b0o/SchemaStore.nvim",
     "pmizio/typescript-tools.nvim",
     "luckasRanarison/tailwind-tools.nvim",
+    "nvim-java/nvim-java",
 
     "ray-x/lsp_signature.nvim",
 
@@ -121,5 +122,8 @@ return {
     require("lsp_signature").setup({ hint_enable = false, doc_lines = 0, transparency = 15 })
 
     require("user.plugins.lsp.keymaps").setup()
+
+    require('java').setup()
+    vim.lsp.enable('jdtls')
   end,
 }

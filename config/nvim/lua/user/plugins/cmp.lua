@@ -1,5 +1,3 @@
-local copilot_enabled = vim.g["copilot_enabled"]
-
 return {
   "hrsh7th/nvim-cmp",
   version = false, -- Last version is very old
@@ -24,15 +22,13 @@ return {
     vim.cmd([[highlight! default link CmpItemKind CmpItemMenuDefault]])
 
     local sources = {
-      { name = "path", group_index = 2 },
+      { name = "path",     group_index = 2 },
       { name = "nvim_lsp", group_index = 2 },
-      { name = "buffer", group_index = 2 },
-      { name = "luasnip", group_index = 2 },
+      { name = "buffer",   group_index = 2 },
+      { name = "luasnip",  group_index = 2 },
     }
 
-    if copilot_enabled then
-      table.insert(sources, 1, { name = "copilot", group_index = 2, max_item_count = 3 })
-    end
+    table.insert(sources, 1, { name = "copilot", group_index = 2, max_item_count = 3 })
 
     local check_backspace = function()
       local line, col = unpack(vim.api.nvim_win_get_cursor(0))

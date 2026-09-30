@@ -5,7 +5,7 @@ return {
   event = { "BufReadPre", "BufNewFile", "InsertEnter" },
   opts = {
     format = {
-      timeout_ms = 3000,
+      timeout_ms = 10000,
       async = false,
       quiet = false,
       lsp_fallback = true,
@@ -13,6 +13,7 @@ return {
     formatters_by_ft = {
       lua = { "stylua" },
       ruby = { "rubocop" },
+      java = { "spotless_gradle" },
 
       javascript = prettier,
       typescript = prettier,
