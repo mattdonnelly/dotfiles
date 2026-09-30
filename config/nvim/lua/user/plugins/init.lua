@@ -8,10 +8,10 @@ return {
   "nvim-lua/popup.nvim",
   "nvim-lua/plenary.nvim",
 
-  { "psliwka/vim-smoothie", event = "BufWinEnter" },
-  { "j-hui/fidget.nvim", event = "VeryLazy", config = true },
-  { "numToStr/Navigator.nvim", event = "VeryLazy", config = true },
-  { "stevearc/dressing.nvim", event = "VeryLazy", opts = {} },
+  { "psliwka/vim-smoothie",    event = "BufWinEnter" },
+  { "j-hui/fidget.nvim",       event = "VeryLazy",   config = true },
+  { "numToStr/Navigator.nvim", event = "VeryLazy",   config = true },
+  { "stevearc/dressing.nvim",  event = "VeryLazy",   opts = {} },
 
   {
     "mrjones2014/legendary.nvim",
@@ -48,7 +48,7 @@ return {
     "pechorin/any-jump.nvim",
     cmd = { "AnyJump", "AnyJumpVisual" },
     keys = {
-      { "<leader>fj", "<cmd>AnyJump<CR>", mode = "n", desc = "AnyJump cursor" },
+      { "<leader>fj", "<cmd>AnyJump<CR>",       mode = "n", desc = "AnyJump cursor" },
       { "<leader>fj", "<cmd>AnyJumpVisual<CR>", mode = "v", desc = "AnyJump selected" },
     },
     config = function()

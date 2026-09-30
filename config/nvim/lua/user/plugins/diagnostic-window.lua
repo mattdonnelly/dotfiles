@@ -1,6 +1,8 @@
 return {
   "cseickel/diagnostic-window.nvim",
-  dependencies = { "MunifTanjim/nui.nvim" },
+  dependencies = {
+    { "MunifTanjim/nui.nvim", branch = "main" },
+  },
   event = "LspAttach",
   cmd = { "DiagWindowShow" },
   keys = {

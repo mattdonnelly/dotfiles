@@ -12,7 +12,7 @@ return {
 
     "ray-x/lsp_signature.nvim",
 
-    { "folke/lazydev.nvim", ft = "lua", opts = {} },
+    { "folke/lazydev.nvim",   ft = "lua", opts = {} },
     { "Bilal2453/luvit-meta", lazy = true },
   },
   config = function()
@@ -30,14 +30,9 @@ return {
         "html",
         "cssls",
         "bashls",
-        "gopls",
         "eslint",
-        "rubocop",
-        "ruby_lsp",
         "lua_ls",
         "jsonls",
-        "ember",
-        "glint",
         "ts_ls",
         "stylelint_lsp",
         "tailwindcss",

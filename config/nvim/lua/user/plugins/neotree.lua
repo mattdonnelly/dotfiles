@@ -3,7 +3,6 @@ return {
   cmd = "Neotree",
   version = "v3.x",
   dependencies = {
-    "MunifTanjim/nui.nvim",
     "antosha417/nvim-lsp-file-operations",
   },
   keys = {
