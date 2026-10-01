@@ -1,2 +1,2 @@
-EXCLUDES="README.md"
+EXCLUDES="README.md screen-256color.ti xterm-256color.ti"
 DOTFILES_DIRS="$HOME/.dotfiles"
