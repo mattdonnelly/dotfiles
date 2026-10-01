@@ -50,16 +50,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # fzf
 if (( $+commands[fzf] )); then
   export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"
-  if _fzf_init="$(fzf --zsh 2>/dev/null)"; then
-    eval "$_fzf_init"
-  else
-    # Older fzf packages (e.g. Debian) ship the scripts separately
-    for _fzf_script in /usr/share/doc/fzf/examples/{key-bindings,completion}.zsh; do
-      [ -f "$_fzf_script" ] && source "$_fzf_script"
-    done
-    unset _fzf_script
-  fi
-  unset _fzf_init
+  source <(fzf --zsh)
 fi
 # Plain history search when fzf's Ctrl-R isn't available
 (( $+widgets[fzf-history-widget] )) || bindkey "^R" history-incremental-search-backward
