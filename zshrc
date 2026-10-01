@@ -13,7 +13,15 @@ setopt SHARE_HISTORY         # share history between sessions (implies EXTENDED_
 setopt HIST_IGNORE_ALL_DUPS  # drop older duplicates of a re-run command
 setopt HIST_IGNORE_SPACE     # don't save commands starting with a space
 
-export CLICOLOR=1
+# --- ls colors ---
+if ls --color=auto -d . >/dev/null 2>&1; then
+  # GNU ls (Linux)
+  alias ls='ls --color=auto'
+  (( $+commands[dircolors] )) && eval "$(dircolors -b)"
+else
+  # BSD ls (macOS)
+  export CLICOLOR=1
+fi
 
 # --- Key bindings ---
 bindkey -v
