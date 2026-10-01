@@ -2,7 +2,21 @@ vim.opt.encoding = "utf-8"
 
 vim.opt.compatible = false
 vim.opt.showmode = false
-vim.opt.clipboard = "unnamed"
+vim.opt.clipboard = "unnamedplus"
+
+if vim.env.SSH_TTY then
+  local osc52 = require("vim.ui.clipboard.osc52")
+
+  local function paste()
+    return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
+  end
+
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+    paste = { ["+"] = paste, ["*"] = paste },
+  }
+end
 
 vim.opt.swapfile = false
 vim.opt.undodir = vim.fn.stdpath("cache") .. "/undo"
