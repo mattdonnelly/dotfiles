@@ -92,3 +92,9 @@ vim.g.any_jump_search_prefered_engine = "rg"
 vim.g.any_jump_references_enabled = 0
 
 vim.g.mapleader = " "
+
+vim.filetype.add({
+  extension = {
+    vpy = "python",
+  },
+})

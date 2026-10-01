@@ -15,6 +15,7 @@ return {
   { "numToStr/Navigator.nvim", event = "VeryLazy",   config = true },
   { "stevearc/dressing.nvim",  event = "VeryLazy",   opts = {} },
 
+  { "MunifTanjim/nui.nvim", version = nil },
   {
     "mrjones2014/legendary.nvim",
   },

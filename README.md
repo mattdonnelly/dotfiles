@@ -6,7 +6,6 @@ Requirements
 
 - Homebrew
 - Zsh
-- Prezto
 
 Install
 -------

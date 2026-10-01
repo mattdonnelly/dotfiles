@@ -3,7 +3,7 @@ unalias rm > /dev/null 2> /dev/null
 alias ll="ls -al"
 alias ln="ln -v"
 alias lsaa="ls -hA"
-alias zprezto-update="cd ~/.zprezto && git pull --rebase && git submodule update --init --recursive && cd -"
+
 alias gl='git pull'
 alias gp='git push'
 alias gs='git status'

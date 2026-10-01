@@ -1,9 +1,24 @@
-# Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
+# --- Shell behavior ---
+setopt INTERACTIVE_COMMENTS  # allow # comments at the prompt
+setopt AUTO_CD               # cd by typing a directory name
+setopt NO_BEEP               # no bell on errors
+setopt NO_FLOW_CONTROL       # free up Ctrl-S / Ctrl-Q
 
-# Customize to your needs...
+# --- History ---
+HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
+HISTSIZE=10000
+SAVEHIST=10000
+
+setopt SHARE_HISTORY         # share history between sessions (implies EXTENDED_HISTORY)
+setopt HIST_IGNORE_ALL_DUPS  # drop older duplicates of a re-run command
+setopt HIST_IGNORE_SPACE     # don't save commands starting with a space
+
+export EDITOR="${EDITOR:-nvim}"
+export CLICOLOR=1
+
+# --- Key bindings ---
+bindkey -v
+export KEYTIMEOUT=1
 
 bindkey "^A" beginning-of-line
 bindkey "^E" end-of-line
@@ -15,40 +30,87 @@ bindkey "^N" insert-last-word
 bindkey "^B" backward-word
 bindkey "^F" forward-word
 
-export FZF_DEFAULT_COMMAND='ag -l -g ""'
-
+# --- Completion ---
 fpath=(~/.zsh/completion $fpath)
+if (( $+commands[brew] )); then
+  # Prefix is two levels up from the brew binary, e.g. /opt/homebrew/bin/brew
+  fpath=("${HOMEBREW_PREFIX:-${commands[brew]:h:h}}/share/zsh/site-functions" $fpath)
+fi
 autoload -Uz compinit && compinit -i
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"``
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
-autoload -U add-zsh-hook
-load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
-
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
-    fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
-
-[ -f "$HOME/.zshrc.local" ] && . "$HOME/.zshrc.local"
-[ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
+# --- Tools (only loaded when installed) ---
+export FZF_DEFAULT_COMMAND='ag -l -g ""'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-. "$HOME/.cargo/env"
+# cargo / rust
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+# yarn
+if (( $+commands[yarn] )); then
+  path=("$HOME/.yarn/bin" "$HOME/.config/yarn/global/node_modules/.bin" $path)
+fi
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  . "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+
+  # Switch to the .nvmrc version when entering a project that uses a different one
+  load-nvmrc() {
+    local nvmrc="$(nvm_find_nvmrc)"
+    if [ -n "$nvmrc" ] && [ "$(nvm version "$(<"$nvmrc")")" != "$(nvm version)" ]; then
+      nvm use
+    fi
+  }
+  autoload -U add-zsh-hook
+  add-zsh-hook chpwd load-nvmrc
+  load-nvmrc
+fi
+
+# --- Plugins (only loaded when installed) ---
+# Searches Homebrew (macOS) and common Linux package locations
+_plugin_dirs=(
+  ${HOMEBREW_PREFIX:+$HOMEBREW_PREFIX/share}
+  /opt/homebrew/share
+  /usr/local/share
+  /usr/share
+  /usr/share/zsh/plugins
+)
+
+# Sources the first match for a plugin; returns 1 if it isn't installed
+source_plugin() {
+  local dir
+  for dir in $_plugin_dirs; do
+    if [ -f "$dir/$1/$1.zsh" ]; then
+      source "$dir/$1/$1.zsh"
+      return 0
+    fi
+  done
+  return 1
+}
+
+source_plugin zsh-autosuggestions
+
+if source_plugin zsh-history-substring-search; then
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
+fi
+
+# Must be sourced last among the plugins
+source_plugin zsh-syntax-highlighting
+
+unset _plugin_dirs
+unfunction source_plugin
+
+# --- Local overrides and aliases ---
+[ -f "$HOME/.zshrc.local" ] && . "$HOME/.zshrc.local"
+[ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
+
+# --- Prompt ---
+if (( $+commands[starship] )); then
+  eval "$(starship init zsh)"
+fi

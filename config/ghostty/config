@@ -9,5 +9,7 @@ font-size = 14
 
 macos-titlebar-style = tabs
 
+shell-integration = zsh
+
 # ghostty +list-themes
 theme = tokyonight
