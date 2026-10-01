@@ -5,7 +5,7 @@ setopt NO_BEEP               # no bell on errors
 setopt NO_FLOW_CONTROL       # free up Ctrl-S / Ctrl-Q
 
 # --- History ---
-HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
+HISTFILE="${ZDOTDIR:-$HOME}/.zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000
 
@@ -13,7 +13,6 @@ setopt SHARE_HISTORY         # share history between sessions (implies EXTENDED_
 setopt HIST_IGNORE_ALL_DUPS  # drop older duplicates of a re-run command
 setopt HIST_IGNORE_SPACE     # don't save commands starting with a space
 
-export EDITOR="${EDITOR:-nvim}"
 export CLICOLOR=1
 
 # --- Key bindings ---
