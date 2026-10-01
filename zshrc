@@ -30,7 +30,6 @@ export KEYTIMEOUT=1
 bindkey "^A" beginning-of-line
 bindkey "^E" end-of-line
 bindkey "^K" kill-line
-bindkey "^R" history-incremental-search-backward
 bindkey "^P" history-search-backward
 bindkey "^Y" accept-and-hold
 bindkey "^N" insert-last-word
@@ -48,8 +47,22 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # --- Tools (only loaded when installed) ---
-export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# fzf
+if (( $+commands[fzf] )); then
+  export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"
+  if _fzf_init="$(fzf --zsh 2>/dev/null)"; then
+    eval "$_fzf_init"
+  else
+    # Older fzf packages (e.g. Debian) ship the scripts separately
+    for _fzf_script in /usr/share/doc/fzf/examples/{key-bindings,completion}.zsh; do
+      [ -f "$_fzf_script" ] && source "$_fzf_script"
+    done
+    unset _fzf_script
+  fi
+  unset _fzf_init
+fi
+# Plain history search when fzf's Ctrl-R isn't available
+(( $+widgets[fzf-history-widget] )) || bindkey "^R" history-incremental-search-backward
 
 # nvm
 export NVM_DIR="$HOME/.nvm"

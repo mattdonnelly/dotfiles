@@ -1,5 +1,4 @@
 # Unix
-unalias rm > /dev/null 2> /dev/null
 alias ll="ls -al"
 alias ln="ln -v"
 alias lsaa="ls -hA"
