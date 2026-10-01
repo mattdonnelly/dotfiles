@@ -14,12 +14,12 @@ setopt HIST_IGNORE_ALL_DUPS  # drop older duplicates of a re-run command
 setopt HIST_IGNORE_SPACE     # don't save commands starting with a space
 
 # --- ls colors ---
+# GNU ls (Linux) and newer macOS ls support --color; dircolors is GNU-only
 if ls --color=auto -d . >/dev/null 2>&1; then
-  # GNU ls (Linux)
   alias ls='ls --color=auto'
   (( $+commands[dircolors] )) && eval "$(dircolors -b)"
 else
-  # BSD ls (macOS)
+  # Older macOS ls
   export CLICOLOR=1
 fi
 
@@ -50,14 +50,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # --- Tools (only loaded when installed) ---
 export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# cargo / rust
-[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
-
-# yarn
-if (( $+commands[yarn] )); then
-  path=("$HOME/.yarn/bin" "$HOME/.config/yarn/global/node_modules/.bin" $path)
-fi
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
