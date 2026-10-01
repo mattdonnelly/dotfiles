@@ -39,10 +39,9 @@ fi
 autoload -Uz compinit && compinit -i
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # --- Tools (only loaded when installed) ---
-export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # cargo / rust

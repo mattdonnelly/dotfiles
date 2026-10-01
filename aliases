@@ -18,10 +18,6 @@ alias gcm='git commit -m'
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
 
-if (( $+commands[rg] )) ; then
-    alias grep="rg"
-fi
-
 if (( $+commands[bat] )) ; then
     alias cat="bat"
 fi
