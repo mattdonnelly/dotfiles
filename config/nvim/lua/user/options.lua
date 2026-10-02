@@ -81,9 +81,6 @@ if brew ~= "" then
   vim.g.python3_host_prog = brew_prefix .. "/bin/python3"
 end
 
-vim.g.any_jump_search_prefered_engine = "rg"
-vim.g.any_jump_references_enabled = 0
-
 vim.g.mapleader = " "
 
 vim.filetype.add({

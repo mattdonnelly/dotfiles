@@ -1,15 +1,10 @@
 return {
   "stevearc/oil.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
-  keys = function()
-    return {
-      {
-        "-",
-        require("oil").open,
-        desc = "Open parent directory",
-      },
-    }
-  end,
+  cmd = "Oil",
+  keys = {
+    { "-", "<cmd>Oil<CR>", desc = "Open parent directory" },
+  },
   opts = {
     lsp_file_methods = {
       autosave_changes = true,

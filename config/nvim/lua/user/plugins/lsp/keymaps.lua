@@ -5,6 +5,14 @@ function M.setup()
     { desc = "Previous diagnostic" })
   vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next diagnostic" })
 
+  if require("user.features").copilot then
+    vim.keymap.set("i", "<M-l>", vim.lsp.inline_completion.get, { desc = "Accept inline completion" })
+    vim.keymap.set("i", "<M-]>", function() vim.lsp.inline_completion.select({ count = 1 }) end,
+      { desc = "Next inline completion" })
+    vim.keymap.set("i", "<M-[>", function() vim.lsp.inline_completion.select({ count = -1 }) end,
+      { desc = "Previous inline completion" })
+  end
+
   vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("UserLspConfig", {}),
     callback = function(event)

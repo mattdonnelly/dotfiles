@@ -3,7 +3,7 @@ return {
   enabled = require("user.features").debugging,
   dependencies = {
     "nvim-neotest/nvim-nio",
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     "theHamsta/nvim-dap-virtual-text",
     "rcarriga/nvim-dap-ui",
   },

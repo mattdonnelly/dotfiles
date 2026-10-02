@@ -3,26 +3,18 @@ return {
   enabled = require("user.features").lsp,
   event = "BufReadPre",
   dependencies = {
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
+    "mason-org/mason.nvim",
+    "mason-org/mason-lspconfig.nvim",
 
-    "hrsh7th/cmp-nvim-lsp",
+    "saghen/blink.cmp",
     "b0o/SchemaStore.nvim",
     "pmizio/typescript-tools.nvim",
-    "nvim-java/nvim-java",
-    -- nvim-java pins an old commit that uses the deprecated client.request
-    { "JavaHello/spring-boot.nvim", commit = false },
 
     { "folke/lazydev.nvim",   ft = "lua", opts = {} },
     { "Bilal2453/luvit-meta", lazy = true },
   },
   config = function()
-    local capabilities = vim.tbl_deep_extend(
-      "force",
-      {},
-      vim.lsp.protocol.make_client_capabilities(),
-      require("cmp_nvim_lsp").default_capabilities()
-    )
+    local capabilities = require("blink.cmp").get_lsp_capabilities()
 
     vim.lsp.config("*", {
       capabilities = capabilities,
@@ -73,18 +65,25 @@ return {
       },
     })
 
+    local ensure_installed = {
+      "html",
+      "cssls",
+      "bashls",
+      "eslint",
+      "lua_ls",
+      "jsonls",
+      "ts_ls",
+      "stylelint_lsp",
+    }
+
+    local copilot = require("user.features").copilot
+    if copilot then
+      table.insert(ensure_installed, "copilot")
+    end
+
     require("mason").setup()
     require("mason-lspconfig").setup({
-      ensure_installed = {
-        "html",
-        "cssls",
-        "bashls",
-        "eslint",
-        "lua_ls",
-        "jsonls",
-        "ts_ls",
-        "stylelint_lsp",
-      },
+      ensure_installed = ensure_installed,
       automatic_enable = {
         -- typescript-tools.nvim runs tsserver itself
         exclude = { "ts_ls" },
@@ -103,7 +102,9 @@ return {
 
     require("user.plugins.lsp.keymaps").setup()
 
-    require('java').setup()
-    vim.lsp.enable('jdtls')
+    if copilot then
+      -- Native inline completion; sign in once with :LspCopilotSignIn
+      vim.lsp.inline_completion.enable()
+    end
   end,
 }

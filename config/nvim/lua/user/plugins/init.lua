@@ -1,12 +1,10 @@
 local features = require("user.features")
 
 return {
-  { "williamboman/mason-lspconfig.nvim", enabled = features.lsp },
+  { "mason-org/mason-lspconfig.nvim", enabled = features.lsp },
 
   "nvim-lua/plenary.nvim",
 
-  { "psliwka/vim-smoothie",    event = "BufWinEnter" },
-  { "j-hui/fidget.nvim",       event = "VeryLazy",   config = true },
   { "numToStr/Navigator.nvim", event = "VeryLazy",   config = true },
 
   "MunifTanjim/nui.nvim",
@@ -16,7 +14,6 @@ return {
       "echasnovski/mini.icons",
     },
     opts = {
-      show_help = false,
       plugins = {
         registers = false,
       },
@@ -36,16 +33,5 @@ return {
       { "u" },
       { "<C-r>" },
     },
-  },
-  {
-    "pechorin/any-jump.nvim",
-    cmd = { "AnyJump", "AnyJumpVisual" },
-    keys = {
-      { "<leader>fj", "<cmd>AnyJump<CR>",       mode = "n", desc = "AnyJump cursor" },
-      { "<leader>fj", "<cmd>AnyJumpVisual<CR>", mode = "v", desc = "AnyJump selected" },
-    },
-    config = function()
-      vim.g.any_jump_disable_default_keybindings = 1
-    end,
   },
 }
