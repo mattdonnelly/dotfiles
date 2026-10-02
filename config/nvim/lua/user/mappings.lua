@@ -19,13 +19,7 @@ vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste (no register write)" })
 
 vim.keymap.set("n", "<leader>qc", "<cmd>cclose<CR>", { desc = "Quickfix close" })
 
-require("legendary").setup({
-  include_builtin = true,
-  which_key = {
-    auto_register = true,
-  },
-})
-vim.keymap.set("n", "<C-p>", "<cmd>lua require('legendary').find()<CR>", { desc = "Open Legendary" })
+vim.keymap.set("n", "<C-p>", "<cmd>Telescope keymaps<CR>", { desc = "Search keymaps" })
 
 local wk = require("which-key")
 wk.add({

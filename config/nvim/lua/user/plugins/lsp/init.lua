@@ -10,6 +10,8 @@ return {
     "b0o/SchemaStore.nvim",
     "pmizio/typescript-tools.nvim",
     "nvim-java/nvim-java",
+    -- nvim-java pins an old commit that uses the deprecated client.request
+    { "JavaHello/spring-boot.nvim", commit = false },
 
     { "folke/lazydev.nvim",   ft = "lua", opts = {} },
     { "Bilal2453/luvit-meta", lazy = true },

@@ -7,29 +7,38 @@ return {
     "nvim-lua/plenary.nvim",
     { "nvim-telescope/telescope-dap.nvim", enabled = features.debugging },
     "natecraddock/telescope-zf-native.nvim",
+    "nvim-telescope/telescope-ui-select.nvim",
   },
   cmd = { "Telescope" },
+  init = function()
+    -- Load telescope on first use so ui-select can take over vim.ui.select
+    ---@diagnostic disable-next-line: duplicate-set-field
+    vim.ui.select = function(...)
+      require("lazy").load({ plugins = { "telescope.nvim" } })
+      return vim.ui.select(...)
+    end
+  end,
   keys = function()
     -- stylua: ignore
     local keys = {
-      { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Find files" },
-      { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "Buffers" },
-      { "<leader>f/", "<cmd>Telescope live_grep<CR>", desc = "Live search" },
-      { "<leader>fo", function() require("telescope.builtin").oldfiles({ only_cwd = true }) end, desc = "Recent files" },
+      { "<leader>ff", "<cmd>Telescope find_files<CR>",                                              desc = "Find files" },
+      { "<leader>fb", "<cmd>Telescope buffers<CR>",                                                 desc = "Buffers" },
+      { "<leader>f/", "<cmd>Telescope live_grep<CR>",                                               desc = "Live search" },
+      { "<leader>fo", function() require("telescope.builtin").oldfiles({ only_cwd = true }) end,    desc = "Recent files" },
 
-      { "<leader>gl", "<cmd>Telescope git_commits<CR>", desc = "Git commit log" },
-      { "<leader>gb", "<cmd>Telescope git_branches<CR>", desc = "Git branches" },
-      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "Git status" },
+      { "<leader>gl", "<cmd>Telescope git_commits<CR>",                                             desc = "Git commit log" },
+      { "<leader>gb", "<cmd>Telescope git_branches<CR>",                                            desc = "Git branches" },
+      { "<leader>gs", "<cmd>Telescope git_status<CR>",                                              desc = "Git status" },
 
-      { "<leader>P", function() require("telescope").extensions.yank_history.yank_history({}) end, desc = "Open Yank History" },
+      { "<leader>P",  function() require("telescope").extensions.yank_history.yank_history({}) end, desc = "Open Yank History" },
     }
 
     if features.debugging then
       -- stylua: ignore
       vim.list_extend(keys, {
         { "<leader>dlb", function() require("telescope").extensions.dap.list_breakpoints({}) end, desc = "List breakpoints" },
-        { "<leader>dlv", function() require("telescope").extensions.dap.variables({}) end, desc = "List variables" },
-        { "<leader>dlf", function() require("telescope").extensions.dap.frames({}) end, desc = "List frames" },
+        { "<leader>dlv", function() require("telescope").extensions.dap.variables({}) end,        desc = "List variables" },
+        { "<leader>dlf", function() require("telescope").extensions.dap.frames({}) end,           desc = "List frames" },
       })
     end
 
@@ -117,6 +126,7 @@ return {
     })
 
     require("telescope").load_extension("zf-native")
+    require("telescope").load_extension("ui-select")
     if features.debugging then
       require("telescope").load_extension("dap")
     end

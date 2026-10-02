@@ -48,7 +48,6 @@ return {
   "nvim-treesitter/nvim-treesitter",
   enabled = require("user.features").treesitter,
   branch = "main",
-  version = false,
   -- The main branch does not support lazy-loading
   lazy = false,
   build = ":TSUpdate",

@@ -13,7 +13,6 @@ return {
   },
   {
     "echasnovski/mini-git",
-    version = false,
     main = "mini.git",
     cmd = "Git",
     keys = {
@@ -61,7 +60,6 @@ return {
   },
   {
     "echasnovski/mini.move",
-    version = false,
     event = "VeryLazy",
     opts = {
       mappings = {

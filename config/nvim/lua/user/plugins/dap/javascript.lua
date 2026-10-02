@@ -1,11 +1,20 @@
 local M = {}
 
+-- Installed with :MasonInstall js-debug-adapter
+local debug_server = vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js"
+
 function M.setup()
-  require("dap-vscode-js").setup({
-    adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
-    debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
-    log_file_level = vim.log.levels.TRACE,
-  })
+  for _, adapter in ipairs({ "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }) do
+    require("dap").adapters[adapter] = {
+      type = "server",
+      host = "localhost",
+      port = "${port}",
+      executable = {
+        command = "node",
+        args = { debug_server, "${port}" },
+      },
+    }
+  end
 
   for _, language in ipairs({ "typescript", "javascript" }) do
     require("dap").configurations[language] = {

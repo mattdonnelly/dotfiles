@@ -8,12 +8,8 @@ return {
   { "psliwka/vim-smoothie",    event = "BufWinEnter" },
   { "j-hui/fidget.nvim",       event = "VeryLazy",   config = true },
   { "numToStr/Navigator.nvim", event = "VeryLazy",   config = true },
-  { "stevearc/dressing.nvim",  event = "VeryLazy",   opts = {} },
 
-  { "MunifTanjim/nui.nvim", version = nil },
-  {
-    "mrjones2014/legendary.nvim",
-  },
+  "MunifTanjim/nui.nvim",
   {
     "folke/which-key.nvim",
     dependencies = {
@@ -21,7 +17,6 @@ return {
     },
     opts = {
       show_help = false,
-      triggers = { "auto" },
       plugins = {
         registers = false,
       },
