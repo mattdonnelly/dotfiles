@@ -11,6 +11,13 @@ vim.api.nvim_create_autocmd("FileType", {
   command = "setlocal iskeyword+=-",
 })
 
+-- Keep terminals (e.g. Claude Code) out of bufferline and :bnext
+vim.api.nvim_create_autocmd("TermOpen", {
+  callback = function(args)
+    vim.bo[args.buf].buflisted = false
+  end,
+})
+
 local autocmd = vim.api.nvim_create_autocmd
 autocmd("BufWritePre", {
   pattern = "*.ts,*.tsx,*.jsx,*.js",
