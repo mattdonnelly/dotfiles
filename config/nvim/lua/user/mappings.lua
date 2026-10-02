@@ -7,8 +7,9 @@ vim.keymap.set("n", "<Down>", "<nop>")
 vim.keymap.set("n", "<Left>", "<nop>")
 vim.keymap.set("n", "<Right>", "<nop>")
 
-vim.keymap.set({ "n", "t" }, "<C-n>", "<CMD>BufferLineCyclePrev<CR>")
-vim.keymap.set({ "n", "t" }, "<C-m>", "<CMD>BufferLineCycleNext<CR>")
+-- Normal mode only: terminals send <C-m> as <CR>, so a terminal-mode mapping swallows Enter
+vim.keymap.set("n", "<C-n>", "<CMD>BufferLineCyclePrev<CR>")
+vim.keymap.set("n", "<C-m>", "<CMD>BufferLineCycleNext<CR>")
 
 vim.keymap.set({ "n", "t" }, "<C-h>", "<CMD>NavigatorLeft<CR>")
 vim.keymap.set({ "n", "t" }, "<C-l>", "<CMD>NavigatorRight<CR>")
@@ -24,6 +25,7 @@ vim.keymap.set("n", "<C-p>", "<cmd>Telescope keymaps<CR>", { desc = "Search keym
 local wk = require("which-key")
 wk.add({
   { "<leader>S", group = "Spectre" },
+  { "<leader>a", group = "Claude" },
   { "<leader>c", group = "Code" },
   { "<leader>d", group = "Debug" },
   { "<leader>dl", group = "List" },

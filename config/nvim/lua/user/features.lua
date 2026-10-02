@@ -33,6 +33,7 @@ local defaults = {
   debugging = dev_tools, -- nvim-dap and adapters
   testing = dev_tools, -- neotest and adapters
   copilot = dev_tools and vim.g.copilot_enabled == true,
+  claude = dev_tools and vim.fn.executable("claude") == 1, -- claudecode.nvim, needs the Claude Code CLI
 }
 
 local overrides = vim.g.features or {}

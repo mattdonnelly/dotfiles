@@ -22,13 +22,6 @@ vim.opt.swapfile = false
 vim.opt.undodir = vim.fn.stdpath("cache") .. "/undo"
 vim.opt.undofile = true
 
--- Undercurl support
-vim.g["&t_Cs"] = "\\e[4:3m"
-vim.g["&t_Ce"] = "\\e[4:0m"
---
--- Italics support
-vim.g["&t_ZM"] = "\\e[4m"
-
 vim.opt.termguicolors = true
 
 vim.opt.showtabline = 2
