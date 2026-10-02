@@ -42,7 +42,22 @@ if (( $+commands[brew] )); then
   # Prefix is two levels up from the brew binary, e.g. /opt/homebrew/bin/brew
   fpath=("${HOMEBREW_PREFIX:-${commands[brew]:h:h}}/share/zsh/site-functions" $fpath)
 fi
-autoload -Uz compinit && compinit -i
+autoload -Uz compinit
+# Run the full security check and fpath rescan once a day, or when a completion was added or
+# removed (that bumps its directory's mtime); otherwise trust the dump
+() {
+  setopt local_options extended_glob
+  local dump="${ZDOTDIR:-$HOME}/.zcompdump" dir stale
+  [[ ! -s $dump || -n $dump(#qN.mh+24) ]] && stale=1
+  for dir in $fpath; do
+    [[ -z $stale && $dir -nt $dump ]] && stale=1
+  done
+  if [[ -n $stale ]]; then
+    compinit -i -d "$dump" && touch "$dump"
+  else
+    compinit -C -d "$dump"
+  fi
+}
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
@@ -55,23 +70,8 @@ fi
 # Plain history search when fzf's Ctrl-R isn't available
 (( $+widgets[fzf-history-widget] )) || bindkey "^R" history-incremental-search-backward
 
-# nvm
-export NVM_DIR="$HOME/.nvm"
-if [ -s "$NVM_DIR/nvm.sh" ]; then
-  . "$NVM_DIR/nvm.sh"
-  [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
-
-  # Switch to the .nvmrc version when entering a project that uses a different one
-  load-nvmrc() {
-    local nvmrc="$(nvm_find_nvmrc)"
-    if [ -n "$nvmrc" ] && [ "$(nvm version "$(<"$nvmrc")")" != "$(nvm version)" ]; then
-      nvm use
-    fi
-  }
-  autoload -U add-zsh-hook
-  add-zsh-hook chpwd load-nvmrc
-  load-nvmrc
-fi
+# mise (switches to the version in .nvmrc etc. when entering a project)
+(( $+commands[mise] )) && eval "$(mise activate zsh)"
 
 # --- Plugins (only loaded when installed) ---
 # Searches Homebrew (macOS) and common Linux package locations
