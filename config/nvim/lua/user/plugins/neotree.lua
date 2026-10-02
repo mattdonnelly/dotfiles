@@ -1,7 +1,7 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
   cmd = "Neotree",
-  version = "v3.x",
+  branch = "v3.x",
   dependencies = {
     "antosha417/nvim-lsp-file-operations",
   },

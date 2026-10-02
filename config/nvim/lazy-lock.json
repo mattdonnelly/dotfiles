@@ -27,7 +27,7 @@
   "mini.splitjoin": { "branch": "main", "commit": "9301717c7612ccb72e89629df89416585dd54c9b" },
   "mini.surround": { "branch": "main", "commit": "72feeaa0f984646efde875cc775a97b6f8a8be9b" },
   "mini.trailspace": { "branch": "main", "commit": "82c4fb7d4336f8824ca6c97068932886b56326d0" },
-  "neo-tree.nvim": { "branch": "main", "commit": "f3f3bf73414e400cf9fc13fda50f00404a8f8ab1" },
+  "neo-tree.nvim": { "branch": "v3.x", "commit": "1a14083046d96e88e361d1da00761c40d45012f3" },
   "neotest": { "branch": "master", "commit": "27bf921498043f7ecd821d6db68d05de244bbd02" },
   "neotest-go": { "branch": "main", "commit": "59b50505053f9c45a9febb79e11a56206c3e3901" },
   "neotest-java": { "branch": "main", "commit": "51a1389b66e0dbdae628c1dab9f1cfd4e9b0c6f6" },
