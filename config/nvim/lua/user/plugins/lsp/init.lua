@@ -8,7 +8,6 @@ return {
 
     "saghen/blink.cmp",
     "b0o/SchemaStore.nvim",
-    "pmizio/typescript-tools.nvim",
 
     { "folke/lazydev.nvim",   ft = "lua", opts = {} },
     { "Bilal2453/luvit-meta", lazy = true },
@@ -72,7 +71,7 @@ return {
       "eslint",
       "lua_ls",
       "jsonls",
-      "ts_ls",
+      "vtsls",
       "stylelint_lsp",
     }
 
@@ -84,18 +83,6 @@ return {
     require("mason").setup()
     require("mason-lspconfig").setup({
       ensure_installed = ensure_installed,
-      automatic_enable = {
-        -- typescript-tools.nvim runs tsserver itself
-        exclude = { "ts_ls" },
-      },
-    })
-
-    require("typescript-tools").setup({
-      capabilities = capabilities,
-      settings = {
-        expose_as_code_action = "all",
-        separate_diagnostic_server = false,
-      },
     })
 
     require("user.plugins.lsp.diagnostics").setup()

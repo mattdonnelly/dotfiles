@@ -1,5 +1,22 @@
 return {
   {
+    "echasnovski/mini.animate",
+    event = "VeryLazy",
+    opts = function()
+      local animate = require("mini.animate")
+      -- Only smooth scrolling; skip cursor/resize/window animations
+      return {
+        cursor = { enable = false },
+        resize = { enable = false },
+        open = { enable = false },
+        close = { enable = false },
+        scroll = {
+          timing = animate.gen_timing.linear({ duration = 100, unit = "total" }),
+        },
+      }
+    end,
+  },
+  {
     "echasnovski/mini.ai",
     event = "VeryLazy",
     config = true,
