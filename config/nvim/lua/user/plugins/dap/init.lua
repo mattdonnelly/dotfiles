@@ -5,7 +5,8 @@ return {
     "nvim-neotest/nvim-nio",
     "williamboman/mason.nvim",
     "theHamsta/nvim-dap-virtual-text",
-    "rcarriga/nvim-dap-ui",
+    -- Latest tag predates fixes for Neovim deprecations
+    { "rcarriga/nvim-dap-ui", version = false },
     {
       "mxsdev/nvim-dap-vscode-js",
       dependencies = {

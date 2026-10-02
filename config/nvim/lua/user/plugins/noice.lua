@@ -6,7 +6,7 @@ return {
     lsp = {
       -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
       signature = {
-        enabled = false,
+        enabled = true,
       },
       override = {
         ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
