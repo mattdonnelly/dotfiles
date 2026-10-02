@@ -23,6 +23,8 @@ require("lazy").setup("user.plugins", {
   install = {
     colorscheme = { "tokyonight-night" },
   },
+  concurrency = 8,
+  checker = { enabled = true, concurrency = 4 },
   performance = {
     rtp = {
       disabled_plugins = {
