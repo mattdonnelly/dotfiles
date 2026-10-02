@@ -3,10 +3,10 @@ return {
   enabled = require("user.features").lsp,
   ft = "java",
   dependencies = {
-    -- provides the jdtls config and sets shared LSP defaults
     "neovim/nvim-lspconfig",
-    -- nvim-java pins an old commit that uses the deprecated client.request
-    { "JavaHello/spring-boot.nvim", commit = false },
+    -- nvim-java pins an old commit that uses the deprecated client.request.
+    -- Newer commits (9880be4+) block the UI with vim.wait() while jdtls imports.
+    { "JavaHello/spring-boot.nvim", commit = "eea95b752bceb6ca410b3e2d87a1a02d08bd61a6" },
   },
   config = function()
     require("java").setup()
@@ -14,8 +14,6 @@ return {
     vim.lsp.config("jdtls", {
       settings = {
         java = {
-          -- Re-import the Gradle/Maven project when build files change. The
-          -- default ("interactive") prompts via a request Neovim doesn't surface.
           configuration = { updateBuildConfiguration = "automatic" },
         },
       },

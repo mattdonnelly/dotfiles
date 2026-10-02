@@ -35,7 +35,6 @@ return {
         return "<Ignore>"
       end, { expr = true, desc = "Prev Hunk" })
 
-      -- stage_hunk on an already staged hunk unstages it
       map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage/Unstage Hunk")
       map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
       map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")

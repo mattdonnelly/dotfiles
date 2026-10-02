@@ -4,7 +4,16 @@ return {
     event = "VeryLazy",
     opts = function()
       local animate = require("mini.animate")
-      -- Only smooth scrolling; skip cursor/resize/window animations
+
+      local mouse_scrolled = false
+      for _, scroll in ipairs({ "Up", "Down" }) do
+        local key = "<ScrollWheel" .. scroll .. ">"
+        vim.keymap.set({ "", "i" }, key, function()
+          mouse_scrolled = true
+          return key
+        end, { expr = true })
+      end
+
       return {
         cursor = { enable = false },
         resize = { enable = false },
@@ -12,6 +21,15 @@ return {
         close = { enable = false },
         scroll = {
           timing = animate.gen_timing.linear({ duration = 100, unit = "total" }),
+          subscroll = animate.gen_subscroll.equal({
+            predicate = function(total_scroll)
+              if mouse_scrolled then
+                mouse_scrolled = false
+                return false
+              end
+              return total_scroll > 1
+            end,
+          }),
         },
       }
     end,
@@ -33,11 +51,11 @@ return {
     main = "mini.git",
     cmd = "Git",
     keys = {
-      { "<leader>ga", "<CMD>Git add %<CR>", desc = "Git add buffer" },
-      { "<leader>gA", "<CMD>Git add -A<CR>", desc = "Git add all files" },
-      { "<leader>gC", "<CMD>Git commit<CR>", desc = "Git commit" },
-      { "<leader>gd", "<CMD>Git diff %<CR>", desc = "Git diff buffer" },
-      { "<leader>gD", "<CMD>Git diff<CR>", desc = "Git diff all files" },
+      { "<leader>ga", "<CMD>Git add %<CR>",   desc = "Git add buffer" },
+      { "<leader>gA", "<CMD>Git add -A<CR>",  desc = "Git add all files" },
+      { "<leader>gC", "<CMD>Git commit<CR>",  desc = "Git commit" },
+      { "<leader>gd", "<CMD>Git diff %<CR>",  desc = "Git diff buffer" },
+      { "<leader>gD", "<CMD>Git diff<CR>",    desc = "Git diff all files" },
       { "<leader>gr", "<CMD>Git reset %<CR>", desc = "Git reset buffer" },
     },
     config = true,

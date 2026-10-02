@@ -74,7 +74,6 @@ vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 
--- Avoid shelling out to `brew --prefix`, which is slow on startup
 local brew = vim.fn.exepath("brew")
 if brew ~= "" then
   local brew_prefix = vim.env.HOMEBREW_PREFIX or vim.fn.fnamemodify(brew, ":h:h")

@@ -3,7 +3,7 @@ return {
   lazy = false,
   priority = 100,
   config = function()
-    require("tokyonight").setup({
+    local opts = {
       style = "night",
       on_highlights = function(hl, c)
         local prompt = "#2d3149"
@@ -35,7 +35,8 @@ return {
           fg = c.bg_dark,
         }
       end,
-    })
+    }
+    require("tokyonight").setup(opts)
     vim.cmd("colorscheme tokyonight-night")
   end,
 }

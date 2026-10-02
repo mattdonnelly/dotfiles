@@ -1,6 +1,8 @@
+local features = require("user.features")
+
 return {
   "nvim-neotest/neotest",
-  enabled = require("user.features").testing,
+  enabled = features.testing,
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
@@ -8,36 +10,64 @@ return {
     "haydenmeade/neotest-jest",
     "marilari88/neotest-vitest",
     "nvim-neotest/neotest-go",
+    -- Uses the jdtls client from nvim-java for classpaths
+    { "rcasia/neotest-java", enabled = features.lsp },
   },
+  event = vim.tbl_map(function(pattern)
+    return "BufReadPost " .. pattern
+  end, {
+    "*.test.[jt]s",
+    "*.test.[jt]sx",
+    "*.spec.[jt]s",
+    "*.spec.[jt]sx",
+    "*_spec.rb",
+    "*_test.go",
+    "*Test.java",
+    "*Tests.java",
+    "*IT.java",
+  }),
   keys = function()
-    -- stylua: ignore
     return {
-      { "<leader>tt", function() require("neotest").run.run() end, desc = "Run nearest tests" },
-      { "<leader>tT", function() require("neotest").run.run({ strategy = "dap" }) end, desc = "Debug nearest tests" },
-      { "<leader>tf", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run full test suite" },
-      { "<leader>tl", function() require("neotest").run.run_last() end, desc = "Debug nearest tests" },
-      { "<leader>ts", function() require("neotest").run.stop() end, desc = "Stop nearest test" },
-      { "<leader>ta", function() require("neotest").run.attach() end, desc = "Attach to nearest test" },
-      { "<leader>to", function() require("neotest").output.open() end, desc = "Toggle test panel" },
-      { "<leader>tp", function() require("neotest").output_panel.toggle() end, desc = "Toggle test panel" },
+      { "<leader>tt", function() require("neotest").run.run() end,                                    desc = "Run nearest tests" },
+      { "<leader>tT", function() require("neotest").run.run({ strategy = "dap", suite = false }) end, desc = "Debug nearest tests" },
+      { "<leader>tf", function() require("neotest").run.run(vim.fn.expand("%")) end,                  desc = "Run full test suite" },
+      { "<leader>tl", function() require("neotest").run.run_last() end,                               desc = "Debug nearest tests" },
+      { "<leader>ts", function() require("neotest").run.stop() end,                                   desc = "Stop nearest test" },
+      { "<leader>ta", function() require("neotest").run.attach() end,                                 desc = "Attach to nearest test" },
+      { "<leader>to", function() require("neotest").output.open() end,                                desc = "Toggle test panel" },
+      { "<leader>tp", function() require("neotest").output_panel.toggle() end,                        desc = "Toggle test panel" },
     }
   end,
   config = function()
-    ---@diagnostic disable-next-line: missing-fields
-    require("neotest").setup({
-      adapters = {
-        require("neotest-vitest"),
-        require("neotest-jest")({
-          jestCommand = vim.g.jest_command or "npm test",
-        }),
-        require("neotest-rspec")({
-          rspecCommand = vim.g.rspec_command or "bundle exec rspec",
-        }),
-        require("neotest-go"),
-      },
+    local adapters = {
+      require("neotest-vitest"),
+      require("neotest-jest")({
+        jestCommand = vim.g.jest_command or "npm test",
+      }),
+      require("neotest-rspec")({
+        rspecCommand = vim.g.rspec_command or "bundle exec rspec",
+      }),
+      require("neotest-go"),
+    }
+    if features.lsp then
+      table.insert(adapters, require("neotest-java")({}))
+    end
+
+    local opts = {
+      adapters = adapters,
       discovery = {
         enabled = false,
       },
-    })
+      consumers = {
+        autostart = function(client)
+          require("nio").run(function()
+            client:get_adapters()
+          end)
+          return {}
+        end,
+      }
+    }
+
+    require("neotest").setup(opts)
   end,
 }

@@ -17,18 +17,17 @@ return {
     "ClaudeCodeDiffDeny",
     "ClaudeCodeCloseAllDiffs",
   },
-  -- stylua: ignore
   keys = {
-    { "<leader>ac", "<cmd>ClaudeCode<CR>", desc = "Toggle Claude" },
-    { "<leader>af", "<cmd>ClaudeCodeFocus<CR>", desc = "Focus Claude" },
-    { "<leader>ar", "<cmd>ClaudeCode --resume<CR>", desc = "Resume Claude" },
+    { "<leader>ac", "<cmd>ClaudeCode<CR>",            desc = "Toggle Claude" },
+    { "<leader>af", "<cmd>ClaudeCodeFocus<CR>",       desc = "Focus Claude" },
+    { "<leader>ar", "<cmd>ClaudeCode --resume<CR>",   desc = "Resume Claude" },
     { "<leader>aC", "<cmd>ClaudeCode --continue<CR>", desc = "Continue Claude" },
     { "<leader>am", "<cmd>ClaudeCodeSelectModel<CR>", desc = "Select Claude model" },
-    { "<leader>ab", "<cmd>ClaudeCodeAdd %<CR>", desc = "Add current buffer" },
-    { "<leader>as", "<cmd>ClaudeCodeSend<CR>", mode = "v", desc = "Send to Claude" },
-    { "<leader>as", "<cmd>ClaudeCodeTreeAdd<CR>", desc = "Add file", ft = { "neo-tree", "oil" } },
-    { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<CR>", desc = "Accept diff" },
-    { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<CR>", desc = "Deny diff" },
+    { "<leader>ab", "<cmd>ClaudeCodeAdd %<CR>",       desc = "Add current buffer" },
+    { "<leader>as", "<cmd>ClaudeCodeSend<CR>",        mode = "v",                  desc = "Send to Claude" },
+    { "<leader>as", "<cmd>ClaudeCodeTreeAdd<CR>",     desc = "Add file",           ft = { "neo-tree", "oil" } },
+    { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<CR>",  desc = "Accept diff" },
+    { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<CR>",    desc = "Deny diff" },
   },
   opts = {
     terminal = {
