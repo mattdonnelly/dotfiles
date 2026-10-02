@@ -25,7 +25,7 @@ fi
 
 # --- Key bindings ---
 bindkey -v
-export KEYTIMEOUT=1
+export KEYTIMEOUT=10
 
 bindkey "^A" beginning-of-line
 bindkey "^E" end-of-line
