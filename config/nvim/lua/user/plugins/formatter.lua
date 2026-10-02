@@ -5,11 +5,11 @@ return {
   enabled = require("user.features").formatting,
   event = { "BufReadPre", "BufNewFile", "InsertEnter" },
   opts = {
-    format = {
+    default_format_opts = {
       timeout_ms = 10000,
       async = false,
       quiet = false,
-      lsp_fallback = true,
+      lsp_format = "fallback",
     },
     formatters_by_ft = {
       lua = { "stylua" },
@@ -32,7 +32,7 @@ return {
       },
     },
     format_on_save = {
-      lsp_fallback = true,
+      lsp_format = "fallback",
       timeout_ms = 3000,
     },
   },

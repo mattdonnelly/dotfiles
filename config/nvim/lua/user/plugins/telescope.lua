@@ -5,8 +5,6 @@ return {
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
     "nvim-lua/plenary.nvim",
-    "BurntSushi/ripgrep",
-    "sharkdp/fd",
     { "nvim-telescope/telescope-dap.nvim", enabled = features.debugging },
     "natecraddock/telescope-zf-native.nvim",
   },

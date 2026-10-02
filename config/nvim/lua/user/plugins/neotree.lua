@@ -10,12 +10,18 @@ return {
   },
   config = function()
     local signs = require("user.plugins.lsp.diagnostics").signs
-    vim.fn.sign_define("DiagnosticSignError", { text = signs.Error, texthl = "DiagnosticSignError" })
-    vim.fn.sign_define("DiagnosticSignWarn", { text = signs.Warning, texthl = "DiagnosticSignWarn" })
-    vim.fn.sign_define("DiagnosticSignInfo", { text = signs.Information, texthl = "DiagnosticSignInfo" })
-    vim.fn.sign_define("DiagnosticSignHint", { text = signs.Hint, texthl = "DiagnosticSignHint" })
 
     require("neo-tree").setup({
+      default_component_configs = {
+        diagnostics = {
+          symbols = {
+            error = signs.Error,
+            warn = signs.Warning,
+            info = signs.Information,
+            hint = signs.Hint,
+          },
+        },
+      },
       filesystem = {
         follow_current_file = {
           enabled = true,

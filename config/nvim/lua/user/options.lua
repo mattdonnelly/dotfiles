@@ -53,7 +53,6 @@ vim.opt.hidden = true
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.autochdir = false
-vim.opt.swapfile = true
 vim.opt.autoread = true
 vim.opt.number = true
 vim.opt.numberwidth = 4
@@ -82,9 +81,10 @@ vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 
-if vim.fn.executable("brew") == 1 then
-  local brew_prefix = vim.fn.system("echo -n $(brew --prefix)")
-  vim.g.python_host_prog = brew_prefix .. "/bin/python"
+-- Avoid shelling out to `brew --prefix`, which is slow on startup
+local brew = vim.fn.exepath("brew")
+if brew ~= "" then
+  local brew_prefix = vim.env.HOMEBREW_PREFIX or vim.fn.fnamemodify(brew, ":h:h")
   vim.g.python3_host_prog = brew_prefix .. "/bin/python3"
 end
 

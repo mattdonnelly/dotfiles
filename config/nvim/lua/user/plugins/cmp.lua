@@ -9,7 +9,6 @@ return {
     "hrsh7th/cmp-path",
     "hrsh7th/cmp-cmdline",
     "onsails/lspkind.nvim",
-    "folke/neodev.nvim",
     "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
   },

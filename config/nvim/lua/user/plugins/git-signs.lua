@@ -20,7 +20,7 @@ return {
           return "]h"
         end
         vim.schedule(function()
-          gs.next_hunk()
+          gs.nav_hunk("next")
         end)
         return "<Ignore>"
       end, { expr = true, desc = "Next Hunk" })
@@ -30,15 +30,15 @@ return {
           return "[h"
         end
         vim.schedule(function()
-          gs.prev_hunk()
+          gs.nav_hunk("prev")
         end)
         return "<Ignore>"
       end, { expr = true, desc = "Prev Hunk" })
 
-      map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+      -- stage_hunk on an already staged hunk unstages it
+      map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage/Unstage Hunk")
       map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
       map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
-      map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
       map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
       map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
       map("n", "<leader>ghb", function()
