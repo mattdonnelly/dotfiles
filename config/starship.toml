@@ -1,6 +1,6 @@
 add_newline = false
 
-format = "$username$hostname$directory$character"
+format = "$username$hostname$python$directory$character"
 right_format = "$git_branch$git_status"
 
 [username]
@@ -13,6 +13,10 @@ style_root = "bold red"
 ssh_only = true
 format = "@[$hostname]($style) "
 style = "yellow"
+
+[python]
+format = '[(\($virtualenv\) )]($style)'
+style = "cyan"
 
 [directory]
 style = "blue"
