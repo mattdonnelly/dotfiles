@@ -19,6 +19,7 @@ path=(
 )
 
 export EDITOR='nvim'
+export SUDO_EDITOR=${commands[nvim]}
 export VISUAL='nvim'
 export PAGER='less'
 export LESS='-g -i -M -R -S -w -X -z-4'
