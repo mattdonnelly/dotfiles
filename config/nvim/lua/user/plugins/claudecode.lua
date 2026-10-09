@@ -36,4 +36,15 @@ return {
       split_width_percentage = 0.35,
     },
   },
+  init = function()
+    -- The native provider (unlike snacks) doesn't map <S-CR>, so Claude receives a
+    -- plain Enter. Remap it to <M-CR>, which Claude Code treats as a newline. Being a
+    -- key (not raw bytes), it's encoded for the job the same way a real Alt+Enter is.
+    vim.api.nvim_create_autocmd("TermOpen", {
+      pattern = "term://*claude*",
+      callback = function(ev)
+        vim.keymap.set("t", "<S-CR>", "<M-CR>", { buffer = ev.buf, desc = "New line in Claude" })
+      end,
+    })
+  end,
 }

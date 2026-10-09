@@ -36,6 +36,10 @@ bindkey "^N" insert-last-word
 bindkey "^B" backward-word
 bindkey "^F" forward-word
 
+# vi-mode backspace won't delete newlines or text from before insert mode started
+bindkey -M viins "^?" backward-delete-char
+bindkey -M viins "^H" backward-delete-char
+
 # --- Completion ---
 fpath=(~/.zsh/completion $fpath)
 if (( $+commands[brew] )); then
